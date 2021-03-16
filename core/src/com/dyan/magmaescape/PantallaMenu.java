@@ -64,6 +64,13 @@ public class PantallaMenu extends Pantalla {
         Button btnSalir = this.crearBoton("menuPrincipal/button_salir.png", "menuPrincipal/button_salir-2.png");
         btnSalir.setPosition(320.0F, 180.0F, 1);
         this.escenaMenu.addActor(btnSalir);
+        btnSalir.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                PantallaMenu.this.juego.setScreen(new PantallaNivel1(PantallaMenu.this.juego));
+            }
+        });
+
+
         Gdx.input.setInputProcessor(this.escenaMenu);
     }
 

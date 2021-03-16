@@ -2,6 +2,7 @@ package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -18,6 +19,9 @@ public class PantallaNivel1 extends Pantalla {
     //Escena
     private Stage escenaMenu;
 
+    //sprite de Olivia
+    private Sprite oliviaSprite;
+
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -31,11 +35,11 @@ public class PantallaNivel1 extends Pantalla {
 
     private void crearNivel1() {
         escenaMenu=new Stage(vista);
-        texturaFondo=new Texture("menuNiveles/nivel1/fondoNivel1jpg");
+        texturaFondo=new Texture("nivel1/fondoNivel1.jpg");
 
 
-        Button btnMenu=crearBoton("menuNiveles/nivel1/button_menu.png");
-        btnMenu.setPosition(10,ALTO, Align.center);
+        Button btnMenu=crearBoton("nivel1/button_menu.png","nivel1/button_menuInverso.png");
+        btnMenu.setPosition(10,645);
         escenaMenu.addActor(btnMenu);
         //Registrar el evento de click para el boton
         btnMenu.addListener(new ClickListener(){
@@ -46,16 +50,23 @@ public class PantallaNivel1 extends Pantalla {
             }
         });
 
+        oliviaSprite=new Sprite(new Texture("nivel1/Olivia.png"));
+        oliviaSprite.setPosition(0,ALTO/4.5f);
+
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
 
     }
 
-    private Button crearBoton(String archivo) {
+    private Button crearBoton(String archivo, String archivoInverso) {
         Texture texturaBoton=new Texture(archivo);
         TextureRegionDrawable trdBtn=new TextureRegionDrawable(texturaBoton);
 
-        return new Button(trdBtn);
+        //Inverso
+        Texture texturaBotonInverso=new Texture(archivoInverso);
+        TextureRegionDrawable trdBtnInverso=new TextureRegionDrawable(texturaBotonInverso);
+
+        return new Button(trdBtn,trdBtnInverso);
     }
 
     @Override
@@ -64,6 +75,7 @@ public class PantallaNivel1 extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         batch.draw(texturaFondo,0,0);
+        oliviaSprite.draw(batch);
 
         batch.end();
 
