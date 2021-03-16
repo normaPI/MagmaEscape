@@ -25,5 +25,6 @@ public class PantallaSeleccionarNivel extends Pantalla {
     public void dispose() {
     }
 
-    //este es un comentario 
+    //este es un comentario
+    // confirmacion del comentario
 }
