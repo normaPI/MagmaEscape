@@ -22,6 +22,9 @@ public class PantallaNivel1 extends Pantalla {
     //sprite de Olivia
     private Sprite oliviaSprite;
 
+    private Olivia olivia1;
+    private Objeto objeto1;
+
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -30,7 +33,13 @@ public class PantallaNivel1 extends Pantalla {
     public void show() {
 
         crearNivel1();
+        crearOlivia();
 
+    }
+
+    private void crearOlivia() {
+        Texture texturaOlivia=new Texture("nivel1/Olivia.png");
+        olivia1=new Olivia(texturaOlivia,10,ALTO/4.5f);
     }
 
     private void crearNivel1() {
@@ -50,8 +59,6 @@ public class PantallaNivel1 extends Pantalla {
             }
         });
 
-        oliviaSprite=new Sprite(new Texture("nivel1/Olivia.png"));
-        oliviaSprite.setPosition(0,ALTO/4.5f);
 
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
@@ -75,8 +82,8 @@ public class PantallaNivel1 extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         batch.draw(texturaFondo,0,0);
-        oliviaSprite.draw(batch);
 
+       olivia1.render(batch);
         batch.end();
 
         //Escena despues del FONDO
