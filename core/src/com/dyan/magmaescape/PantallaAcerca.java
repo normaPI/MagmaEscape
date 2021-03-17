@@ -46,7 +46,7 @@ public class PantallaAcerca extends Pantalla
         });
 
         //BOTON HISTORIA
-        Button btnHistoria=crearBoton("acercade/button_historia1.png", "acercade/button_historiaInverso.png");
+        Button btnHistoria=crearBoton("acercaDe/button_historia1.png", "acercade/button_historiaInverso.png");
         btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/2, Align.center);
         escenaMenu.addActor(btnHistoria);
         //Registrar el evento de click para el boton
