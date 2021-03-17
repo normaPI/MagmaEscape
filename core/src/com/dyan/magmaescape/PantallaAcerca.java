@@ -30,7 +30,7 @@ public class PantallaAcerca extends Pantalla
     private void crearAcercaDe() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercade/fondoAcercaDe.jpg");
+        texturaFondo=new Texture("acercaDe/fondoAcercaDe2.jpg");
 
         //Boton regresar
         Button btnRegresar=crearBoton("acercade/button_regresar.png", "acercade/button_regresarInverso.png");
@@ -46,7 +46,7 @@ public class PantallaAcerca extends Pantalla
         });
 
         //BOTON HISTORIA
-        Button btnHistoria=crearBoton("acercade/button_historia1.png", "acercade/button_historiaInverso.png");
+        Button btnHistoria=crearBoton("acercaDe/button_historia1.png", "acercade/button_historiaInverso.png");
         btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/2, Align.center);
         escenaMenu.addActor(btnHistoria);
         //Registrar el evento de click para el boton
