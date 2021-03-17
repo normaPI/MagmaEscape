@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 public class PantallaSeleccionarNivel extends Pantalla {
     private Juego juego;
 
+
     public PantallaSeleccionarNivel(Juego juego) {
         this.juego = juego;
     }

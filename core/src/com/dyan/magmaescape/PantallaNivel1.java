@@ -2,6 +2,7 @@ package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -18,6 +19,12 @@ public class PantallaNivel1 extends Pantalla {
     //Escena
     private Stage escenaMenu;
 
+    //sprite de Olivia
+    private Sprite oliviaSprite;
+
+    private Olivia olivia1;
+    private Objeto objeto1;
+
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -26,16 +33,22 @@ public class PantallaNivel1 extends Pantalla {
     public void show() {
 
         crearNivel1();
+        crearOlivia();
 
+    }
+
+    private void crearOlivia() {
+        Texture texturaOlivia=new Texture("nivel1/Olivia.png");
+        olivia1=new Olivia(texturaOlivia,10,ALTO/4.5f);
     }
 
     private void crearNivel1() {
         escenaMenu=new Stage(vista);
-        texturaFondo=new Texture("menuNiveles/nivel1/fondoNivel1jpg");
+        texturaFondo=new Texture("nivel1/fondoNivel1.jpg");
 
 
-        Button btnMenu=crearBoton("menuNiveles/nivel1/button_menu.png");
-        btnMenu.setPosition(10,ALTO, Align.center);
+        Button btnMenu=crearBoton("nivel1/button_menu.png","nivel1/button_menuInverso.png");
+        btnMenu.setPosition(10,645);
         escenaMenu.addActor(btnMenu);
         //Registrar el evento de click para el boton
         btnMenu.addListener(new ClickListener(){
@@ -46,16 +59,21 @@ public class PantallaNivel1 extends Pantalla {
             }
         });
 
+
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
 
     }
 
-    private Button crearBoton(String archivo) {
+    private Button crearBoton(String archivo, String archivoInverso) {
         Texture texturaBoton=new Texture(archivo);
         TextureRegionDrawable trdBtn=new TextureRegionDrawable(texturaBoton);
 
-        return new Button(trdBtn);
+        //Inverso
+        Texture texturaBotonInverso=new Texture(archivoInverso);
+        TextureRegionDrawable trdBtnInverso=new TextureRegionDrawable(texturaBotonInverso);
+
+        return new Button(trdBtn,trdBtnInverso);
     }
 
     @Override
@@ -65,6 +83,7 @@ public class PantallaNivel1 extends Pantalla {
         batch.begin();
         batch.draw(texturaFondo,0,0);
 
+       olivia1.render(batch);
         batch.end();
 
         //Escena despues del FONDO
