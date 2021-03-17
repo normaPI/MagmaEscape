@@ -30,10 +30,10 @@ public class PantallaAcerca extends Pantalla
     private void crearAcercaDe() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercade/fondoAcercaDe.jpg");
+        texturaFondo=new Texture("acercaDe/fondoAcercaDe.jpg");
 
         //Boton regresar
-        Button btnRegresar=crearBoton("acercade/button_regresar.png", "acercade/button_regresarInverso.png");
+        Button btnRegresar=crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         escenaMenu.addActor(btnRegresar);
         //Registrar el evento de click para el boton
