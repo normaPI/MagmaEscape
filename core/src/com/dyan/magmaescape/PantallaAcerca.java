@@ -30,7 +30,7 @@ public class PantallaAcerca extends Pantalla
     private void crearAcercaDe() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercade/fondoAcercaDe2.jpg");
+        texturaFondo=new Texture("acercade/fondoAcercaDe.jpg");
 
         //Boton regresar
         Button btnRegresar=crearBoton("acercade/button_regresar.png", "acercade/button_regresarInverso.png");
