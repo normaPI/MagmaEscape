@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-public class PantallaAcerca extends Pantalla
+public class PantallaHistoria extends Pantalla
 {
     //Referencia al juego principal
     private Juego juego;
@@ -19,21 +19,21 @@ public class PantallaAcerca extends Pantalla
     //Escena
     private Stage escenaMenu;
 
-    public PantallaAcerca(Juego juego) {
-        this.juego = juego;
+    public PantallaHistoria(Juego juego) {
+            this.juego = juego;
     }
 
+    @Override
     public void show() {
-        crearAcercaDe();
+        crearHistoria();
     }
 
-    private void crearAcercaDe() {
+    private void crearHistoria() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercaDe/fondoAcercaDe.jpg");
-
+        texturaFondo=new Texture("acercade/fondoHistoria.jpg");
         //Boton regresar
-        Button btnRegresar=crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
+        Button btnRegresar=crearBoton("acercade/button_regresar.png", "acercade/button_regresarInverso.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         escenaMenu.addActor(btnRegresar);
         //Registrar el evento de click para el boton
@@ -41,22 +41,10 @@ public class PantallaAcerca extends Pantalla
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //Cambiar pantalla
-                juego.setScreen(new PantallaMenu(juego));
+                juego.setScreen(new PantallaAcerca(juego));
             }
         });
 
-        //BOTON HISTORIA
-        Button btnHistoria=crearBoton("acercaDe/button_historia1.png", "acercade/button_historiaInverso.png");
-        btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/2, Align.center);
-        escenaMenu.addActor(btnHistoria);
-        //Registrar el evento de click para el boton
-        btnHistoria.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //Cambiar pantalla
-                juego.setScreen(new PantallaHistoria(juego));
-            }
-        });
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
     }
@@ -70,6 +58,7 @@ public class PantallaAcerca extends Pantalla
         return new Button(trdBtn, trdBtnInverso);
     }
 
+    @Override
     public void render(float delta) {
         borrarPantalla(1,0,0);
         batch.setProjectionMatrix(camara.combined);
@@ -79,15 +68,20 @@ public class PantallaAcerca extends Pantalla
 
         // Escena (DESPUES DEL FONDO)
         escenaMenu.draw();
-
     }
 
+    @Override
     public void pause() {
+
     }
 
+    @Override
     public void resume() {
+
     }
 
+    @Override
     public void dispose() {
+
     }
 }
