@@ -55,7 +55,7 @@ public class PantallaNivel1 extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //Cambiar pantalla
-                juego.setScreen(new PantallaMenu(juego));
+                juego.setScreen(new PantallaMenuPausa(juego));
             }
         });
 
