@@ -39,7 +39,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
 
         //actores botones...
         Button btnNivel1 = crearBoton("menuNiveles/button_nivel.png", "menuNiveles/button_nivel1Inverso.png");
-        btnNivel1.setPosition(ANCHO/2-ANCHO/4,2*ALTO/3, Align.center);
+        btnNivel1.setPosition(ANCHO/2-ANCHO/4,3*ALTO/6, Align.center);
         //agregar boton a la escena
         escenaMenuSeleccionNivel.addActor(btnNivel1);
         btnNivel1.addListener(new ClickListener(){
@@ -50,7 +50,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
         });
 
         Button btnNivel2 = crearBoton("menuNiveles/button_nivel-2.png", "menuNiveles/button_nivel2Inversopng.png");
-        btnNivel2.setPosition(ANCHO/2+ANCHO/4,2*ALTO/3,Align.center);
+        btnNivel2.setPosition(ANCHO/2+ANCHO/4,3*ALTO/6,Align.center);
         escenaMenuSeleccionNivel.addActor(btnNivel2);
         btnNivel2.addListener(new ClickListener(){
             @Override
@@ -60,7 +60,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
         });
 
         Button btnNivel3 = crearBoton("menuNiveles/button_nivel3.png", "menuNiveles/btnNivel3Inv.png");
-        btnNivel3.setPosition(ANCHO/2,ALTO/3,Align.center);
+        btnNivel3.setPosition(ANCHO/2,ALTO/4,Align.center);
         escenaMenuSeleccionNivel.addActor(btnNivel3);
         btnNivel3.addListener(new ClickListener(){
             @Override
