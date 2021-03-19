@@ -30,7 +30,7 @@ public class PantallaMenu extends Pantalla {
         this.escenaMenu = new Stage(this.vista);
 
         Button btnJugar = this.crearBoton("menuPrincipal/button_jugar.png", "menuPrincipal/button_jugar-2.png");
-        btnJugar.setPosition(3*ANCHO/4, 4*ALTO/6, 1);
+        btnJugar.setPosition(3*ANCHO/4, 3*ALTO/6, 1);
         this.escenaMenu.addActor(btnJugar);
         btnJugar.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
