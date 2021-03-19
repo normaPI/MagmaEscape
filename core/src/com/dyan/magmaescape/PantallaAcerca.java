@@ -1,3 +1,8 @@
+/*
+Esta clase representa a la pantalla Acerca De
+Autor: Yised Denise Apolonio
+*/
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
@@ -53,7 +58,7 @@ public class PantallaAcerca extends Pantalla
         btnHistoria.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //Cambiar pantalla
+
                 juego.setScreen(new PantallaHistoria(juego));
             }
         });

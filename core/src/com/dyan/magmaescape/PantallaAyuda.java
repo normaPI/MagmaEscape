@@ -1,3 +1,8 @@
+/*
+Esta clase representa a la pantalla Acerca De
+Autor: Amauri Elian Perez
+*/
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;

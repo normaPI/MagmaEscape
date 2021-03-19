@@ -1,3 +1,7 @@
+/*
+Esta clase representa la pantalla para la seleccion de nivel
+Autor: Amauri Elian Perez
+*/
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;

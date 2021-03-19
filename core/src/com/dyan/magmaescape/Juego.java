@@ -1,5 +1,9 @@
-package com.dyan.magmaescape;
+/*
+Esta clase representa a la aplicacion que corre, el objeto esta vivo durante toda la aplicacion
+Autor: Norma P Iturbide
+*/
 
+package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Game;
 

@@ -1,3 +1,8 @@
+/*
+Esta clase representa el primer nivel
+Autor: Carlos Daniel Castañeda
+*/
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;

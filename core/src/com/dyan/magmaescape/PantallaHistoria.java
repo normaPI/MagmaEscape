@@ -1,3 +1,7 @@
+/*
+Esta clase representa a la pantalla Historia
+Autor: Yised Denisse Apolonio
+*/
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;

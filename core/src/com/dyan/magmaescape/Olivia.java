@@ -1,3 +1,8 @@
+/*
+Esta clase representa la clase del personaje Olivia(Personaje Principal)
+Autor: Daniel Castañeda
+*/
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.graphics.Texture;

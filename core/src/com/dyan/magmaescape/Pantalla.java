@@ -1,3 +1,8 @@
+/*
+Esta clase Pantalla para que demas clases vayan heredando
+Autor: Norma P Iturbide
+*/
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;

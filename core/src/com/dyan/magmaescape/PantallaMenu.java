@@ -1,9 +1,8 @@
 package com.dyan.magmaescape;
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
+/*
+Esta clase representa a la pantalla Menu Principal
+Autor: Norma P Iturbide
+*/
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
