@@ -24,6 +24,7 @@ public class PantallaNivel1 extends Pantalla {
 
     private Olivia olivia1;
     private Objeto objeto1;
+    private float xFondo=0;
 
 
     public PantallaNivel1(Juego juego) {
@@ -44,7 +45,7 @@ public class PantallaNivel1 extends Pantalla {
 
     private void crearNivel1() {
         escenaMenu=new Stage(vista);
-        texturaFondo=new Texture("nivel1/fondoNivel1.jpg");
+        texturaFondo=new Texture("nivel1/fondNivel1.jpg");
 
 
         Button btnMenu=crearBoton("nivel1/button_menu.png","nivel1/button_menuInverso.png");
@@ -83,12 +84,27 @@ public class PantallaNivel1 extends Pantalla {
         batch.begin();
         batch.draw(texturaFondo,0,0);
 
+        batch.draw(texturaFondo,xFondo,0);
+        batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
+        actualizar();
+
        olivia1.render(batch);
         batch.end();
 
         //Escena despues del FONDO
         escenaMenu.draw();
 
+    }
+
+    private void actualizar() {
+        actualizarFondo();
+    }
+
+    private void actualizarFondo() {
+        xFondo-=3;
+        if(xFondo<=-texturaFondo.getWidth()) {
+            xFondo=0;
+        }
     }
 
     @Override
