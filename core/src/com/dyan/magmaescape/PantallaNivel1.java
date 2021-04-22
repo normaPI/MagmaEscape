@@ -8,12 +8,13 @@ package com.dyan.magmaescape;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 
 public class PantallaNivel1 extends Pantalla {
 
@@ -31,6 +32,12 @@ public class PantallaNivel1 extends Pantalla {
     private Objeto objeto1;
     private float xFondo=0;
 
+    //Enemigo (Ashes)
+    //private Ashe ashe;
+    private Array<Ashe> arrAshes;
+    private Texture texturaAshe;
+    private float timerCreaAshe;   //Acumulador de tiempo
+    private final float TIEMPO_CREAR_ASHE = 3;
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -40,7 +47,14 @@ public class PantallaNivel1 extends Pantalla {
 
         crearNivel1();
         crearOlivia();
+        crearAshes();
 
+    }
+
+    private void crearAshes() {
+        texturaAshe = new Texture("nivel1/Ashes.png");
+        //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
+        arrAshes = new Array<>();
     }
 
     private void crearOlivia() {
@@ -91,9 +105,14 @@ public class PantallaNivel1 extends Pantalla {
 
         batch.draw(texturaFondo,xFondo,0);
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
-        actualizar();
+        actualizar(delta);
 
        olivia1.render(batch);
+        //Dibujar Ashe
+        //ashe.render(batch);
+        for (Ashe ashe : arrAshes) {
+            ashe.render(batch);
+        }
         batch.end();
 
         //Escena despues del FONDO
@@ -101,8 +120,27 @@ public class PantallaNivel1 extends Pantalla {
 
     }
 
-    private void actualizar() {
+    private void actualizar(float delta) {
+
         actualizarFondo();
+        actualizarAshes(delta);
+    }
+
+    private void actualizarAshes(float delta) {
+        // Crear Ashes
+        timerCreaAshe += delta;
+        if (timerCreaAshe>=TIEMPO_CREAR_ASHE) {
+            timerCreaAshe = 0;
+            //Crear Enemigo
+            float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, 75);
+            arrAshes.add(ashe);
+        }
+
+        // Mover los Ashes
+        for (Ashe ashe: arrAshes) {
+            ashe.moverIzquierda(delta);
+        }
     }
 
     private void actualizarFondo() {
