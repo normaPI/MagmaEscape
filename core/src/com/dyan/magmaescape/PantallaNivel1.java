@@ -133,7 +133,7 @@ public class PantallaNivel1 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, 75);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, 165);
             arrAshes.add(ashe);
         }
 
