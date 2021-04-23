@@ -59,7 +59,7 @@ public class PantallaNivel1 extends Pantalla {
 
     private void crearOlivia() {
         Texture texturaOlivia=new Texture("nivel1/oliviaSprites.png");
-        olivia1=new Olivia(texturaOlivia,ANCHO/2-(texturaOlivia.getWidth()/4f),ALTO/4.5f);
+        olivia1=new Olivia(texturaOlivia,ANCHO/2-(texturaOlivia.getWidth()/4f),ALTO/3.0f);
     }
 
     private void crearNivel1() {

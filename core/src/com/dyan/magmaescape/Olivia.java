@@ -19,10 +19,10 @@ public class Olivia extends Objeto {
 
     public Olivia(Texture textura, float x, float y){
         TextureRegion region = new TextureRegion(textura);
-        TextureRegion[][] texturas = region.split(407,400);
+        TextureRegion[][] texturas = region.split(127,275);
 
         //Cuadros para caminar
-        TextureRegion[] arrFramesCaminar={ texturas[0][0], texturas[0][1],texturas[1][0],texturas[1][1], texturas[2][0],texturas[2][1]};
+        TextureRegion[] arrFramesCaminar={ texturas[0][0], texturas[0][1],texturas[0][2],texturas[1][0], texturas[1][1],texturas[1][2]};
         animacionCorrer= new Animation<TextureRegion>(0.2f,arrFramesCaminar );
         animacionCorrer.setPlayMode(Animation.PlayMode.LOOP);
         timerAnimacion = 0;
