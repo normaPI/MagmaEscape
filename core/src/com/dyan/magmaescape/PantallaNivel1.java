@@ -52,7 +52,7 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearAshes() {
-        texturaAshe = new Texture("nivel1/Ashes.png");
+        texturaAshe = new Texture("nivel1/Ashe.png");
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
@@ -133,7 +133,7 @@ public class PantallaNivel1 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, 165);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, 240);
             arrAshes.add(ashe);
         }
 
