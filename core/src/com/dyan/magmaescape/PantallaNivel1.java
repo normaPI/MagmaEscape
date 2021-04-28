@@ -6,9 +6,11 @@ Autor: Carlos Daniel Castañeda
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -28,7 +30,7 @@ public class PantallaNivel1 extends Pantalla {
     //sprite de Olivia
     private Sprite oliviaSprite;
 
-    private Olivia olivia1;
+    private Olivia olivia;
     private Objeto objeto1;
     private float xFondo=0;
 
@@ -42,13 +44,21 @@ public class PantallaNivel1 extends Pantalla {
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
     }
+
     @Override
     public void show() {
 
-        crearNivel1();
+        //crearNivel1();
+        crearFondo();
         crearOlivia();
         crearAshes();
 
+        Gdx.input.setInputProcessor(new ProcesadorEntrada());
+
+    }
+    private void crearFondo(){
+
+        texturaFondo = new Texture("nivel1/fondNivel1.jpg");
     }
 
     private void crearAshes() {
@@ -58,11 +68,11 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearOlivia() {
-        Texture texturaOlivia=new Texture("nivel1/oliviaSprites.png");
-        olivia1=new Olivia(texturaOlivia,ANCHO/2-(texturaOlivia.getWidth()/4f),ALTO/3.0f);
+        Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
+        olivia = new Olivia(texturaOlivia,ANCHO/2-(texturaOlivia.getWidth()/4f),ALTO/4f);
     }
 
-    private void crearNivel1() {
+    /*private void crearNivel1() {
         escenaMenu=new Stage(vista);
         texturaFondo=new Texture("nivel1/fondNivel1.jpg");
 
@@ -83,7 +93,7 @@ public class PantallaNivel1 extends Pantalla {
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
 
-    }
+    }*/
 
     private Button crearBoton(String archivo, String archivoInverso) {
         Texture texturaBoton=new Texture(archivo);
@@ -98,17 +108,19 @@ public class PantallaNivel1 extends Pantalla {
 
     @Override
     public void render(float delta) {
+        // actualizar
+        actualizar(delta);
+
         borrarPantalla(1,0,1);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        batch.draw(texturaFondo,0,0);
-
+        //dibujando fondo
         batch.draw(texturaFondo,xFondo,0);
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
-        actualizar(delta);
 
-       olivia1.render(batch);
-        //Dibujar Ashe
+       olivia.render(batch);
+
+        //Dibujar Ashes
         //ashe.render(batch);
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
@@ -116,7 +128,7 @@ public class PantallaNivel1 extends Pantalla {
         batch.end();
 
         //Escena despues del FONDO
-        escenaMenu.draw();
+        //escenaMenu.draw();
 
     }
 
@@ -133,15 +145,22 @@ public class PantallaNivel1 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, 240);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f);
             arrAshes.add(ashe);
         }
+
+        /*if(olivia!=null){
+            probarColisiones();
+        }*/
 
         // Mover los Ashes
         for (Ashe ashe: arrAshes) {
             ashe.moverIzquierda(delta);
         }
     }
+
+    /*private void probarColisiones() {
+    }*/
 
     private void actualizarFondo() {
         xFondo-=3;
@@ -163,5 +182,61 @@ public class PantallaNivel1 extends Pantalla {
     @Override
     public void dispose() {
 
+    }
+
+    private class ProcesadorEntrada implements InputProcessor{
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            Vector3 v = new Vector3(screenX, screenY, 0);
+            camara.unproject(v);
+
+            /*if (v.x >= ANCHO/2){
+                // Dispara!!
+                Bola bola = new Bola(texturaBola, mario.getSprite().getX(),  mario.getSprite().getY());
+                arrBolas.add(bola);
+
+            }
+            else {*/
+                olivia.saltar(); // Top-Down
+
+
+            return true;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(float amountX, float amountY) {
+            return false;
+        }
     }
 }
