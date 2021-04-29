@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Texto {
     private BitmapFont font;
 
-    public Texto(){
-        font = new BitmapFont(Gdx.files.internal("font/arcade.fnt"));
+    public Texto(String archivoo){
+        font = new BitmapFont(Gdx.files.internal(archivoo));
+        font.setColor(1,1,1,1);
+
     }
 
     public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y){
