@@ -262,12 +262,12 @@ public class PantallaNivel1 extends Pantalla {
                 else
                     juego.setScreen(new PantallaMenu(juego));
 
-
             }
+
             if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
                 olivia.saltar(); // Top-Down
-
             }
+
             if (estadoOlivia == EstadoOlivia.MURIENDO){
                 if (v.x >= ANCHO/2){
                     juego.setScreen(new PantallaNivel1(juego));
@@ -279,9 +279,6 @@ public class PantallaNivel1 extends Pantalla {
             if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30 ){
                 juego.setScreen(new PantallaNivel1Completo(juego));
             }
-
-
-
 
             return true;
         }
