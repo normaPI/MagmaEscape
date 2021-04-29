@@ -115,7 +115,7 @@ public class PantallaNivel1 extends Pantalla {
         texto.mostrarMensaje(batch,Integer.toString((int) tiempo),ANCHO*.95F,.9F*ALTO);
 
         if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30){
-            texto.mostrarMensaje(batch, "Has ganau has pasado el primer nivel", ANCHO/2, ALTO/2);
+            texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
         }
 
