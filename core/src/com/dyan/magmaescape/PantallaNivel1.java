@@ -40,7 +40,7 @@ public class PantallaNivel1 extends Pantalla {
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 3;
+    private final float TIEMPO_CREAR_ASHE = 4;
 
     // Boton PAUSE
     private Texture texturaPause;
@@ -87,7 +87,7 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearAshes() {
-        texturaAshe = new Texture("nivel1/Ashe.png");
+        texturaAshe = new Texture("nivel1/Ashes.png");
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
