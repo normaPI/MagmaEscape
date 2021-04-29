@@ -41,7 +41,12 @@ public class PantallaNivel1 extends Pantalla {
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 3;
 
-    private Texto texto;
+
+
+
+    //contador
+    private float tiempo=0;
+    private Texto texto; //escribe texto en la pantalla
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -54,10 +59,17 @@ public class PantallaNivel1 extends Pantalla {
         crearFondo();
         crearOlivia();
         crearAshes();
+        crearTexto();
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
+
+    private void crearTexto() {
+        texto= new Texto("font/arcade.fnt");
+
+    }
+
     private void crearFondo(){
 
         texturaFondo = new Texture("nivel1/fondNivel1.jpg");
@@ -127,6 +139,9 @@ public class PantallaNivel1 extends Pantalla {
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
+
+        //dibujar contador de tiempo
+        texto.mostrarMensaje(batch,Integer.toString((int) tiempo),ANCHO*.95F,.9F*ALTO);
         batch.end();
 
         //Escena despues del FONDO
@@ -138,6 +153,10 @@ public class PantallaNivel1 extends Pantalla {
 
         actualizarFondo();
         actualizarAshes(delta);
+        if(olivia.getEstado()!=EstadoOlivia.MURIENDO)
+        {
+            tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
     }
 
     private void actualizarAshes(float delta) {
@@ -164,7 +183,7 @@ public class PantallaNivel1 extends Pantalla {
     // Prueba la colision de olivia vs ashes
     private void probarColisiones() {
         for (Ashe ashe: arrAshes) {
-            Gdx.app.log("Probando colision", "tengo miedo");
+            //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
@@ -172,6 +191,11 @@ public class PantallaNivel1 extends Pantalla {
                 Gdx.app.log("Probando colision", "YA LE PEGAMOS");
                 break;
             }
+
+
+
+
+
         }
     }
 
