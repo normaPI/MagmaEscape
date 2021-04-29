@@ -26,10 +26,10 @@ public class PantallaNivel1Completo extends Pantalla {
     @Override
     public void show() {
         this.escenaNivelCompleto1 = new Stage(this.vista);
-
+        texturaFondo=new Texture("nivel1/mapaNivel1.jpg");
 
         Button btnVolverMenu = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
-        btnVolverMenu.setPosition(ANCHO/2,ALTO/2, Align.center);
+        btnVolverMenu.setPosition(ANCHO*.85f,ALTO-(ALTO*.90F), Align.center);
         //agregar boton a la escena
         escenaNivelCompleto1.addActor(btnVolverMenu);
         btnVolverMenu.addListener(new ClickListener(){
@@ -56,6 +56,7 @@ public class PantallaNivel1Completo extends Pantalla {
         borrarPantalla(1,0,1);
         batch.setProjectionMatrix(this.camara.combined);
         batch.begin();
+        batch.draw(texturaFondo,0,0);
 
         batch.end();
 
