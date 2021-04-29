@@ -12,7 +12,7 @@ public class Texto {
 
     public Texto(String archivoo){
         font = new BitmapFont(Gdx.files.internal(archivoo));
-        font.setColor(1,1,1,1);
+        font.setColor(0,0,0,1);
 
     }
 
