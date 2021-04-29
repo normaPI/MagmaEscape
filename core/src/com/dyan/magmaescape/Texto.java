@@ -21,7 +21,5 @@ public class Texto {
         glyph.setText(font, mensaje);
         float anchoTexto = glyph.width;
         font.draw(batch, glyph, x-anchoTexto/2, y);
-
-
     }
 }
