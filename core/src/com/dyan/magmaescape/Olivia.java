@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Olivia extends Objeto {
     private Animation<TextureRegion> animacionCorrer;
+    private Animation<TextureRegion> animacionMorir;
     private float timerAnimacion;  //Para saber el que corresponder mostar
 
     // Salto
@@ -35,6 +36,11 @@ public class Olivia extends Objeto {
         TextureRegion[] arrFramesCaminar={ texturas[0][0], texturas[0][1],texturas[0][2],texturas[1][0], texturas[1][1],texturas[1][2]};
         animacionCorrer= new Animation<TextureRegion>(0.2f,arrFramesCaminar );
         animacionCorrer.setPlayMode(Animation.PlayMode.LOOP);
+
+        TextureRegion[] arrFramesMorir={ texturas[0][0]};
+        animacionMorir= new Animation<TextureRegion>(0.2f,arrFramesMorir );
+        animacionMorir.setPlayMode(Animation.PlayMode.LOOP);
+
         timerAnimacion = 0;
 
         //IDLE
@@ -58,6 +64,13 @@ public class Olivia extends Objeto {
                 actualizar();
                 super.render(batch);
                 break;
+
+            case MURIENDO:
+                timerAnimacion+=delta;
+                TextureRegion frameMorir= animacionMorir.getKeyFrame(timerAnimacion);
+                batch.draw(frameMorir,sprite.getX(),sprite.getY());
+                break;
+
         }
 
     }
@@ -90,6 +103,13 @@ public class Olivia extends Objeto {
 
         }
 
+    }
+    public EstadoOlivia getEstado(){
+        return estado;
+    }
+
+    public void setEstado(EstadoOlivia nuevoEstado){
+        this.estado = nuevoEstado;
     }
 
 }

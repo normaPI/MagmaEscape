@@ -41,6 +41,8 @@ public class PantallaNivel1 extends Pantalla {
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 3;
 
+    private Texto texto;
+
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
     }
@@ -149,9 +151,9 @@ public class PantallaNivel1 extends Pantalla {
             arrAshes.add(ashe);
         }
 
-        /*if(olivia!=null){
+        if(olivia!=null){
             probarColisiones();
-        }*/
+        }
 
         // Mover los Ashes
         for (Ashe ashe: arrAshes) {
@@ -159,8 +161,19 @@ public class PantallaNivel1 extends Pantalla {
         }
     }
 
-    /*private void probarColisiones() {
-    }*/
+    // Prueba la colision de olivia vs ashes
+    private void probarColisiones() {
+        for (Ashe ashe: arrAshes) {
+            Gdx.app.log("Probando colision", "tengo miedo");
+            if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
+                // Le pego
+                olivia.setEstado(EstadoOlivia.MURIENDO);
+                //olivia = null;
+                Gdx.app.log("Probando colision", "YA LE PEGAMOS");
+                break;
+            }
+        }
+    }
 
     private void actualizarFondo() {
         xFondo-=3;

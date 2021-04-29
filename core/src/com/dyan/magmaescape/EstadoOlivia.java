@@ -4,5 +4,6 @@ public enum EstadoOlivia {
     CAMINADO,
     SALTANDO,
     SUBIENDO,
+    MURIENDO,
     BAJANDO
 }
