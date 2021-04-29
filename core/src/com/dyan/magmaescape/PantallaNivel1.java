@@ -44,9 +44,6 @@ public class PantallaNivel1 extends Pantalla {
 
 
 
-    //contador
-    private float tiempo=0;
-    private Texto texto; //escribe texto en la pantalla
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -59,16 +56,13 @@ public class PantallaNivel1 extends Pantalla {
         crearFondo();
         crearOlivia();
         crearAshes();
-        crearTexto();
+
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
 
-    private void crearTexto() {
-        texto= new Texto("font/arcade.fnt");
 
-    }
 
     private void crearFondo(){
 
@@ -140,8 +134,7 @@ public class PantallaNivel1 extends Pantalla {
             ashe.render(batch);
         }
 
-        //dibujar contador de tiempo
-        texto.mostrarMensaje(batch,Integer.toString((int) tiempo),ANCHO*.95F,.9F*ALTO);
+
         batch.end();
 
         //Escena despues del FONDO
@@ -153,10 +146,7 @@ public class PantallaNivel1 extends Pantalla {
 
         actualizarFondo();
         actualizarAshes(delta);
-        if(olivia.getEstado()!=EstadoOlivia.MURIENDO)
-        {
-            tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
-        }
+     
     }
 
     private void actualizarAshes(float delta) {
