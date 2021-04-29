@@ -1,10 +1,11 @@
 package com.dyan.magmaescape;
 
-public enum EstadoOlivia {
+public enum EstadoNivel1 {
     CAMINADO,
     SALTANDO,
     SUBIENDO,
     MURIENDO,
-    PAUSA,
+    RESUME,
     BAJANDO
 }
+

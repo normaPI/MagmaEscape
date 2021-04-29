@@ -28,6 +28,8 @@ public class Olivia extends Objeto {
     private EstadoOlivia estado;
 
 
+
+
     public Olivia(Texture textura, float x, float y){
         TextureRegion region = new TextureRegion(textura);
         TextureRegion[][] texturas = region.split(90,220);
@@ -37,7 +39,7 @@ public class Olivia extends Objeto {
         animacionCorrer= new Animation<TextureRegion>(0.2f,arrFramesCaminar );
         animacionCorrer.setPlayMode(Animation.PlayMode.LOOP);
 
-        TextureRegion[] arrFramesMorir={ texturas[0][0]};
+        TextureRegion[] arrFramesMorir={ texturas[0][2]};
         animacionMorir= new Animation<TextureRegion>(0.2f,arrFramesMorir );
         animacionMorir.setPlayMode(Animation.PlayMode.LOOP);
 
