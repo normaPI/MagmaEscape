@@ -1,3 +1,8 @@
+/*
+Esta clase representa el objeto para que clases que hereden, pueden acceder a la variable
+Autor: Daniel Castañeda
+*/
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -5,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Objeto {
-    //para que clases que hereden, pueden acceder a la variable
+
     protected Sprite sprite;
 
 
