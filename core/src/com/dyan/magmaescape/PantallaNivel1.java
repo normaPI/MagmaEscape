@@ -40,7 +40,11 @@ public class PantallaNivel1 extends Pantalla {
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 3;
 
-    private Texto texto;
+
+    //contador
+    private float tiempo=0;
+    private Texto texto; //escribe texto en la pantalla
+
 
     // Estado de Juego
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
@@ -63,7 +67,7 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearTexto() {
-        texto = new Texto();
+        texto = new Texto("font/arcade.fnt");
     }
 
     private void crearFondo(){
@@ -106,14 +110,25 @@ public class PantallaNivel1 extends Pantalla {
             texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
             texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
         }
+
+        //dibujar contador de tiempo
+        texto.mostrarMensaje(batch,Integer.toString((int) tiempo),ANCHO*.95F,.9F*ALTO);
+
+        if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30){
+            texto.mostrarMensaje(batch, "Has ganau has pasado el primer nivel", ANCHO/2, ALTO/2);
+            texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
+        }
+
+
         batch.end();
 
     }
 
     private void actualizar(float delta) {
-        if(estadoOlivia != EstadoOlivia.MURIENDO){
+        if(estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
             actualizarFondo();
             actualizarAshes(delta);
+            tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
     }
 
@@ -206,6 +221,12 @@ public class PantallaNivel1 extends Pantalla {
                 else
                     juego.setScreen(new PantallaMenu(juego));
             }
+
+            if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30 ){
+                juego.setScreen(new PantallaNivel1Completo(juego));
+            }
+
+
 
 
             return true;

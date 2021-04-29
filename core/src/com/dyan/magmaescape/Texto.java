@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Texto {
     private BitmapFont font;
 
-    public Texto(String archivo){
-        font = new BitmapFont(Gdx.files.internal(archivo));
+    public Texto(String archivoo){
+        font = new BitmapFont(Gdx.files.internal(archivoo));
         font.setColor(1,1,1,1);
 
     }
