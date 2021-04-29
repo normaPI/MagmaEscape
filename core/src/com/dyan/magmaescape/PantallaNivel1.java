@@ -31,7 +31,6 @@ public class PantallaNivel1 extends Pantalla {
     private Sprite oliviaSprite;
 
     private Olivia olivia;
-    private Objeto objeto1;
     private float xFondo=0;
 
     //Enemigo (Ashes)
@@ -42,6 +41,9 @@ public class PantallaNivel1 extends Pantalla {
     private final float TIEMPO_CREAR_ASHE = 3;
 
     private Texto texto;
+
+    // Estado de Juego
+    private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -54,10 +56,16 @@ public class PantallaNivel1 extends Pantalla {
         crearFondo();
         crearOlivia();
         crearAshes();
+        crearTexto();
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
+
+    private void crearTexto() {
+        texto = new Texto();
+    }
+
     private void crearFondo(){
 
         texturaFondo = new Texture("nivel1/fondNivel1.jpg");
@@ -72,40 +80,6 @@ public class PantallaNivel1 extends Pantalla {
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
         olivia = new Olivia(texturaOlivia,ANCHO/2-(texturaOlivia.getWidth()/4f),ALTO/4f);
-    }
-
-    /*private void crearNivel1() {
-        escenaMenu=new Stage(vista);
-        texturaFondo=new Texture("nivel1/fondNivel1.jpg");
-
-
-        Button btnMenu=crearBoton("nivel1/button_menu.png","nivel1/button_menuInverso.png");
-        btnMenu.setPosition(10,645);
-        escenaMenu.addActor(btnMenu);
-        //Registrar el evento de click para el boton
-        btnMenu.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //Cambiar pantalla
-                juego.setScreen(new PantallaMenuPausa(juego));
-            }
-        });
-
-
-        //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
-        Gdx.input.setInputProcessor(escenaMenu);
-
-    }*/
-
-    private Button crearBoton(String archivo, String archivoInverso) {
-        Texture texturaBoton=new Texture(archivo);
-        TextureRegionDrawable trdBtn=new TextureRegionDrawable(texturaBoton);
-
-        //Inverso
-        Texture texturaBotonInverso=new Texture(archivoInverso);
-        TextureRegionDrawable trdBtnInverso=new TextureRegionDrawable(texturaBotonInverso);
-
-        return new Button(trdBtn,trdBtnInverso);
     }
 
     @Override
@@ -123,21 +97,24 @@ public class PantallaNivel1 extends Pantalla {
        olivia.render(batch);
 
         //Dibujar Ashes
-        //ashe.render(batch);
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
-        batch.end();
 
-        //Escena despues del FONDO
-        //escenaMenu.draw();
+        if (estadoOlivia == EstadoOlivia.MURIENDO){
+            texto.mostrarMensaje(batch, "So sorry,  perdiste :(", ANCHO/2, ALTO/2);
+            texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
+            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
+        }
+        batch.end();
 
     }
 
     private void actualizar(float delta) {
-
-        actualizarFondo();
-        actualizarAshes(delta);
+        if(estadoOlivia != EstadoOlivia.MURIENDO){
+            actualizarFondo();
+            actualizarAshes(delta);
+        }
     }
 
     private void actualizarAshes(float delta) {
@@ -151,7 +128,7 @@ public class PantallaNivel1 extends Pantalla {
             arrAshes.add(ashe);
         }
 
-        if(olivia!=null){
+        if(estadoOlivia!=EstadoOlivia.MURIENDO){
             probarColisiones();
         }
 
@@ -168,6 +145,7 @@ public class PantallaNivel1 extends Pantalla {
             if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
+                estadoOlivia = EstadoOlivia.MURIENDO;
                 //olivia = null;
                 Gdx.app.log("Probando colision", "YA LE PEGAMOS");
                 break;
@@ -218,15 +196,16 @@ public class PantallaNivel1 extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-
-            /*if (v.x >= ANCHO/2){
-                // Dispara!!
-                Bola bola = new Bola(texturaBola, mario.getSprite().getX(),  mario.getSprite().getY());
-                arrBolas.add(bola);
-
-            }
-            else {*/
+            if (estadoOlivia != EstadoOlivia.MURIENDO ){
                 olivia.saltar(); // Top-Down
+            }
+            if (estadoOlivia == EstadoOlivia.MURIENDO){
+                if (v.x >= ANCHO/2){
+                    juego.setScreen(new PantallaNivel1(juego));
+                }
+                else
+                    juego.setScreen(new PantallaMenu(juego));
+            }
 
 
             return true;
