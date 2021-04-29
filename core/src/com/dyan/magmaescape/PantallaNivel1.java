@@ -73,7 +73,7 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearTexto() {
-        texto = new Texto("font/arcade.fnt");
+        texto = new Texto("font/arcade2.fnt");
     }
 
     private void recuperarMarcador() {
@@ -129,7 +129,7 @@ public class PantallaNivel1 extends Pantalla {
         }
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
-            texto.mostrarMensaje(batch, "So sorry,  perdiste :(", ANCHO/2, ALTO/2);
+            texto.mostrarMensaje(batch, "So sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
             texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
             texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
         }
