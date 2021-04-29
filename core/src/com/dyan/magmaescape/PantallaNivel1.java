@@ -156,7 +156,7 @@ public class PantallaNivel1 extends Pantalla {
     // Prueba la colision de olivia vs ashes
     private void probarColisiones() {
         for (Ashe ashe: arrAshes) {
-            Gdx.app.log("Probando colision", "tengo miedo");
+            //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
