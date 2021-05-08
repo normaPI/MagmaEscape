@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-
+// Created by Amauri Elian Perez Cruz 29/4/2021
 public class PantallaNivel1Completo extends Pantalla {
 
     private Juego juego;
