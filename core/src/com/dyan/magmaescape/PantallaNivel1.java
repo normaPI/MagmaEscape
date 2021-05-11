@@ -87,14 +87,14 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearAshes() {
-        texturaAshe = new Texture("nivel1/Ashes.png");
+        texturaAshe = new Texture("nivel1/AsheRojo.png");
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/2-(texturaOlivia.getWidth()/4f),ALTO/4f);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f);
     }
     private void crearPause() {
         texturaPause = new Texture("nivel1/button_pausa.png");
