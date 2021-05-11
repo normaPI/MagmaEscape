@@ -87,7 +87,7 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearAshes() {
-        texturaAshe = new Texture("nivel1/Ashes.png");
+        texturaAshe = new Texture("nivel1/AsheRojo.png");
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
