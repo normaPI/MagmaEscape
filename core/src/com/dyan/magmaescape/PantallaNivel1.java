@@ -129,13 +129,14 @@ public class PantallaNivel1 extends Pantalla {
         }
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
-            texto.mostrarMensaje(batch, "So sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
+            texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
             texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
             texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
         }
 
         //dibujar contador de tiempo
-        texto.mostrarMensaje(batch,Integer.toString((int) tiempo),ANCHO*.95F,.9F*ALTO);
+        texto.mostrarMensaje(batch,"Meta  30s",ANCHO*.45F,.9F*ALTO);
+        texto.mostrarMensaje(batch,"Tiempo  "+Integer.toString((int) tiempo),ANCHO*.85F,.9F*ALTO);
 
         if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30){
             texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
@@ -238,7 +239,7 @@ public class PantallaNivel1 extends Pantalla {
             float anchoPause = texturaPause.getWidth();
             float altoPause = texturaPause.getHeight();
             float xPause = texturaPause.getWidth()/2;
-            float yPause = ALTO - 1.5f*altoPause;
+            float yPause = ALTO - 1.55f*altoPause;
             // Primero, verificar el boton de back
 
             Rectangle rectPuse = new Rectangle(xPause, yPause, anchoPause, altoPause);
@@ -262,12 +263,12 @@ public class PantallaNivel1 extends Pantalla {
                 else
                     juego.setScreen(new PantallaMenu(juego));
 
-
             }
+
             if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
                 olivia.saltar(); // Top-Down
-
             }
+
             if (estadoOlivia == EstadoOlivia.MURIENDO){
                 if (v.x >= ANCHO/2){
                     juego.setScreen(new PantallaNivel1(juego));
@@ -279,9 +280,6 @@ public class PantallaNivel1 extends Pantalla {
             if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30 ){
                 juego.setScreen(new PantallaNivel1Completo(juego));
             }
-
-
-
 
             return true;
         }
