@@ -1,8 +1,3 @@
-/*
-Esta clase representa el primer nivel
-Autor: Carlos Daniel Castañeda
-*/
-
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
@@ -13,17 +8,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
-public class PantallaNivel1 extends Pantalla {
+public class PantallaNivel2 extends Pantalla {
 
-    //
     private Juego juego;
+
     //Fondo
     private Texture texturaFondo;
     //Escena
@@ -36,40 +27,57 @@ public class PantallaNivel1 extends Pantalla {
     private float xFondo=0;
 
     //Enemigo (Ashes)
-    //private Ashe ashe;
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 4;
 
+    //Obstaculo (Hoyo)
+    private Array<Hoyo> arrHoyos;
+    private Texture texturaHoyo;
+    private float timerCrearHoyo;
+    private final float TIEMPO_CREAR_HOYO = 22;
+
+    //Potenciador
+    private Array<Potenciador> arrPotenciadores;
+    private Texture texturaPotenciadores;
+    private float timerCrearPotenciador;   //Acumulador de tiempo
+    private final float TIEMPO_CREAR_POTENCIADOR = 25;
+
     // Boton PAUSE
     private Texture texturaPause;
-
 
     //contador
     private float tiempo=0;
     private Texto texto; //escribe texto en la pantalla
 
-
     // Estado de Juego
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
 
-    public PantallaNivel1(Juego juego) {
-        this.juego = juego;
+    public PantallaNivel2(Juego juego) {
+        this.juego=juego;
     }
-
     @Override
     public void show() {
-
         crearFondo();
         crearPause();
         crearOlivia();
         crearAshes();
         crearTexto();
-        //recuperarMarcador();
+        crearHoyos();
+        crearPotenciador();
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+    }
 
+    private void crearPotenciador() {
+        texturaPotenciadores = new Texture("nivel2/diamante.png");
+        arrPotenciadores = new Array<>();
+    }
+
+    private void crearHoyos() {
+        texturaHoyo = new Texture("nivel2/hoyos.png");
+        arrHoyos = new Array<>();
     }
 
     private void crearTexto() {
@@ -83,11 +91,11 @@ public class PantallaNivel1 extends Pantalla {
 
     private void crearFondo(){
 
-        texturaFondo = new Texture("nivel1/fondNivel1.jpg");
+        texturaFondo = new Texture("nivel2/fondoNivel2.jpg");
     }
 
     private void crearAshes() {
-        texturaAshe = new Texture("nivel1/AsheRojo.png");
+        texturaAshe = new Texture("nivel2/AsheAzul.png");
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
@@ -115,7 +123,7 @@ public class PantallaNivel1 extends Pantalla {
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
         batch.draw(texturaPause, .03f*ANCHO, .85F*ALTO);
 
-       olivia.render(batch);
+        olivia.render(batch);
 
         if (estadoOlivia == EstadoOlivia.PAUSA){
             texto.mostrarMensaje(batch, "PAUSA", ANCHO/2, ALTO/2);
@@ -127,6 +135,14 @@ public class PantallaNivel1 extends Pantalla {
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
+        //Dibujar Hoyos
+        for (Hoyo hoyo: arrHoyos) {
+            hoyo.render(batch);
+        }
+        //Dibujar Potenciadores
+        for (Potenciador potenciador: arrPotenciadores) {
+            potenciador.render(batch);
+        }
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
             texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
@@ -135,24 +151,57 @@ public class PantallaNivel1 extends Pantalla {
         }
 
         //dibujar contador de tiempo
-        texto.mostrarMensaje(batch,"Meta  30s",ANCHO*.45F,.9F*ALTO);
+        texto.mostrarMensaje(batch,"Meta  60s",ANCHO*.45F,.9F*ALTO);
         texto.mostrarMensaje(batch,"Tiempo  "+Integer.toString((int) tiempo),ANCHO*.85F,.9F*ALTO);
 
-        if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30){
-            texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
+        if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==60){
+            texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el segundo nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
         }
 
 
         batch.end();
-
     }
 
     private void actualizar(float delta) {
-        if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
+        if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<60) ){
             actualizarFondo();
             actualizarAshes(delta);
+            actualizarHoyos(delta);
+            actualizarPotenciadores(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+    }
+
+    private void actualizarPotenciadores(float delta) {
+        // Crear Potenciadores
+        timerCrearPotenciador += delta;
+        if (timerCrearPotenciador>=TIEMPO_CREAR_POTENCIADOR) {
+            timerCrearPotenciador = 0;
+            //Crear Potenciador
+            float xPotenciador = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Potenciador potenciador = new Potenciador(texturaPotenciadores, xPotenciador, ALTO/1.35f);
+            arrPotenciadores.add(potenciador);
+        }
+        // Mover los Potenciadores
+        for (Potenciador potenciador: arrPotenciadores) {
+            potenciador.moverIzquierda(delta);
+        }
+    }
+
+    private void actualizarHoyos(float delta) {
+        //Crear Hoyos
+        timerCrearHoyo += delta;
+        if (timerCrearHoyo>=TIEMPO_CREAR_HOYO) {
+            timerCrearHoyo = 0;
+            //Crear obstaculo
+            float xHoyo = MathUtils.random(ANCHO, ANCHO*1.5F);
+            Hoyo hoyo = new Hoyo(texturaHoyo, xHoyo, ALTO/4);
+            arrHoyos.add(hoyo);
+        }
+        //Mover los obstaculos
+        for (Hoyo hoyo: arrHoyos) {
+            hoyo.moverIzquierda(delta);
         }
     }
 
@@ -163,7 +212,7 @@ public class PantallaNivel1 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4);
             arrAshes.add(ashe);
         }
 
@@ -175,10 +224,30 @@ public class PantallaNivel1 extends Pantalla {
         for (Ashe ashe: arrAshes) {
             ashe.moverIzquierda(delta);
         }
+
     }
 
     // Prueba la colision de olivia vs ashes
     private void probarColisiones() {
+        colisionAshe();
+        colisionHoyo();
+    }
+
+    private void colisionHoyo() {
+        for (Hoyo hoyo: arrHoyos) {
+            //Gdx.app.log("Probando colision", "tengo miedo");
+            if (olivia.sprite.getBoundingRectangle().overlaps(hoyo.sprite.getBoundingRectangle())){
+                // Le pego
+                olivia.setEstado(EstadoOlivia.MURIENDO);
+                estadoOlivia = EstadoOlivia.MURIENDO;
+                //olivia = null;
+                Gdx.app.log("Probando colision", "YA LE PEGAMOS");
+                break;
+            }
+        }
+    }
+
+    private void colisionAshe() {
         for (Ashe ashe: arrAshes) {
             //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
@@ -214,7 +283,7 @@ public class PantallaNivel1 extends Pantalla {
 
     }
 
-    public class ProcesadorEntrada implements InputProcessor{
+    private class ProcesadorEntrada implements InputProcessor {
 
         @Override
         public boolean keyDown(int keycode) {
@@ -271,14 +340,14 @@ public class PantallaNivel1 extends Pantalla {
 
             if (estadoOlivia == EstadoOlivia.MURIENDO){
                 if (v.x >= ANCHO/2){
-                    juego.setScreen(new PantallaNivel1(juego));
+                    juego.setScreen(new PantallaNivel2(juego));
                 }
                 else
                     juego.setScreen(new PantallaMenu(juego));
             }
 
-            if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30 ){
-                juego.setScreen(new PantallaNivel1Completo(juego));
+            if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==60 ){
+                juego.setScreen(new PantallaNivel2Completo(juego));
             }
 
             return true;
@@ -304,4 +373,5 @@ public class PantallaNivel1 extends Pantalla {
             return false;
         }
     }
+
 }
