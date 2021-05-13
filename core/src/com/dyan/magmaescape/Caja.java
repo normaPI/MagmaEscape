@@ -10,19 +10,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /*
 Representa un obstáculo
  */
-public class Hoyo extends Objeto
+public class Caja extends Objeto
 {
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
     private float velocidadX = -300;  //pixeles/segundos
 
-    public Hoyo(Texture textura, float x, float y) {
+    public Caja(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
-        TextureRegion[][] texturas = region.split(120,60);
+        TextureRegion[][] texturas = region.split(83,79);
 
         //Crear la animacion
-        TextureRegion[] arrFrames = { texturas[0][0], texturas[0][1],texturas[1][0], texturas[1][1] };
+        TextureRegion[] arrFrames = { texturas[0][0], texturas[0][1],texturas[0][2]};
         animacion = new Animation<TextureRegion>(0.4f, arrFrames);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
         timerAnimacion = 0;

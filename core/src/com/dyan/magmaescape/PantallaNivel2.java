@@ -32,11 +32,11 @@ public class PantallaNivel2 extends Pantalla {
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 4;
 
-    //Obstaculo (Hoyo)
-    private Array<Hoyo> arrHoyos;
-    private Texture texturaHoyo;
-    private float timerCrearHoyo;
-    private final float TIEMPO_CREAR_HOYO = 22;
+    //Obstaculo (Cajas de fuego)
+    private Array<Caja> arrCajas;
+    private Texture texturaCajas;
+    private float timerCrearCaja;
+    private final float TIEMPO_CREAR_CAJA = 22;
 
     //Potenciador
     private Array<Potenciador> arrPotenciadores;
@@ -64,7 +64,7 @@ public class PantallaNivel2 extends Pantalla {
         crearOlivia();
         crearAshes();
         crearTexto();
-        crearHoyos();
+        crearCajas();
         crearPotenciador();
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
@@ -75,9 +75,9 @@ public class PantallaNivel2 extends Pantalla {
         arrPotenciadores = new Array<>();
     }
 
-    private void crearHoyos() {
-        texturaHoyo = new Texture("nivel2/hoyos.png");
-        arrHoyos = new Array<>();
+    private void crearCajas() {
+        texturaCajas = new Texture("nivel2/cajasFuego.png");
+        arrCajas = new Array<>();
     }
 
     private void crearTexto() {
@@ -135,9 +135,9 @@ public class PantallaNivel2 extends Pantalla {
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
-        //Dibujar Hoyos
-        for (Hoyo hoyo: arrHoyos) {
-            hoyo.render(batch);
+        //Dibujar Cajas de Fuego
+        for (Caja caja : arrCajas) {
+            caja.render(batch);
         }
         //Dibujar Potenciadores
         for (Potenciador potenciador: arrPotenciadores) {
@@ -167,7 +167,7 @@ public class PantallaNivel2 extends Pantalla {
         if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<60) ){
             actualizarFondo();
             actualizarAshes(delta);
-            actualizarHoyos(delta);
+            actualizarCajas(delta);
             actualizarPotenciadores(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
@@ -189,19 +189,19 @@ public class PantallaNivel2 extends Pantalla {
         }
     }
 
-    private void actualizarHoyos(float delta) {
-        //Crear Hoyos
-        timerCrearHoyo += delta;
-        if (timerCrearHoyo>=TIEMPO_CREAR_HOYO) {
-            timerCrearHoyo = 0;
+    private void actualizarCajas(float delta) {
+        //Crear Cajas de Fuego
+        timerCrearCaja += delta;
+        if (timerCrearCaja >= TIEMPO_CREAR_CAJA) {
+            timerCrearCaja = 0;
             //Crear obstaculo
-            float xHoyo = MathUtils.random(ANCHO, ANCHO*1.5F);
-            Hoyo hoyo = new Hoyo(texturaHoyo, xHoyo, ALTO/4);
-            arrHoyos.add(hoyo);
+            float xCaja = MathUtils.random(ANCHO, ANCHO*1.5F);
+            Caja caja = new Caja(texturaCajas, xCaja, ALTO/4);
+            arrCajas.add(caja);
         }
         //Mover los obstaculos
-        for (Hoyo hoyo: arrHoyos) {
-            hoyo.moverIzquierda(delta);
+        for (Caja caja : arrCajas) {
+            caja.moverIzquierda(delta);
         }
     }
 
@@ -230,13 +230,13 @@ public class PantallaNivel2 extends Pantalla {
     // Prueba la colision de olivia vs ashes
     private void probarColisiones() {
         colisionAshe();
-        colisionHoyo();
+        colisionCaja();
     }
 
-    private void colisionHoyo() {
-        for (Hoyo hoyo: arrHoyos) {
+    private void colisionCaja() {
+        for (Caja caja : arrCajas) {
             //Gdx.app.log("Probando colision", "tengo miedo");
-            if (olivia.sprite.getBoundingRectangle().overlaps(hoyo.sprite.getBoundingRectangle())){
+            if (olivia.sprite.getBoundingRectangle().overlaps(caja.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
