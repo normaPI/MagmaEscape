@@ -67,6 +67,7 @@ public class Olivia extends Objeto {
                 super.render(batch);
                 break;
 
+
             case MURIENDO:
                 timerAnimacion+=delta;
                 TextureRegion frameMorir= animacionMorir.getKeyFrame(timerAnimacion);

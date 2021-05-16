@@ -231,6 +231,20 @@ public class PantallaNivel2 extends Pantalla {
     private void probarColisiones() {
         colisionAshe();
         colisionCaja();
+        colisionPotenRapidez();
+    }
+
+    private void colisionPotenRapidez() {
+        for(Potenciador potenciador : arrPotenciadores){
+            if (olivia.sprite.getBoundingRectangle().overlaps(potenciador.sprite.getBoundingRectangle())){
+                olivia.setEstado(EstadoOlivia.CORRIENDO);
+                estadoOlivia=EstadoOlivia.CORRIENDO;
+                Gdx.app.log("Probando colision", "TOCO DIAMANTE,CORRIENDO");
+                break;
+
+            }
+        }
+
     }
 
     private void colisionCaja() {
