@@ -41,7 +41,12 @@ public class PantallaNivel3 extends Pantalla{
 
     //contador
     private float tiempo=0;
-    private Texto texto; //escribe texto en la pantalla
+    private TextoBlanco texto; //escribe texto en la pantalla negro
+
+    //Caja
+    private Array<Caja> arrCajas;
+    private Texture texturaCaja;
+
 
 
     // Estado de Juego
@@ -59,14 +64,26 @@ public class PantallaNivel3 extends Pantalla{
         crearOlivia();
         crearAshes();
         crearTexto();
+        crearCaja();
+        crearPotenciador();
         //recuperarMarcador();
 
         Gdx.input.setInputProcessor(new PantallaNivel3.ProcesadorEntrada());
 
     }
 
+    private void crearPotenciador() {
+
+    }
+
+    private void crearCaja() {
+        texturaCaja= new Texture("nivel3/fuego.png");
+        arrCajas=new Array<>();
+    }
+
     private void crearTexto() {
-        texto = new Texto("font/arcade2.fnt");
+        texto= new TextoBlanco("font/arcade2.fnt");
+
     }
 
     private void recuperarMarcador() {
