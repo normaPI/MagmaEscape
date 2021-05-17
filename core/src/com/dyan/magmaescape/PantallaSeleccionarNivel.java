@@ -65,7 +65,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
         btnNivel3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new PantallaNivel1(juego));
+                juego.setScreen(new PantallaNivel3(juego));
             }
         } );
 
