@@ -222,6 +222,11 @@ public class PantallaNivel3 extends Pantalla{
             Potenciador potenciador = new Potenciador(texturaPotenciadores, xPotenciador, ALTO/1.35f);
             arrPotenciadores.add(potenciador);
         }
+
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            colisionPotenRapidez();
+        }
+
         // Mover los Potenciadores
         for (Potenciador potenciador: arrPotenciadores) {
             potenciador.moverIzquierda(delta);
@@ -278,7 +283,7 @@ public class PantallaNivel3 extends Pantalla{
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
                 //olivia = null;
-                Gdx.app.log("Probando colision", "YA LE PEGAMOS");
+                Gdx.app.log("Probando colision con ashe", "YA LE PEGAMOS");
                 break;
             }
         }
