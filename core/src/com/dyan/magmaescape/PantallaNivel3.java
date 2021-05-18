@@ -11,8 +11,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaNivel3 extends Pantalla{
     //
@@ -49,11 +56,16 @@ public class PantallaNivel3 extends Pantalla{
     private float timerCrearCaja;
     private final float TIEMPO_CREAR_CAJA = 22;
 
+    //Escena pausa
+    private EscenaPausa escenaPausa;
+    private ProcesadorEntrada procesadorEntrada;
 
 
-
-    // Estado de Juego
+    // Estado de Olivia
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
+
+    //Estado del juego
+    private EstadoJuego estadoJuego=EstadoJuego.JUGANDO;
 
     public PantallaNivel3(Juego juego) {
         this.juego = juego;
@@ -71,12 +83,21 @@ public class PantallaNivel3 extends Pantalla{
         crearPotenciador();
         //recuperarMarcador();
 
-        Gdx.input.setInputProcessor(new PantallaNivel3.ProcesadorEntrada());
+        procesadorEntrada= new ProcesadorEntrada();
+        Gdx.input.setInputProcessor(procesadorEntrada);
 
     }
 
     private void crearPotenciador() {
 
+    }
+
+    private Button crearBoton(String archivo, String archivoInverso) {
+        Texture texturaBoton = new Texture(archivo);
+        TextureRegionDrawable trdBtnMario = new TextureRegionDrawable(texturaBoton);
+        Texture texturaInverso = new Texture(archivoInverso);
+        TextureRegionDrawable trdBtnInverso = new TextureRegionDrawable(texturaInverso);
+        return new Button(trdBtnMario, trdBtnInverso);
     }
 
     private void crearCaja() {
@@ -130,11 +151,6 @@ public class PantallaNivel3 extends Pantalla{
 
         olivia.render(batch);
 
-        if (estadoOlivia == EstadoOlivia.PAUSA){
-            texto.mostrarMensaje(batch, "PAUSA", ANCHO/2, ALTO/2);
-            texto.mostrarMensaje(batch, "Tap para CONTINUAR", 3*ANCHO/4, ALTO/4);
-            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
-        }
 
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
@@ -162,12 +178,18 @@ public class PantallaNivel3 extends Pantalla{
         }
 
 
+        //Dibujar la pausa
+        if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)
+        {
+            escenaPausa.draw();
+        }
+
         batch.end();
 
     }
 
     private void actualizar(float delta) {
-        if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
+        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
             actualizarFondo();
             actualizarAshes(delta);
             actualizarCajas(delta);
@@ -202,7 +224,7 @@ public class PantallaNivel3 extends Pantalla{
             arrAshes.add(ashe);
         }
 
-        if(estadoOlivia!=EstadoOlivia.MURIENDO){
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
             probarColisionAshe();
         }
 
@@ -210,11 +232,6 @@ public class PantallaNivel3 extends Pantalla{
         for (Ashe ashe: arrAshes) {
             ashe.moverIzquierda(delta);
         }
-    }
-
-    // Prueba la colision de olivia vs ashes
-    private void probarColisiones() {
-        probarColisionAshe();
     }
 
     private void probarColisionAshe() {
@@ -282,29 +299,23 @@ public class PantallaNivel3 extends Pantalla{
             // Primero, verificar el boton de back
 
             Rectangle rectPuse = new Rectangle(xPause, yPause, anchoPause, altoPause);
-            if(rectPuse.contains(v.x, v.y)){
+            if(rectPuse.contains(v.x, v.y)) {
                 // SALIY y guardar el marcador
-                estadoOlivia = EstadoOlivia.PAUSA;
-                olivia.setEstado(EstadoOlivia.PAUSA);
+                if (escenaPausa == null) escenaPausa = new EscenaPausa(vista);
+
+                estadoJuego=EstadoJuego.PAUSADO;
+                //Cambiar el procesador de entrada, ahra quien sera el procesador de entrada sera la escena de pausa
+                Gdx.input.setInputProcessor(escenaPausa); //Detecta el click sobre el boton
+
                 Preferences preferencias = Gdx.app.getPreferences("TIEMPO");
                 preferencias.putInteger("segundos", (int) tiempo);
                 preferencias.flush();
 
-                //juego.setScreen(new PantallaMenuPausa(juego));
 
             }else
 
-            if (estadoOlivia == EstadoOlivia.PAUSA ){
 
-                if (v.x >= ANCHO/2){
-                    estadoOlivia = EstadoOlivia.CAMINADO;
-                }
-                else
-                    juego.setScreen(new PantallaMenu(juego));
-
-            }
-
-            if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
+            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != EstadoOlivia.MURIENDO ){
                 olivia.saltar(); // Top-Down
             }
 
@@ -343,4 +354,68 @@ public class PantallaNivel3 extends Pantalla{
             return false;
         }
     }
+
+    //Creacion de la escena pausa al apretar el boton
+    private class EscenaPausa extends Stage
+    {
+        private Texture texturaFondo;
+
+        public EscenaPausa(Viewport vista)
+        {
+            super(vista);
+            //añadir la textura de pausa
+            texturaFondo= new Texture("pausa/fondoPausa.png");
+            Image imgFondo= new Image(texturaFondo);
+            imgFondo.setPosition(ANCHO/2,ALTO/2, Align.center);
+            addActor(imgFondo);
+
+            //adicion de botones
+            //actores
+            Button btnVolverJuego = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
+            //agregar boton a la escena
+            addActor(btnVolverJuego);
+            btnVolverJuego.setPosition(ANCHO/2,.7F*ALTO,Align.center);
+
+            btnVolverJuego.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event,x,y);
+                    estadoJuego=EstadoJuego.JUGANDO;
+                    Gdx.input.setInputProcessor(procesadorEntrada);
+                }
+            });
+
+            Button btnVolverIntentar = crearBoton("menuPausa/btnVolverIntentar.png", "menuPausa/btnVolverIntentarInverso.png");
+            //agregar boton a la escena
+            addActor(btnVolverIntentar);
+            btnVolverIntentar.setPosition(ANCHO/2,.5F*ALTO, Align.center);
+
+            btnVolverIntentar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaNivel3(juego));
+                }
+            });
+
+            Button btnMenuPrincipal = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
+
+            //agregar boton a la escena
+            addActor(btnMenuPrincipal);
+            btnMenuPrincipal.setPosition(ANCHO/2,.3F*ALTO, Align.center);
+
+            btnMenuPrincipal.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaMenu(juego));
+                }
+            });
+
+        }
+    }
+    private enum EstadoJuego
+    {
+        JUGANDO,
+        PAUSADO
+    }
+
 }
