@@ -56,6 +56,13 @@ public class PantallaNivel3 extends Pantalla{
     private float timerCrearCaja;
     private final float TIEMPO_CREAR_CAJA = 22;
 
+
+    //Potenciador
+    private Array<Potenciador> arrPotenciadores;
+    private Texture texturaPotenciadores;
+    private float timerCrearPotenciador;   //Acumulador de tiempo
+    private final float TIEMPO_CREAR_POTENCIADOR = 25;
+
     //Escena pausa
     private EscenaPausa escenaPausa;
     private ProcesadorEntrada procesadorEntrada;
@@ -89,7 +96,8 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void crearPotenciador() {
-
+        texturaPotenciadores = new Texture("nivel3/Diamante2resize.png");
+        arrPotenciadores = new Array<>();
     }
 
     private Button crearBoton(String archivo, String archivoInverso) {
@@ -162,6 +170,12 @@ public class PantallaNivel3 extends Pantalla{
             caja.render(batch);
         }
 
+
+        //Dibujar Potenciadores
+        for (Potenciador potenciador: arrPotenciadores) {
+            potenciador.render(batch);
+        }
+
         if (estadoOlivia == EstadoOlivia.MURIENDO){
             texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
             texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
@@ -193,7 +207,24 @@ public class PantallaNivel3 extends Pantalla{
             actualizarFondo();
             actualizarAshes(delta);
             actualizarCajas(delta);
+            actualizarPotenciadores(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+    }
+
+    private void actualizarPotenciadores(float delta) {
+        // Crear Potenciadores
+        timerCrearPotenciador += delta;
+        if (timerCrearPotenciador>=TIEMPO_CREAR_POTENCIADOR) {
+            timerCrearPotenciador = 0;
+            //Crear Potenciador
+            float xPotenciador = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Potenciador potenciador = new Potenciador(texturaPotenciadores, xPotenciador, ALTO/1.35f);
+            arrPotenciadores.add(potenciador);
+        }
+        // Mover los Potenciadores
+        for (Potenciador potenciador: arrPotenciadores) {
+            potenciador.moverIzquierda(delta);
         }
     }
 
@@ -207,6 +238,11 @@ public class PantallaNivel3 extends Pantalla{
             Caja caja = new Caja(texturaCaja, xCaja, ALTO/4);
             arrCajas.add(caja);
         }
+
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            colisionCaja();
+        }
+
         //Mover los obstaculos
         for (Caja caja : arrCajas) {
             caja.moverIzquierda(delta);
@@ -246,6 +282,32 @@ public class PantallaNivel3 extends Pantalla{
                 break;
             }
         }
+    }
+
+    private void colisionCaja() {
+        for (Caja caja : arrCajas) {
+            //Gdx.app.log("Probando colision", "tengo miedo");
+            if (olivia.sprite.getBoundingRectangle().overlaps(caja.sprite.getBoundingRectangle())){
+                // Le pego
+                olivia.setEstado(EstadoOlivia.MURIENDO);
+                estadoOlivia = EstadoOlivia.MURIENDO;
+                //olivia = null;
+                Gdx.app.log("Probando colision de caja de fuego", "Ya se quemo");
+                break;
+            }
+        }
+    }
+
+    private void colisionPotenRapidez() {
+        for(Potenciador potenciador : arrPotenciadores){
+            if (olivia.sprite.getBoundingRectangle().overlaps(potenciador.sprite.getBoundingRectangle())){
+
+                Gdx.app.log("Probando colision con el potenciador", "TOCO DIAMANTE,CORRIENDO");
+                break;
+
+            }
+        }
+
     }
 
     private void actualizarFondo() {
