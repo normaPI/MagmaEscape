@@ -11,8 +11,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaNivel3 extends Pantalla{
     //
@@ -41,11 +48,31 @@ public class PantallaNivel3 extends Pantalla{
 
     //contador
     private float tiempo=0;
-    private Texto texto; //escribe texto en la pantalla
+    private TextoBlanco texto; //escribe texto en la pantalla negro
+
+    //Caja
+    private Array<Caja> arrCajas;
+    private Texture texturaCaja;
+    private float timerCrearCaja;
+    private final float TIEMPO_CREAR_CAJA = 22;
 
 
-    // Estado de Juego
+    //Potenciador
+    private Array<Potenciador> arrPotenciadores;
+    private Texture texturaPotenciadores;
+    private float timerCrearPotenciador;   //Acumulador de tiempo
+    private final float TIEMPO_CREAR_POTENCIADOR = 25;
+
+    //Escena pausa
+    private EscenaPausa escenaPausa;
+    private ProcesadorEntrada procesadorEntrada;
+
+
+    // Estado de Olivia
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
+
+    //Estado del juego
+    private EstadoJuego estadoJuego=EstadoJuego.JUGANDO;
 
     public PantallaNivel3(Juego juego) {
         this.juego = juego;
@@ -59,14 +86,36 @@ public class PantallaNivel3 extends Pantalla{
         crearOlivia();
         crearAshes();
         crearTexto();
+        crearCaja();
+        crearPotenciador();
         //recuperarMarcador();
 
-        Gdx.input.setInputProcessor(new PantallaNivel3.ProcesadorEntrada());
+        procesadorEntrada= new ProcesadorEntrada();
+        Gdx.input.setInputProcessor(procesadorEntrada);
 
     }
 
+    private void crearPotenciador() {
+        texturaPotenciadores = new Texture("nivel3/Diamante2resize.png");
+        arrPotenciadores = new Array<>();
+    }
+
+    private Button crearBoton(String archivo, String archivoInverso) {
+        Texture texturaBoton = new Texture(archivo);
+        TextureRegionDrawable trdBtnMario = new TextureRegionDrawable(texturaBoton);
+        Texture texturaInverso = new Texture(archivoInverso);
+        TextureRegionDrawable trdBtnInverso = new TextureRegionDrawable(texturaInverso);
+        return new Button(trdBtnMario, trdBtnInverso);
+    }
+
+    private void crearCaja() {
+        texturaCaja= new Texture("nivel3/fuego.png");
+        arrCajas=new Array<>();
+    }
+
     private void crearTexto() {
-        texto = new Texto("font/arcade2.fnt");
+        texto= new TextoBlanco("font/arcade2.fnt");
+
     }
 
     private void recuperarMarcador() {
@@ -110,15 +159,21 @@ public class PantallaNivel3 extends Pantalla{
 
         olivia.render(batch);
 
-        if (estadoOlivia == EstadoOlivia.PAUSA){
-            texto.mostrarMensaje(batch, "PAUSA", ANCHO/2, ALTO/2);
-            texto.mostrarMensaje(batch, "Tap para CONTINUAR", 3*ANCHO/4, ALTO/4);
-            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
-        }
 
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
+        }
+
+        //Dibujar Cajas de Fuego
+        for (Caja caja : arrCajas) {
+            caja.render(batch);
+        }
+
+
+        //Dibujar Potenciadores
+        for (Potenciador potenciador: arrPotenciadores) {
+            potenciador.render(batch);
         }
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
@@ -137,15 +192,65 @@ public class PantallaNivel3 extends Pantalla{
         }
 
 
+        //Dibujar la pausa
+        if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)
+        {
+            escenaPausa.draw();
+        }
+
         batch.end();
 
     }
 
     private void actualizar(float delta) {
-        if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
+        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
             actualizarFondo();
             actualizarAshes(delta);
+            actualizarCajas(delta);
+            actualizarPotenciadores(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+    }
+
+    private void actualizarPotenciadores(float delta) {
+        // Crear Potenciadores
+        timerCrearPotenciador += delta;
+        if (timerCrearPotenciador>=TIEMPO_CREAR_POTENCIADOR) {
+            timerCrearPotenciador = 0;
+            //Crear Potenciador
+            float xPotenciador = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Potenciador potenciador = new Potenciador(texturaPotenciadores, xPotenciador, ALTO/1.35f);
+            arrPotenciadores.add(potenciador);
+        }
+
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            colisionPotenRapidez();
+        }
+
+        // Mover los Potenciadores
+        for (Potenciador potenciador: arrPotenciadores) {
+            potenciador.moverIzquierda(delta);
+        }
+    }
+
+    private void actualizarCajas(float delta) {
+        //Crear Cajas de Fuego
+        timerCrearCaja += delta;
+        if (timerCrearCaja >= TIEMPO_CREAR_CAJA) {
+            timerCrearCaja = 0;
+            //Crear obstaculo
+            float xCaja = MathUtils.random(ANCHO, ANCHO*1.5F);
+            Caja caja = new Caja(texturaCaja, xCaja, ALTO/4);
+            arrCajas.add(caja);
+        }
+
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            colisionCaja();
+        }
+
+        //Mover los obstaculos
+        for (Caja caja : arrCajas) {
+            caja.moverIzquierda(delta);
         }
     }
 
@@ -160,8 +265,8 @@ public class PantallaNivel3 extends Pantalla{
             arrAshes.add(ashe);
         }
 
-        if(estadoOlivia!=EstadoOlivia.MURIENDO){
-            probarColisiones();
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            probarColisionAshe();
         }
 
         // Mover los Ashes
@@ -170,19 +275,44 @@ public class PantallaNivel3 extends Pantalla{
         }
     }
 
-    // Prueba la colision de olivia vs ashes
-    private void probarColisiones() {
-        for (Ashe ashe: arrAshes) {
+    private void probarColisionAshe() {
+        for (Ashe ashe : arrAshes) {
             //Gdx.app.log("Probando colision", "tengo miedo");
-            if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
+            if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())) {
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
                 //olivia = null;
-                Gdx.app.log("Probando colision", "YA LE PEGAMOS");
+                Gdx.app.log("Probando colision con ashe", "YA LE PEGAMOS");
                 break;
             }
         }
+    }
+
+    private void colisionCaja() {
+        for (Caja caja : arrCajas) {
+            //Gdx.app.log("Probando colision", "tengo miedo");
+            if (olivia.sprite.getBoundingRectangle().overlaps(caja.sprite.getBoundingRectangle())){
+                // Le pego
+                olivia.setEstado(EstadoOlivia.MURIENDO);
+                estadoOlivia = EstadoOlivia.MURIENDO;
+                //olivia = null;
+                Gdx.app.log("Probando colision de caja de fuego", "Ya se quemo");
+                break;
+            }
+        }
+    }
+
+    private void colisionPotenRapidez() {
+        for(Potenciador potenciador : arrPotenciadores){
+            if (olivia.sprite.getBoundingRectangle().overlaps(potenciador.sprite.getBoundingRectangle())){
+
+                Gdx.app.log("Probando colision con el potenciador", "TOCO DIAMANTE,CORRIENDO");
+                break;
+
+            }
+        }
+
     }
 
     private void actualizarFondo() {
@@ -236,29 +366,23 @@ public class PantallaNivel3 extends Pantalla{
             // Primero, verificar el boton de back
 
             Rectangle rectPuse = new Rectangle(xPause, yPause, anchoPause, altoPause);
-            if(rectPuse.contains(v.x, v.y)){
+            if(rectPuse.contains(v.x, v.y)) {
                 // SALIY y guardar el marcador
-                estadoOlivia = EstadoOlivia.PAUSA;
-                olivia.setEstado(EstadoOlivia.PAUSA);
+                if (escenaPausa == null) escenaPausa = new EscenaPausa(vista);
+
+                estadoJuego=EstadoJuego.PAUSADO;
+                //Cambiar el procesador de entrada, ahra quien sera el procesador de entrada sera la escena de pausa
+                Gdx.input.setInputProcessor(escenaPausa); //Detecta el click sobre el boton
+
                 Preferences preferencias = Gdx.app.getPreferences("TIEMPO");
                 preferencias.putInteger("segundos", (int) tiempo);
                 preferencias.flush();
 
-                //juego.setScreen(new PantallaMenuPausa(juego));
 
             }else
 
-            if (estadoOlivia == EstadoOlivia.PAUSA ){
 
-                if (v.x >= ANCHO/2){
-                    estadoOlivia = EstadoOlivia.CAMINADO;
-                }
-                else
-                    juego.setScreen(new PantallaMenu(juego));
-
-            }
-
-            if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
+            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != EstadoOlivia.MURIENDO ){
                 olivia.saltar(); // Top-Down
             }
 
@@ -297,4 +421,68 @@ public class PantallaNivel3 extends Pantalla{
             return false;
         }
     }
+
+    //Creacion de la escena pausa al apretar el boton
+    private class EscenaPausa extends Stage
+    {
+        private Texture texturaFondo;
+
+        public EscenaPausa(Viewport vista)
+        {
+            super(vista);
+            //añadir la textura de pausa
+            texturaFondo= new Texture("pausa/fondoPausa.png");
+            Image imgFondo= new Image(texturaFondo);
+            imgFondo.setPosition(ANCHO/2,ALTO/2, Align.center);
+            addActor(imgFondo);
+
+            //adicion de botones
+            //actores
+            Button btnVolverJuego = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
+            //agregar boton a la escena
+            addActor(btnVolverJuego);
+            btnVolverJuego.setPosition(ANCHO/2,.7F*ALTO,Align.center);
+
+            btnVolverJuego.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event,x,y);
+                    estadoJuego=EstadoJuego.JUGANDO;
+                    Gdx.input.setInputProcessor(procesadorEntrada);
+                }
+            });
+
+            Button btnVolverIntentar = crearBoton("menuPausa/btnVolverIntentar.png", "menuPausa/btnVolverIntentarInverso.png");
+            //agregar boton a la escena
+            addActor(btnVolverIntentar);
+            btnVolverIntentar.setPosition(ANCHO/2,.5F*ALTO, Align.center);
+
+            btnVolverIntentar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaNivel3(juego));
+                }
+            });
+
+            Button btnMenuPrincipal = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
+
+            //agregar boton a la escena
+            addActor(btnMenuPrincipal);
+            btnMenuPrincipal.setPosition(ANCHO/2,.3F*ALTO, Align.center);
+
+            btnMenuPrincipal.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaMenu(juego));
+                }
+            });
+
+        }
+    }
+    private enum EstadoJuego
+    {
+        JUGANDO,
+        PAUSADO
+    }
+
 }
