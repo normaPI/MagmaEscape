@@ -46,6 +46,9 @@ public class PantallaNivel3 extends Pantalla{
     //Caja
     private Array<Caja> arrCajas;
     private Texture texturaCaja;
+    private float timerCrearCaja;
+    private final float TIEMPO_CREAR_CAJA = 22;
+
 
 
 
@@ -138,6 +141,11 @@ public class PantallaNivel3 extends Pantalla{
             ashe.render(batch);
         }
 
+        //Dibujar Cajas de Fuego
+        for (Caja caja : arrCajas) {
+            caja.render(batch);
+        }
+
         if (estadoOlivia == EstadoOlivia.MURIENDO){
             texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
             texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
@@ -162,7 +170,24 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
             actualizarFondo();
             actualizarAshes(delta);
+            actualizarCajas(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+    }
+
+    private void actualizarCajas(float delta) {
+        //Crear Cajas de Fuego
+        timerCrearCaja += delta;
+        if (timerCrearCaja >= TIEMPO_CREAR_CAJA) {
+            timerCrearCaja = 0;
+            //Crear obstaculo
+            float xCaja = MathUtils.random(ANCHO, ANCHO*1.5F);
+            Caja caja = new Caja(texturaCaja, xCaja, ALTO/4);
+            arrCajas.add(caja);
+        }
+        //Mover los obstaculos
+        for (Caja caja : arrCajas) {
+            caja.moverIzquierda(delta);
         }
     }
 
@@ -178,7 +203,7 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         if(estadoOlivia!=EstadoOlivia.MURIENDO){
-            probarColisiones();
+            probarColisionAshe();
         }
 
         // Mover los Ashes
@@ -189,9 +214,13 @@ public class PantallaNivel3 extends Pantalla{
 
     // Prueba la colision de olivia vs ashes
     private void probarColisiones() {
-        for (Ashe ashe: arrAshes) {
+        probarColisionAshe();
+    }
+
+    private void probarColisionAshe() {
+        for (Ashe ashe : arrAshes) {
             //Gdx.app.log("Probando colision", "tengo miedo");
-            if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
+            if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())) {
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
