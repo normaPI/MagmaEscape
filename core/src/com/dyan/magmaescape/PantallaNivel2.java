@@ -40,10 +40,10 @@ public class PantallaNivel2 extends Pantalla {
     private final float TIEMPO_CREAR_ASHE = 4;
 
     //Obstaculo (Cajas de fuego)
-    private Array<Fuego> arrCajas;
-    private Texture texturaCajas;
-    private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 22;
+    private Array<Fuego> arrFuegos;
+    private Texture texturaFuegos;
+    private float timerCrearFuego;
+    private final float TIEMPO_CREAR_FUEGO = 22;
 
     //Potenciador
     private Array<PotenciadorLentitud> arrPotenciadores;
@@ -63,7 +63,7 @@ public class PantallaNivel2 extends Pantalla {
     // Estado de Juego
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
 
-    private boolean coliPotenLenti=false;
+    private boolean colisionPLentitud =false;
 
     public PantallaNivel2(Juego juego) {
         this.juego=juego;
@@ -75,7 +75,7 @@ public class PantallaNivel2 extends Pantalla {
         crearOlivia();
         crearAshes();
         crearTexto();
-        crearCajas();
+        crearFuego();
         crearPotenciador();
 
         procesadorEntrada = new ProcesadorEntrada();
@@ -87,9 +87,9 @@ public class PantallaNivel2 extends Pantalla {
         arrPotenciadores = new Array<>();
     }
 
-    private void crearCajas() {
-        texturaCajas = new Texture("nivel2/fuego.png");
-        arrCajas = new Array<>();
+    private void crearFuego() {
+        texturaFuegos = new Texture("nivel2/fuego.png");
+        arrFuegos = new Array<>();
     }
 
     private void crearTexto() {
@@ -136,18 +136,12 @@ public class PantallaNivel2 extends Pantalla {
 
         olivia.render(batch);
 
-        /*if (estadoOlivia == EstadoOlivia.PAUSA){
-            texto.mostrarMensaje(batch, "PAUSA", ANCHO/2, ALTO/2);
-            texto.mostrarMensaje(batch, "Tap para CONTINUAR", 3*ANCHO/4, ALTO/4);
-            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
-        }*/
-
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
         //Dibujar Cajas de Fuego
-        for (Fuego fuego : arrCajas) {
+        for (Fuego fuego : arrFuegos) {
             fuego.render(batch);
         }
         //Dibujar Potenciadores
@@ -183,7 +177,7 @@ public class PantallaNivel2 extends Pantalla {
         if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<60) ){
             actualizarFondo();
             actualizarAshes(delta);
-            actualizarCajas(delta);
+            actualizarFuegos(delta);
             actualizarPotenciadores(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
@@ -205,18 +199,18 @@ public class PantallaNivel2 extends Pantalla {
         }
     }
 
-    private void actualizarCajas(float delta) {
+    private void actualizarFuegos(float delta) {
         //Crear Cajas de Fuego
-        timerCrearCaja += delta;
-        if (timerCrearCaja >= TIEMPO_CREAR_CAJA) {
-            timerCrearCaja = 0;
+        timerCrearFuego += delta;
+        if (timerCrearFuego >= TIEMPO_CREAR_FUEGO) {
+            timerCrearFuego = 0;
             //Crear obstaculo
-            float xCaja = MathUtils.random(ANCHO, ANCHO*1.5F);
-            Fuego fuego = new Fuego(texturaCajas, xCaja, ALTO/4);
-            arrCajas.add(fuego);
+            float xFuego = MathUtils.random(ANCHO, ANCHO*1.5F);
+            Fuego fuego = new Fuego(texturaFuegos, xFuego, ALTO/4);
+            arrFuegos.add(fuego);
         }
         //Mover los obstaculos
-        for (Fuego fuego : arrCajas) {
+        for (Fuego fuego : arrFuegos) {
             fuego.moverIzquierda(delta);
         }
     }
@@ -238,19 +232,17 @@ public class PantallaNivel2 extends Pantalla {
 
         // Mover los Ashes
         for (Ashe ashe: arrAshes) {
-            if (coliPotenLenti){
+            if (colisionPLentitud)
                 ashe.setPotenLentitud(true);
+                ashe.moverIzquierda(delta);
             }
-
-            ashe.moverIzquierda(delta);
         }
 
-    }
 
-    // Prueba la colision de olivia vs ashes
+    // Prueba la colision de olivia vs ashes,fuego y potenciador
     private void probarColisiones() {
         colisionAshe();
-        colisionCaja();
+        colisionFuego();
         colisionPotenLentitud();
     }
 
@@ -260,7 +252,7 @@ public class PantallaNivel2 extends Pantalla {
             if (olivia.sprite.getBoundingRectangle().overlaps(potenciadorLentitud.sprite.getBoundingRectangle())){
                 //olivia.setEstado(EstadoOlivia.CORRIENDO);
                 //estadoOlivia=EstadoOlivia.CORRIENDO;
-                coliPotenLenti=true;
+                colisionPLentitud =true;
                 arrPotenciadores.removeIndex(i);
                 Gdx.app.log("Probando colision", "TOCO DIAMANTE,CORRIENDO");
                 break;
@@ -271,8 +263,8 @@ public class PantallaNivel2 extends Pantalla {
 
     }
 
-    private void colisionCaja() {
-        for (Fuego fuego : arrCajas) {
+    private void colisionFuego() {
+        for (Fuego fuego : arrFuegos) {
             //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(fuego.sprite.getBoundingRectangle())){
                 // Le pego
