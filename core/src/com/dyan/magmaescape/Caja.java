@@ -10,14 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /*
 Representa un obstáculo
  */
-public class Fuego extends Objeto
+public class Caja extends Objeto
 {
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
-    private float velocidadX = -300;  //pixeles/segundos
+    private float velocidadX = -340;  //pixeles/segundos
 
-    public Fuego(Texture textura, float x, float y) {
+    public Caja(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
         TextureRegion[][] texturas = region.split(80,80);
 
@@ -42,5 +42,9 @@ public class Fuego extends Objeto
     public void moverIzquierda(float delta) {
         float dx = velocidadX * delta;
         sprite.setX(sprite.getX() + dx);
+    }
+
+    public float getX() {
+        return sprite.getX();
     }
 }
