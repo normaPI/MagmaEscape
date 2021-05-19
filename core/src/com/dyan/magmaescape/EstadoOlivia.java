@@ -7,5 +7,4 @@ public enum EstadoOlivia {
     MURIENDO,
     PAUSA,
     BAJANDO,
-    CORRIENDO
 }

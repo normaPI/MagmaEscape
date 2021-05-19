@@ -10,14 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /*
 Representa un item
  */
-public class Potenciador extends Objeto
+public class PotenciadorLentitud extends Objeto
 {
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
     private float velocidadX = -300;  //pixeles/segundos
 
-    public Potenciador(Texture textura, float x, float y) {
+    public PotenciadorLentitud(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
         TextureRegion[][] texturas = region.split(65,65);
 

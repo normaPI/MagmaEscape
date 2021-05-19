@@ -15,7 +15,8 @@ public class Ashe extends Objeto
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
-    private float velocidadX = -300;  //pixeles/segundos
+    private float velocidadX = -350;  //pixeles/segundos
+    private boolean potenLentitud=false;
 
     public Ashe(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
@@ -40,7 +41,28 @@ public class Ashe extends Objeto
 
     //Mover al enemigo
     public void moverIzquierda(float delta) {
-        float dx = velocidadX * delta;
-        sprite.setX(sprite.getX() + dx);
+
+
+        if (potenLentitud){
+            float dx = (velocidadX+100) * delta;
+            Gdx.app.log("Probando colision", "El float es:"+(velocidadX+100));
+            sprite.setX(sprite.getX() + dx);
+
+        }else{
+            float dx = (velocidadX * delta);
+            //Gdx.app.log("Probando colision", "El float es:"+dx);
+            sprite.setX(sprite.getX() + dx);
+        }
+
+
     }
+
+    public boolean getpotenLentitud(){
+        return potenLentitud;
+    }
+    public void setPotenLentitud(boolean pl){
+        this.potenLentitud=pl;
+    }
+
+
 }

@@ -39,7 +39,7 @@ public class PantallaNivel2 extends Pantalla {
     private final float TIEMPO_CREAR_CAJA = 22;
 
     //Potenciador
-    private Array<Potenciador> arrPotenciadores;
+    private Array<PotenciadorLentitud> arrPotenciadores;
     private Texture texturaPotenciadores;
     private float timerCrearPotenciador;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_POTENCIADOR = 25;
@@ -53,6 +53,8 @@ public class PantallaNivel2 extends Pantalla {
 
     // Estado de Juego
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
+
+    private boolean coliPotenLenti=false;
 
     public PantallaNivel2(Juego juego) {
         this.juego=juego;
@@ -140,8 +142,8 @@ public class PantallaNivel2 extends Pantalla {
             caja.render(batch);
         }
         //Dibujar Potenciadores
-        for (Potenciador potenciador: arrPotenciadores) {
-            potenciador.render(batch);
+        for (PotenciadorLentitud potenciadorLentitud : arrPotenciadores) {
+            potenciadorLentitud.render(batch);
         }
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
@@ -180,12 +182,12 @@ public class PantallaNivel2 extends Pantalla {
             timerCrearPotenciador = 0;
             //Crear Potenciador
             float xPotenciador = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Potenciador potenciador = new Potenciador(texturaPotenciadores, xPotenciador, ALTO/1.35f);
-            arrPotenciadores.add(potenciador);
+            PotenciadorLentitud potenciadorLentitud = new PotenciadorLentitud(texturaPotenciadores, xPotenciador, ALTO/1.35f);
+            arrPotenciadores.add(potenciadorLentitud);
         }
         // Mover los Potenciadores
-        for (Potenciador potenciador: arrPotenciadores) {
-            potenciador.moverIzquierda(delta);
+        for (PotenciadorLentitud potenciadorLentitud : arrPotenciadores) {
+            potenciadorLentitud.moverIzquierda(delta);
         }
     }
 
@@ -222,6 +224,10 @@ public class PantallaNivel2 extends Pantalla {
 
         // Mover los Ashes
         for (Ashe ashe: arrAshes) {
+            if (coliPotenLenti){
+                ashe.setPotenLentitud(true);
+            }
+
             ashe.moverIzquierda(delta);
         }
 
@@ -231,18 +237,22 @@ public class PantallaNivel2 extends Pantalla {
     private void probarColisiones() {
         colisionAshe();
         colisionCaja();
-        colisionPotenRapidez();
+        colisionPotenLentitud();
     }
 
-    private void colisionPotenRapidez() {
-        for(Potenciador potenciador : arrPotenciadores){
-            if (olivia.sprite.getBoundingRectangle().overlaps(potenciador.sprite.getBoundingRectangle())){
-                olivia.setEstado(EstadoOlivia.CORRIENDO);
-                estadoOlivia=EstadoOlivia.CORRIENDO;
+    private void colisionPotenLentitud() {
+        for(PotenciadorLentitud potenciadorLentitud : arrPotenciadores){
+            int i=0;
+            if (olivia.sprite.getBoundingRectangle().overlaps(potenciadorLentitud.sprite.getBoundingRectangle())){
+                //olivia.setEstado(EstadoOlivia.CORRIENDO);
+                //estadoOlivia=EstadoOlivia.CORRIENDO;
+                coliPotenLenti=true;
+                arrPotenciadores.removeIndex(i);
                 Gdx.app.log("Probando colision", "TOCO DIAMANTE,CORRIENDO");
                 break;
 
             }
+
         }
 
     }
