@@ -41,19 +41,15 @@ public class Ashe extends Objeto
 
     //Mover al enemigo
     public void moverIzquierda(float delta) {
-
-
         if (potenLentitud){
-            float dx = (velocidadX+100) * delta;
-
+            float dx = (velocidadX+80) * delta;
             sprite.setX(sprite.getX() + dx);
 
 
-        }else{
+        }else {
             float dx = (velocidadX * delta);
             sprite.setX(sprite.getX() + dx);
         }
-
 
     }
 
@@ -64,5 +60,7 @@ public class Ashe extends Objeto
         this.potenLentitud=pl;
     }
 
-
+    public float getX() {
+        return sprite.getX();
+    }
 }
