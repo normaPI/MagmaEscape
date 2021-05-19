@@ -86,7 +86,15 @@ public class PantallaNivel3 extends Pantalla{
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
 
     //Estado del juego
-    private EstadoJuego estadoJuego=EstadoJuego.JUGANDO;
+    private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
+
+    // Estados potenciadores
+    private EstadoInvencibilidad estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA;
+    private EstadoAzul estadoAzul = EstadoAzul.AZUL_DESACTIVADA;
+    //contador
+    private float tiempoAzul = 0;
+    private float tiempoInv = 0;
+
 
     public PantallaNivel3(Juego juego) {
         this.juego = juego;
@@ -164,7 +172,7 @@ public class PantallaNivel3 extends Pantalla{
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,140);
     }
     private void crearPause() {
 
@@ -176,7 +184,14 @@ public class PantallaNivel3 extends Pantalla{
     public void render(float delta) {
 
         // actualizar
-        actualizar(delta);
+        if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA && estadoAzul == EstadoAzul.AZUL_DESACTIVADA){
+            actualizar(delta);
+        }
+
+
+        if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA){
+            actualizarInven(delta);
+        }
 
         borrarPantalla(1,0,1);
         batch.setProjectionMatrix(camara.combined);
@@ -195,7 +210,6 @@ public class PantallaNivel3 extends Pantalla{
         }
         //Dibujar Bolas de fuego
         for (BolaFuego bolaFuego : arrBolasFuego) {
-            //Gdx.app.log("FUNION:", "creaBolasFuego");
             bolaFuego.render(batch);
         }
 
@@ -251,6 +265,20 @@ public class PantallaNivel3 extends Pantalla{
 
     }
 
+    private void actualizarInven(float delta) {
+        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
+            actualizarFondo();
+            actualizarAshesINVENCIBILIDAD(delta);
+            actualizarBolasFuegoINVENCIBILIDAD(delta);
+            actualizarCajasINVENCIBILIDAD(delta);
+            actualizarPotenciadores(delta);
+            actualizarPotenciadorInvencibilidad(delta);
+            checandoTiempoPotenciador();
+            tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+    }
+
+
     private void actualizar(float delta) {
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
             actualizarFondo();
@@ -259,9 +287,27 @@ public class PantallaNivel3 extends Pantalla{
             actualizarCajas(delta);
             actualizarPotenciadores(delta);
             actualizarPotenciadorInvencibilidad(delta);
+            checandoTiempoPotenciador();
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
+
     }
+
+    private void checandoTiempoPotenciador() {
+        if (estadoAzul == EstadoAzul.AZUL_ACTIVADA){
+            tiempoAzul = tiempoAzul+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+        if (tiempoAzul > 5){
+            estadoAzul = EstadoAzul.AZUL_DESACTIVADA;
+        }
+        if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA){
+            tiempoInv = tiempoInv+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+        if (tiempoInv > 5){
+            estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA;
+        }
+    }
+
 
     private void actualizarPotenciadorInvencibilidad(float delta) {
         if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
@@ -273,7 +319,9 @@ public class PantallaNivel3 extends Pantalla{
         if(potenciadorInvencibilidad!=null){
             if (olivia.sprite.getBoundingRectangle().overlaps(potenciadorInvencibilidad.sprite.getBoundingRectangle())) {
                 // Le pego
-                Gdx.app.log("Probando colision con potenciador rojo", "invencibilidad papu");
+                //Gdx.app.log("Probando colision con potenciador rojo", "invencibilidad papu");
+                estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA;
+                Gdx.app.log("ESTADO", "ya tenemo EDO INVENC");
                 potenciadorInvencibilidad=null;
 
             }
@@ -302,6 +350,28 @@ public class PantallaNivel3 extends Pantalla{
         }
     }
 
+    private void actualizarCajasINVENCIBILIDAD(float delta) {
+
+        timerCrearCaja += delta;
+        if (timerCrearCaja >= TIEMPO_CREAR_CAJA) {
+            timerCrearCaja = 0;
+            //Crear obstaculo
+            float xCaja = MathUtils.random(ANCHO, ANCHO*1.5F);
+            Caja caja = new Caja(texturaCaja, xCaja, ALTO/4);
+            arrCajas.add(caja);
+        }
+
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            //colisionCaja();
+        }
+
+        //Mover los obstaculos
+        for (Caja caja : arrCajas) {
+            caja.moverIzquierda(delta);
+        }
+    }
+
+
     private void actualizarCajas(float delta) {
         //Crear Cajas de Fuego
         timerCrearCaja += delta;
@@ -322,6 +392,24 @@ public class PantallaNivel3 extends Pantalla{
             caja.moverIzquierda(delta);
         }
     }
+
+    private void actualizarBolasFuegoINVENCIBILIDAD(float delta) {
+
+        // Crear Bolas de fuego
+        timerCreaBola += delta;
+        if (timerCreaBola>= TIEMPO_CREAR_BOLA) {
+            timerCreaBola = 0;
+            float xBolaFuego = MathUtils.random(ANCHO, ANCHO*1.5f);
+            BolaFuego bolaFuego = new BolaFuego(texturaBolaFuego, xBolaFuego, ALTO-texturaBolaFuego.getHeight());
+            arrBolasFuego.add(bolaFuego);
+        }
+        // Mover Bolas de fuego
+        for (BolaFuego bolaFuego: arrBolasFuego) {
+            bolaFuego.moverCaida(delta);
+        }
+
+    }
+
 
     private void actualizarBolasFuego(float delta){
 
@@ -344,6 +432,27 @@ public class PantallaNivel3 extends Pantalla{
 
     }
 
+    private void actualizarAshesINVENCIBILIDAD(float delta) {
+        // Crear Ashes
+        timerCreaAshe += delta;
+        if (timerCreaAshe>=TIEMPO_CREAR_ASHE) {
+            timerCreaAshe = 0;
+            //Crear Enemigo
+            float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -700);
+            arrAshes.add(ashe);
+        }
+
+        /*if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            probarColisionAshe();
+        }*/
+
+        // Mover los Ashes
+        for (Ashe ashe: arrAshes) {
+            ashe.moverIzquierda(delta);
+        }
+    }
+
     private void actualizarAshes(float delta) {
         // Crear Ashes
         timerCreaAshe += delta;
@@ -351,7 +460,7 @@ public class PantallaNivel3 extends Pantalla{
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -700);
             arrAshes.add(ashe);
         }
 
@@ -368,7 +477,6 @@ public class PantallaNivel3 extends Pantalla{
 
     private void probarColisionBolaFuego() {
         for (BolaFuego bolaFuego : arrBolasFuego) {
-            Gdx.app.log("Probando colision", "BOLAS DE FUEGO**");
             if (olivia.sprite.getBoundingRectangle().overlaps(bolaFuego.sprite.getBoundingRectangle())) {
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
@@ -382,7 +490,6 @@ public class PantallaNivel3 extends Pantalla{
 
     private void probarColisionAshe() {
         for (Ashe ashe : arrAshes) {
-            //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())) {
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
@@ -396,7 +503,6 @@ public class PantallaNivel3 extends Pantalla{
 
     private void colisionCaja() {
         for (Caja caja : arrCajas) {
-            //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(caja.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);

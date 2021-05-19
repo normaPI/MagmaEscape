@@ -15,9 +15,10 @@ public class Ashe extends Objeto
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
-    private float velocidadX = -600;  //pixeles/segundos
+    private float velocidadX = -300;  //pixeles/segundos
 
-    public Ashe(Texture textura, float x, float y) {
+    public Ashe(Texture textura, float x, float y, float vX) {
+        velocidadX = vX;
         TextureRegion region = new TextureRegion(textura);
         TextureRegion[][] texturas = region.split(73,118);
 

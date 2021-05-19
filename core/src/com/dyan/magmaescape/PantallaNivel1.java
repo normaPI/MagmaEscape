@@ -94,7 +94,7 @@ public class PantallaNivel1 extends Pantalla {
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f, 250, 150);
     }
     private void crearPause() {
         texturaPause = new Texture("nivel1/button_pausa.png");
@@ -163,7 +163,7 @@ public class PantallaNivel1 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -300);
             arrAshes.add(ashe);
         }
 

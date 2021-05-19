@@ -15,8 +15,8 @@ public class BolaFuego extends Objeto
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
-    private float velocidadX = -500;  //pixeles/segundos
-    private float velocidadY = -45;  //pixeles/segundos
+    private float velocidadX = -500;  // pixeles/segundos
+    private float velocidadY = -45;  // pixeles/segundos
 
     public BolaFuego(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
