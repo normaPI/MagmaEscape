@@ -8,8 +8,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaNivel2 extends Pantalla {
 
@@ -33,7 +40,7 @@ public class PantallaNivel2 extends Pantalla {
     private final float TIEMPO_CREAR_ASHE = 4;
 
     //Obstaculo (Cajas de fuego)
-    private Array<Caja> arrCajas;
+    private Array<Fuego> arrCajas;
     private Texture texturaCajas;
     private float timerCrearCaja;
     private final float TIEMPO_CREAR_CAJA = 22;
@@ -46,7 +53,9 @@ public class PantallaNivel2 extends Pantalla {
 
     // Boton PAUSE
     private Texture texturaPause;
-
+    // PAUSA
+    private EscenaPausa escenaPausa;
+    private ProcesadorEntrada procesadorEntrada;
     //contador
     private float tiempo=0;
     private Texto texto; //escribe texto en la pantalla
@@ -69,7 +78,8 @@ public class PantallaNivel2 extends Pantalla {
         crearCajas();
         crearPotenciador();
 
-        Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        procesadorEntrada = new ProcesadorEntrada();
+        Gdx.input.setInputProcessor(procesadorEntrada);
     }
 
     private void crearPotenciador() {
@@ -78,7 +88,7 @@ public class PantallaNivel2 extends Pantalla {
     }
 
     private void crearCajas() {
-        texturaCajas = new Texture("nivel2/cajasFuego.png");
+        texturaCajas = new Texture("nivel2/fuego.png");
         arrCajas = new Array<>();
     }
 
@@ -98,7 +108,6 @@ public class PantallaNivel2 extends Pantalla {
 
     private void crearAshes() {
         texturaAshe = new Texture("nivel2/AsheAzul.png");
-        //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
 
@@ -127,19 +136,19 @@ public class PantallaNivel2 extends Pantalla {
 
         olivia.render(batch);
 
-        if (estadoOlivia == EstadoOlivia.PAUSA){
+        /*if (estadoOlivia == EstadoOlivia.PAUSA){
             texto.mostrarMensaje(batch, "PAUSA", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para CONTINUAR", 3*ANCHO/4, ALTO/4);
             texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
-        }
+        }*/
 
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
         //Dibujar Cajas de Fuego
-        for (Caja caja : arrCajas) {
-            caja.render(batch);
+        for (Fuego fuego : arrCajas) {
+            fuego.render(batch);
         }
         //Dibujar Potenciadores
         for (PotenciadorLentitud potenciadorLentitud : arrPotenciadores) {
@@ -161,8 +170,13 @@ public class PantallaNivel2 extends Pantalla {
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
         }
 
-
         batch.end();
+
+        // Dibujar la PAUSA
+        if(estadoOlivia == EstadoOlivia.PAUSA && escenaPausa != null) {
+            escenaPausa.draw();
+        }
+
     }
 
     private void actualizar(float delta) {
@@ -198,12 +212,12 @@ public class PantallaNivel2 extends Pantalla {
             timerCrearCaja = 0;
             //Crear obstaculo
             float xCaja = MathUtils.random(ANCHO, ANCHO*1.5F);
-            Caja caja = new Caja(texturaCajas, xCaja, ALTO/4);
-            arrCajas.add(caja);
+            Fuego fuego = new Fuego(texturaCajas, xCaja, ALTO/4);
+            arrCajas.add(fuego);
         }
         //Mover los obstaculos
-        for (Caja caja : arrCajas) {
-            caja.moverIzquierda(delta);
+        for (Fuego fuego : arrCajas) {
+            fuego.moverIzquierda(delta);
         }
     }
 
@@ -258,9 +272,9 @@ public class PantallaNivel2 extends Pantalla {
     }
 
     private void colisionCaja() {
-        for (Caja caja : arrCajas) {
+        for (Fuego fuego : arrCajas) {
             //Gdx.app.log("Probando colision", "tengo miedo");
-            if (olivia.sprite.getBoundingRectangle().overlaps(caja.sprite.getBoundingRectangle())){
+            if (olivia.sprite.getBoundingRectangle().overlaps(fuego.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
@@ -337,26 +351,15 @@ public class PantallaNivel2 extends Pantalla {
 
             Rectangle rectPuse = new Rectangle(xPause, yPause, anchoPause, altoPause);
             if(rectPuse.contains(v.x, v.y)){
-                // SALIY y guardar el marcador
+                //PONER LA PAUSA
+                if (escenaPausa == null) {    //Inicializacion Lazy
+                    escenaPausa = new EscenaPausa(vista);
+                }
                 estadoOlivia = EstadoOlivia.PAUSA;
-                olivia.setEstado(EstadoOlivia.PAUSA);
-                Preferences preferencias = Gdx.app.getPreferences("TIEMPO");
-                preferencias.putInteger("segundos", (int) tiempo);
-                preferencias.flush();
-
-                //juego.setScreen(new PantallaMenuPausa(juego));
+                // CAMBIAR el procesador de entrada
+                Gdx.input.setInputProcessor(escenaPausa);   //Para detectar los clicks sobre los botones
 
             }else
-
-            if (estadoOlivia == EstadoOlivia.PAUSA ){
-
-                if (v.x >= ANCHO/2){
-                    estadoOlivia = EstadoOlivia.CAMINADO;
-                }
-                else
-                    juego.setScreen(new PantallaMenu(juego));
-
-            }
 
             if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
                 olivia.saltar(); // Top-Down
@@ -398,4 +401,54 @@ public class PantallaNivel2 extends Pantalla {
         }
     }
 
+    //La escena que se muestra cuando el jugador pausa el juego
+    private class EscenaPausa extends Stage {
+        private Texture texturaFondo;
+
+        public EscenaPausa(Viewport vista) {
+            super(vista);       //Pasa la vista al constructor de Stage
+            texturaFondo = new Texture("nivel2/fondoPausa.png");
+            Image imgFondo= new Image(texturaFondo);
+            imgFondo.setPosition(ANCHO/2,ALTO/2, Align.center);
+            addActor(imgFondo);
+
+            //Boton Volver a Jugar
+            Button btnJugar = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
+            btnJugar.setPosition(ANCHO / 2, 0.6f * ALTO, Align.center);
+            addActor(btnJugar);
+            //Registrar el evento de click para el boton
+            btnJugar.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    //QUITAR LA PAUSA
+                    if (estadoOlivia == EstadoOlivia.PAUSA) {
+                        estadoOlivia = EstadoOlivia.CAMINADO;
+                        Gdx.input.setInputProcessor(procesadorEntrada);
+                    }
+                }
+            });
+
+            //BOTON IR A MENU PRINCIPAL
+            Button btnMenu = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
+            btnMenu.setPosition(ANCHO / 2, 0.4F * ALTO, Align.center);
+            addActor(btnMenu);
+            //Registrar el evento de click para el boton
+            btnMenu.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaMenu(juego));
+                }
+            });
+        }
+        private Button crearBoton(String archivo, String archivoInverso) {
+            Texture texturaBoton= new Texture(archivo);
+            TextureRegionDrawable trdBtn =new TextureRegionDrawable(texturaBoton);
+            //Inverso
+            Texture texturaInverso= new Texture(archivoInverso);
+            TextureRegionDrawable trdBtnInverso= new TextureRegionDrawable(texturaInverso);
+            return new Button(trdBtn,trdBtnInverso);
+        }
+    }
 }
