@@ -42,6 +42,12 @@ public class PantallaNivel3 extends Pantalla{
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 4;
 
+    //Bolas de fuego
+    private Array<BolaFuego> arrBolasFuego;
+    private Texture texturaBolaFuego;
+    private float timerCreaBola;   //Acumulador de tiempo
+    private final float TIEMPO_CREAR_BOLA = 15;
+
     // Boton PAUSE
     private Texture texturaPause;
 
@@ -93,6 +99,7 @@ public class PantallaNivel3 extends Pantalla{
         crearPause();
         crearOlivia();
         crearAshes();
+        crearBolasFuego();
         crearTexto();
         crearCaja();
         crearPotenciador();
@@ -149,12 +156,18 @@ public class PantallaNivel3 extends Pantalla{
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
+    private void crearBolasFuego() {
+        texturaBolaFuego = new Texture("nivel3/bolaFuego.png");
+        arrBolasFuego = new Array<>();
+        //Gdx.app.log("FUNION:", "creaBolasFuego");
+    }
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
         olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f);
     }
     private void crearPause() {
+
         texturaPause = new Texture("nivel1/button_pausa.png");
     }
 
@@ -179,6 +192,11 @@ public class PantallaNivel3 extends Pantalla{
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
+        }
+        //Dibujar Bolas de fuego
+        for (BolaFuego bolaFuego : arrBolasFuego) {
+            //Gdx.app.log("FUNION:", "creaBolasFuego");
+            bolaFuego.render(batch);
         }
 
         //Dibujar Cajas de Fuego
@@ -205,9 +223,6 @@ public class PantallaNivel3 extends Pantalla{
 
             }
         }
-
-
-
 
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
@@ -240,6 +255,7 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
             actualizarFondo();
             actualizarAshes(delta);
+            actualizarBolasFuego(delta);
             actualizarCajas(delta);
             actualizarPotenciadores(delta);
             actualizarPotenciadorInvencibilidad(delta);
@@ -307,6 +323,27 @@ public class PantallaNivel3 extends Pantalla{
         }
     }
 
+    private void actualizarBolasFuego(float delta){
+
+        // Crear Bolas de fuego
+        timerCreaBola += delta;
+        if (timerCreaBola>= TIEMPO_CREAR_BOLA) {
+            timerCreaBola = 0;
+            float xBolaFuego = MathUtils.random(ANCHO, ANCHO*1.5f);
+            BolaFuego bolaFuego = new BolaFuego(texturaBolaFuego, xBolaFuego, ALTO-texturaBolaFuego.getHeight());
+            arrBolasFuego.add(bolaFuego);
+        }
+        // Mover Bolas de fuego
+        for (BolaFuego bolaFuego: arrBolasFuego) {
+            bolaFuego.moverCaida(delta);
+        }
+
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            probarColisionBolaFuego();
+        }
+
+    }
+
     private void actualizarAshes(float delta) {
         // Crear Ashes
         timerCreaAshe += delta;
@@ -325,6 +362,21 @@ public class PantallaNivel3 extends Pantalla{
         // Mover los Ashes
         for (Ashe ashe: arrAshes) {
             ashe.moverIzquierda(delta);
+        }
+    }
+
+
+    private void probarColisionBolaFuego() {
+        for (BolaFuego bolaFuego : arrBolasFuego) {
+            Gdx.app.log("Probando colision", "BOLAS DE FUEGO**");
+            if (olivia.sprite.getBoundingRectangle().overlaps(bolaFuego.sprite.getBoundingRectangle())) {
+                // Le pego
+                olivia.setEstado(EstadoOlivia.MURIENDO);
+                estadoOlivia = EstadoOlivia.MURIENDO;
+                //olivia = null;
+                Gdx.app.log("Probando colision con bola de fuego", "YA LE PEGAMOS");
+                break;
+            }
         }
     }
 
@@ -369,7 +421,7 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void actualizarFondo() {
-        xFondo-=3;
+        xFondo-=6;
         if(xFondo<=-texturaFondo.getWidth()) {
             xFondo=0;
         }
