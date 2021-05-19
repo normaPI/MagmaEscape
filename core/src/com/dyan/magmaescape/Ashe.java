@@ -45,12 +45,12 @@ public class Ashe extends Objeto
 
         if (potenLentitud){
             float dx = (velocidadX+100) * delta;
-            Gdx.app.log("Probando colision", "El float es:"+(velocidadX+100));
+
             sprite.setX(sprite.getX() + dx);
+
 
         }else{
             float dx = (velocidadX * delta);
-            //Gdx.app.log("Probando colision", "El float es:"+dx);
             sprite.setX(sprite.getX() + dx);
         }
 
