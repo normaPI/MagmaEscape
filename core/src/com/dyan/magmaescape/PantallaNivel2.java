@@ -40,7 +40,7 @@ public class PantallaNivel2 extends Pantalla {
     private final float TIEMPO_CREAR_ASHE = 4;
 
     //Obstaculo (Cajas de fuego)
-    private Array<Fuego> arrCajas;
+    private Array<Caja> arrCajas;
     private Texture texturaCajas;
     private float timerCrearCaja;
     private final float TIEMPO_CREAR_CAJA = 18;
@@ -49,7 +49,7 @@ public class PantallaNivel2 extends Pantalla {
     private Array<PotenciadorLentitud> arrPotenciadores;
     private Texture texturaPotenciadores;
     private float timerCrearPotenciador;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_POTENCIADOR = 25;
+    private final float TIEMPO_CREAR_POTENCIADOR = 21;
 
     // Boton PAUSE
     private Texture texturaPause;
@@ -148,8 +148,8 @@ public class PantallaNivel2 extends Pantalla {
             ashe.render(batch);
         }
         //Dibujar Cajas de Fuego
-        for (Fuego fuego : arrCajas) {
-            fuego.render(batch);
+        for (Caja caja : arrCajas) {
+            caja.render(batch);
         }
         //Dibujar Potenciadores
         for (PotenciadorLentitud potenciadorLentitud : arrPotenciadores) {
@@ -213,12 +213,18 @@ public class PantallaNivel2 extends Pantalla {
             timerCrearCaja = 0;
             //Crear obstaculo
             float xCaja = MathUtils.random(ANCHO, ANCHO*1.5F);
-            Fuego fuego = new Fuego(texturaCajas, xCaja, ALTO/4);
-            arrCajas.add(fuego);
+            Caja caja = new Caja(texturaCajas, xCaja, ALTO/4);
+            arrCajas.add(caja);
         }
         //Mover los obstaculos
-        for (Fuego fuego : arrCajas) {
-            fuego.moverIzquierda(delta);
+        //for (Caja caja : arrCajas)
+        for (int i=arrCajas.size-1; i>=0; i--){
+            Caja caja =arrCajas.get(i);
+            caja.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (caja.getX() < -60) {
+                arrCajas.removeIndex(i);
+            }
         }
     }
 
@@ -237,25 +243,23 @@ public class PantallaNivel2 extends Pantalla {
             probarColisiones();
         }
 
-
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
-            if (coliPotenLenti){
-
-
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe = arrAshes.get(i);
+        if (coliPotenLenti){
                 if(tiempo>=(tiempoColision+8.0)){
                    Gdx.app.log("TIEMPO ACABADO ", "El potenciador acabo");
                     ashe.setPotenLentitud(false);
                     Gdx.app.log("Normalidad", "El float es:"+ashe.getpotenLentitud());
 
-                }else{
+                } else {
                     ashe.setPotenLentitud(true);
                 }
-
-
-            }
-
+        }
             ashe.moverIzquierda(delta);
+            if (ashe.getX() < -60) {
+               arrAshes.removeIndex(i);
+            }
         }
 
     }
@@ -287,9 +291,9 @@ public class PantallaNivel2 extends Pantalla {
     }
 
     private void colisionCaja() {
-        for (Fuego fuego : arrCajas) {
+        for (Caja caja : arrCajas) {
             //Gdx.app.log("Probando colision", "tengo miedo");
-            if (olivia.sprite.getBoundingRectangle().overlaps(fuego.sprite.getBoundingRectangle())){
+            if (olivia.sprite.getBoundingRectangle().overlaps(caja.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
