@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /*
 Representa un obstáculo
  */
+//Prueba de errores
 public class Caja extends Objeto
 {
     private Animation<TextureRegion> animacion;
