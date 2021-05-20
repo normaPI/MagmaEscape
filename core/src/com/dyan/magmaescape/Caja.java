@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /*
 Representa un obstáculo
  */
-//Este es un comentario
 public class Caja extends Objeto
 {
     private Animation<TextureRegion> animacion;
@@ -44,7 +43,4 @@ public class Caja extends Objeto
         float dx = velocidadX * delta;
         sprite.setX(sprite.getX() + dx);
     }
-
-
-
 }
