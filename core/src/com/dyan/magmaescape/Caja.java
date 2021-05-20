@@ -1,4 +1,3 @@
-
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
