@@ -223,7 +223,7 @@ public class PantallaNivel2 extends Pantalla {
             Caja caja =arrCajas.get(i);
             caja.moverIzquierda(delta);
             //Prueba si la caja debe desaparecer, porque salió de la pantalla
-            if (caja.getX() < -60) {
+            if (caja.sprite.getX() < -60) {
                 arrCajas.removeIndex(i);
             }
         }
