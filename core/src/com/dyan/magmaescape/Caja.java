@@ -1,3 +1,4 @@
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
@@ -29,7 +30,6 @@ public class Caja extends Objeto
 
         sprite = new Sprite(texturas[0][0]);
         sprite.setPosition(x, y);
-
     }
 
     @Override  //Sobreescribir el metodo
@@ -38,9 +38,6 @@ public class Caja extends Objeto
         TextureRegion frame = animacion.getKeyFrame(timerAnimacion);
         batch.draw(frame, sprite.getX(), sprite.getY());
     }
-
-
-
 
     //Mover al enemigo
     public void moverIzquierda(float delta) {
