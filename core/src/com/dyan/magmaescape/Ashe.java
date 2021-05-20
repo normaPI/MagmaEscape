@@ -18,7 +18,8 @@ public class Ashe extends Objeto
     private float velocidadX = -350;  //pixeles/segundos
     private boolean potenLentitud=false;
 
-    public Ashe(Texture textura, float x, float y) {
+    public Ashe(Texture textura, float x, float y, float vX) {
+        velocidadX = vX;
         TextureRegion region = new TextureRegion(textura);
         TextureRegion[][] texturas = region.split(73,118);
 
