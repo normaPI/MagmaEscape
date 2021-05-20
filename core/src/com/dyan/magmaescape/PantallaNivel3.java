@@ -57,6 +57,12 @@ public class PantallaNivel3 extends Pantalla{
     private float tiempo=0;
     private TextoBlanco texto; //escribe texto en la pantalla negro
 
+    TextoBlanco txt= new TextoBlanco("font/arcade2.fnt");
+
+    TextoBlanco txtLEN=new TextoBlanco("font/arcade2.fnt");
+
+
+
     //Caja
     private Array<Caja> arrCajas;
     private Texture texturaCaja;
@@ -69,13 +75,13 @@ public class PantallaNivel3 extends Pantalla{
     private Potenciador potenciadorLentitud;
     private Texture texturaPotenciadores;
     private float timerCrearPotenciador;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_POTENCIADOR = 3;
+    private final float TIEMPO_CREAR_POTENCIADOR = 5;
 
     //Rojo
     private  PotenciadorInvencibilidad potenciadorInvencibilidad;
     private Texture texturaPotenciadorInvencibilidad;
     private float timerCrearPotenciadorInvencibilidad;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_POTENCIADOR_INVENCIBILIDAD = 10;
+    private final float TIEMPO_CREAR_POTENCIADOR_INVENCIBILIDAD = 25;
 
 
     //Escena pausa
@@ -273,6 +279,17 @@ public class PantallaNivel3 extends Pantalla{
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
         }
 
+        if(estadoInvencibilidad==EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA && txt!=null)
+        {
+            txt.mostrarMensaje(batch,"Invencibilidad",ANCHO*.85F,.6F*ALTO);
+            txt.mostrarMensaje(batch,"Activada "+(int)(tiempoInv),ANCHO*.85F,.55F*ALTO);
+        }
+
+        if(estadoLentitud==EstadoLentitud.LENTITUD_ACTIVADA&& txtLEN!=null)
+        {
+            txtLEN.mostrarMensaje(batch,"Lentitud",ANCHO*.85F,.6F*ALTO);
+            txtLEN.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.85F,.55F*ALTO);
+        }
 
         //Dibujar la pausa
         if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)
@@ -329,14 +346,16 @@ public class PantallaNivel3 extends Pantalla{
         if (estadoLentitud == EstadoLentitud.LENTITUD_ACTIVADA){
             tiempoLentitud = tiempoLentitud +(60*Gdx.graphics.getDeltaTime())/60;
         }
-        if (tiempoLentitud > 10){
+        if ((int)tiempoLentitud ==11){
             estadoLentitud = EstadoLentitud.LENTITUD_DESACTIVADA;
+            txtLEN=null;
         }
         if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA){
             tiempoInv = tiempoInv+(60*Gdx.graphics.getDeltaTime())/60;
         }
-        if (tiempoInv > 5){
+        if ((int)tiempoInv == 5){
             estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA;
+            txt=null;
         }
     }
 
