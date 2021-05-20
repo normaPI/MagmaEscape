@@ -69,7 +69,7 @@ public class PantallaNivel3 extends Pantalla{
     private Potenciador potenciadorLentitud;
     private Texture texturaPotenciadores;
     private float timerCrearPotenciador;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_POTENCIADOR = 5;
+    private final float TIEMPO_CREAR_POTENCIADOR = 3;
 
     //Rojo
     private  PotenciadorInvencibilidad potenciadorInvencibilidad;
@@ -91,9 +91,9 @@ public class PantallaNivel3 extends Pantalla{
 
     // Estados potenciadores
     private EstadoInvencibilidad estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA;
-    private EstadoAzul estadoAzul = EstadoAzul.AZUL_DESACTIVADA;
+    private EstadoLentitud estadoLentitud = EstadoLentitud.LENTITUD_DESACTIVADA;
     //contador
-    private float tiempoAzul = 0;
+    private float tiempoLentitud = 0;
     private float tiempoInv = 0;
 
 
@@ -122,7 +122,7 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void crearFondoNeblina() {
-        texturaNeblina= new Texture("nivel3/Nube75.png");
+        texturaNeblina= new Texture("nivel3/Nube75resize.png");
 
     }
 
@@ -192,7 +192,7 @@ public class PantallaNivel3 extends Pantalla{
     public void render(float delta) {
 
         // actualizar
-        if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA && estadoAzul == EstadoAzul.AZUL_DESACTIVADA){
+        if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA && estadoLentitud == EstadoLentitud.LENTITUD_DESACTIVADA){
             actualizar(delta);
         }
 
@@ -201,13 +201,17 @@ public class PantallaNivel3 extends Pantalla{
             actualizarInven(delta);
         }
 
+        if (estadoLentitud == EstadoLentitud.LENTITUD_ACTIVADA){
+            actualizarLentitud(delta);
+        }
+
         borrarPantalla(1,0,1);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         //dibujando fondo
         batch.draw(texturaFondo,xFondo,0);
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
-        batch.draw(texturaNeblina,0,0);
+        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
         batch.draw(texturaPause, .03f*ANCHO, .85F*ALTO);
 
         olivia.render(batch);
@@ -280,6 +284,19 @@ public class PantallaNivel3 extends Pantalla{
 
     }
 
+    private void actualizarLentitud(float delta) {
+        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
+            actualizarFondo();
+            actualizarAshesLentitud(delta);
+            actualizarBolasFuego(delta);
+            actualizarCajas(delta);
+            actualizarPotenciadores();
+            actualizarPotenciadorInvencibilidad(delta);
+            checandoTiempoPotenciador();
+            tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+    }
+
     private void actualizarInven(float delta) {
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
             actualizarFondo();
@@ -309,11 +326,11 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void checandoTiempoPotenciador() {
-        if (estadoAzul == EstadoAzul.AZUL_ACTIVADA){
-            tiempoAzul = tiempoAzul+(60*Gdx.graphics.getDeltaTime())/60;
+        if (estadoLentitud == EstadoLentitud.LENTITUD_ACTIVADA){
+            tiempoLentitud = tiempoLentitud +(60*Gdx.graphics.getDeltaTime())/60;
         }
-        if (tiempoAzul > 5){
-            estadoAzul = EstadoAzul.AZUL_DESACTIVADA;
+        if (tiempoLentitud > 10){
+            estadoLentitud = EstadoLentitud.LENTITUD_DESACTIVADA;
         }
         if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA){
             tiempoInv = tiempoInv+(60*Gdx.graphics.getDeltaTime())/60;
@@ -357,6 +374,8 @@ public class PantallaNivel3 extends Pantalla{
         {
             if (olivia.sprite.getBoundingRectangle().overlaps(potenciadorLentitud.sprite.getBoundingRectangle())){
                 Gdx.app.log("Probando colision con el potenciador", "TOCO DIAMANTE,CORRIENDO");
+                estadoLentitud = EstadoLentitud.LENTITUD_ACTIVADA;
+                    Gdx.app.log("ESTADO", "ya tenemo EDO LENTITUD");
                 potenciadorLentitud=null;
             }
         }
@@ -473,7 +492,28 @@ public class PantallaNivel3 extends Pantalla{
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -700);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -800);
+            arrAshes.add(ashe);
+        }
+
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
+            probarColisionAshe();
+        }
+
+        // Mover los Ashes
+        for (Ashe ashe: arrAshes) {
+            ashe.moverIzquierda(delta);
+        }
+    }
+
+    private void actualizarAshesLentitud(float delta) {
+        // Crear Ashes
+        timerCreaAshe += delta;
+        if (timerCreaAshe>=TIEMPO_CREAR_ASHE) {
+            timerCreaAshe = 0;
+            //Crear Enemigo
+            float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -400);
             arrAshes.add(ashe);
         }
 
