@@ -43,4 +43,7 @@ public class Caja extends Objeto
         float dx = velocidadX * delta;
         sprite.setX(sprite.getX() + dx);
     }
+
+
+
 }
