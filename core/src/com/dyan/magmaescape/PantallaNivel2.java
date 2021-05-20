@@ -426,7 +426,7 @@ public class PantallaNivel2 extends Pantalla {
 
         public EscenaPausa(Viewport vista) {
             super(vista);       //Pasa la vista al constructor de Stage
-            texturaFondo = new Texture("nivel2/fondoPausa.png");
+            texturaFondo = new Texture("menuPausa/fondoPausar.png");
             Image imgFondo= new Image(texturaFondo);
             imgFondo.setPosition(ANCHO/2,ALTO/2, Align.center);
             addActor(imgFondo);
