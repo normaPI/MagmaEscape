@@ -271,24 +271,24 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         //dibujar contador de tiempo
-        texto.mostrarMensaje(batch,"Meta  30s",ANCHO*.45F,.9F*ALTO);
+        texto.mostrarMensaje(batch,"Meta  90s",ANCHO*.45F,.9F*ALTO);
         texto.mostrarMensaje(batch,"Tiempo  "+Integer.toString((int) tiempo),ANCHO*.85F,.9F*ALTO);
 
-        if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30){
+        if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==90){
             texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
         }
 
         if(estadoInvencibilidad==EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA && txt!=null)
         {
-            txt.mostrarMensaje(batch,"Invencibilidad",ANCHO*.85F,.6F*ALTO);
-            txt.mostrarMensaje(batch,"Activada "+(int)(tiempoInv),ANCHO*.85F,.55F*ALTO);
+            txt.mostrarMensaje(batch,"Invencibilidad",ANCHO*.13F,.65F*ALTO);
+            txt.mostrarMensaje(batch,"Activada "+(int)(tiempoInv),ANCHO*.13F,.60F*ALTO);
         }
 
         if(estadoLentitud==EstadoLentitud.LENTITUD_ACTIVADA&& txtLEN!=null)
         {
-            txtLEN.mostrarMensaje(batch,"Lentitud",ANCHO*.85F,.6F*ALTO);
-            txtLEN.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.85F,.55F*ALTO);
+            txtLEN.mostrarMensaje(batch,"Lentitud",ANCHO*.13F,.65F*ALTO);
+            txtLEN.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.13F,.60F*ALTO);
         }
 
         //Dibujar la pausa
@@ -302,7 +302,7 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void actualizarLentitud(float delta) {
-        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
+        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshesLentitud(delta);
             actualizarBolasFuego(delta);
@@ -315,7 +315,7 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void actualizarInven(float delta) {
-        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
+        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshesINVENCIBILIDAD(delta);
             actualizarBolasFuegoINVENCIBILIDAD(delta);
@@ -329,7 +329,7 @@ public class PantallaNivel3 extends Pantalla{
 
 
     private void actualizar(float delta) {
-        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<30) {
+        if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshes(delta);
             actualizarBolasFuego(delta);
@@ -353,7 +353,7 @@ public class PantallaNivel3 extends Pantalla{
         if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA){
             tiempoInv = tiempoInv+(60*Gdx.graphics.getDeltaTime())/60;
         }
-        if ((int)tiempoInv == 5){
+        if ((int)tiempoInv == 65){
             estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA;
             txt=null;
         }
@@ -667,7 +667,7 @@ public class PantallaNivel3 extends Pantalla{
                     juego.setScreen(new PantallaMenu(juego));
             }
 
-            if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30 ){
+            if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==90 ){
                 juego.setScreen(new PantallaNivel3Completo(juego));
             }
 
