@@ -202,8 +202,15 @@ public class PantallaNivel1 extends Pantalla {
         }
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        //for (Ashe ashe: arrAshes)
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe = arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si los ashes deben desaparecer, porque salieron de la pantalla
+            if (ashe.getX() < -60) {
+                //Borrar el objeto
+                arrAshes.removeIndex(i);
+            }
         }
     }
 
@@ -244,7 +251,7 @@ public class PantallaNivel1 extends Pantalla {
 
     }
 
-    private class ProcesadorEntrada implements InputProcessor{
+    public class ProcesadorEntrada implements InputProcessor{
 
         @Override
         public boolean keyDown(int keycode) {

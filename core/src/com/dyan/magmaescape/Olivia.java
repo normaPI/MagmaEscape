@@ -71,6 +71,7 @@ public class Olivia extends Objeto {
                 super.render(batch);
                 break;
 
+
             case MURIENDO:
                 timerAnimacion+=delta;
                 TextureRegion frameMorir= animacionMorir.getKeyFrame(timerAnimacion);
@@ -89,10 +90,12 @@ public class Olivia extends Objeto {
         sprite.setY(y);
 
         // Como sabria que ya termino la simulacion
-        if (tAire >= tVuelo || y <=yBase){
+        if (tAire >= tVuelo || y <=yBase ){
             estado = EstadoOlivia.CAMINADO;
             sprite.setY(yBase);
         }
+
+
 
 
     }
