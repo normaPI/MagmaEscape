@@ -1,7 +1,6 @@
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,37 +8,39 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-// Created by Amauri Elian Perez Cruz 29/4/2021
-public class PantallaNivel1Completo extends Pantalla {
+
+// Created by Norma Perez I 17/05/2021
+
+public class PantallaNivel3Completo extends Pantalla{
 
     private Juego juego;
 
     private Texture texturaFondo;
     //Escena
-    private Stage escenaNivelCompleto1;
+    private Stage escenaNivelCompleto3;
 
 
-    public PantallaNivel1Completo(Juego juego) {
+    public PantallaNivel3Completo(Juego juego) {
         this.juego = juego;
     }
 
     @Override
     public void show() {
-        this.escenaNivelCompleto1 = new Stage(this.vista);
-        texturaFondo=new Texture("nivel1/mapaEncontrado.png");
+        this.escenaNivelCompleto3 = new Stage(this.vista);
+        texturaFondo=new Texture("nivel3/nivel3Completado.png");
 
         Button btnVolverMenu = crearBoton("nivel1/button_continuar.png", "nivel1/button_continuarInv.png");
         btnVolverMenu.setPosition(ANCHO*.85f,ALTO-(ALTO*.90F), Align.center);
         //agregar boton a la escena
-        escenaNivelCompleto1.addActor(btnVolverMenu);
+        escenaNivelCompleto3.addActor(btnVolverMenu);
         btnVolverMenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new PantallaSeleccionarNivel(juego));
+                juego.setScreen(new PantallaMenu(juego));
             }
         });
 
-        Gdx.input.setInputProcessor(escenaNivelCompleto1);
+        Gdx.input.setInputProcessor(escenaNivelCompleto3);
     }
 
     private Button crearBoton(String archivo, String archivoInverso) {
@@ -60,7 +61,7 @@ public class PantallaNivel1Completo extends Pantalla {
 
         batch.end();
 
-        escenaNivelCompleto1.draw();
+        escenaNivelCompleto3.draw();
     }
 
     @Override
@@ -77,4 +78,5 @@ public class PantallaNivel1Completo extends Pantalla {
     public void dispose() {
 
     }
+
 }

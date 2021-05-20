@@ -10,21 +10,20 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /*
 Representa un enemigo
  */
-public class Ashe extends Objeto
+public class BolaFuego extends Objeto
 {
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
-    private float velocidadX = -350;  //pixeles/segundos
-    private boolean potenLentitud=false;
+    private float velocidadX = -500;  // pixeles/segundos
+    private float velocidadY = -55;  // pixeles/segundos
 
-    public Ashe(Texture textura, float x, float y, float vX) {
-        velocidadX = vX;
+    public BolaFuego(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
-        TextureRegion[][] texturas = region.split(73,118);
+        TextureRegion[][] texturas = region.split(80,95);
 
         //Crear la animacion
-        TextureRegion[] arrFrames = { texturas[0][0], texturas[0][1] };
+        TextureRegion[] arrFrames = { texturas[0][0], texturas[0][1], texturas[0][2] };
         animacion = new Animation<TextureRegion>(0.3f, arrFrames);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
         timerAnimacion = 0;
@@ -41,29 +40,11 @@ public class Ashe extends Objeto
     }
 
     //Mover al enemigo
-    public void moverIzquierda(float delta) {
-        if (potenLentitud){
-            float dx = (velocidadX+80) * delta;
-            sprite.setX(sprite.getX() + dx);
+    public void moverCaida(float delta) {
+        float dx = velocidadX * delta;
+        float dy = velocidadY * delta;
+        sprite.setX(sprite.getX() + dx);
+        sprite.setY(sprite.getY() + dy);
 
-
-        }else {
-            float dx = (velocidadX * delta);
-            sprite.setX(sprite.getX() + dx);
-        }
-
-    }
-
-    public boolean getpotenLentitud(){
-        return potenLentitud;
-    }
-    public void setPotenLentitud(boolean pl){
-        this.potenLentitud=pl;
-    }
-
-    public float getX() {
-        return sprite.getX();
     }
 }
-
-
