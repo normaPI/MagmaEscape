@@ -22,7 +22,7 @@ public class Olivia extends Objeto {
     // Aire
     private float tAire;            // Tiempo que lleva en el aire
     private float tVuelo;           // tiempo de vuelo total
-    private final float v0y = 300;  // Componente en y de la velocida
+    private final float v0y = 250;  // Componente en y de la velocida
     private final float g = 150;   // La gravedad:  Pixeles/ s^2
 
     private EstadoOlivia estado;

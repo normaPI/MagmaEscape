@@ -64,3 +64,5 @@ public class Ashe extends Objeto
         return sprite.getX();
     }
 }
+
+
