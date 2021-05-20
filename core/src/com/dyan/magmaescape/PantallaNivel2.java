@@ -24,6 +24,7 @@ public class PantallaNivel2 extends Pantalla {
 
     //Fondo
     private Texture texturaFondo;
+    private  Texture texturaNeblina;
     //Escena
     private Stage escenaMenu;
 
@@ -59,12 +60,15 @@ public class PantallaNivel2 extends Pantalla {
     //contador
     private float tiempo=0;
     private Texto texto; //escribe texto en la pantalla
-
+    private Texto potentLentitudtxt;
     // Estado de Juego
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
 
+    //Potenciador Lentitud
     private boolean coliPotenLenti=false;
     float tiempoColision=0;
+    float tiempoLentitud=0;
+
 
     public PantallaNivel2(Juego juego) {
         this.juego=juego;
@@ -72,15 +76,21 @@ public class PantallaNivel2 extends Pantalla {
     @Override
     public void show() {
         crearFondo();
+        crearFondoNeblina();
         crearPause();
         crearOlivia();
         crearAshes();
         crearTexto();
+        crearPotentLentitudTxt();
         crearCajas();
         crearPotenciador();
 
         procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(procesadorEntrada);
+    }
+
+    private void crearFondoNeblina() {
+        texturaNeblina= new Texture("nivel2/Nube75resize.png");
     }
 
     private void crearPotenciador() {
@@ -96,6 +106,11 @@ public class PantallaNivel2 extends Pantalla {
     private void crearTexto() {
         texto = new Texto("font/arcade2.fnt");
     }
+    private void crearPotentLentitudTxt() {
+        potentLentitudtxt = new Texto("font/arcade2.fnt");
+    }
+
+
 
     private void recuperarMarcador() {
         Preferences prefs = Gdx.app.getPreferences("TIEMPO");
@@ -114,7 +129,7 @@ public class PantallaNivel2 extends Pantalla {
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,250,170);
     }
     private void crearPause() {
         texturaPause = new Texture("nivel1/button_pausa.png");
@@ -134,6 +149,7 @@ public class PantallaNivel2 extends Pantalla {
         batch.draw(texturaFondo,xFondo,0);
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
         batch.draw(texturaPause, .03f*ANCHO, .85F*ALTO);
+        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
 
         olivia.render(batch);
 
@@ -166,6 +182,13 @@ public class PantallaNivel2 extends Pantalla {
         texto.mostrarMensaje(batch,"Meta  60s",ANCHO*.45F,.9F*ALTO);
         texto.mostrarMensaje(batch,"Tiempo  "+Integer.toString((int) tiempo),ANCHO*.85F,.9F*ALTO);
 
+        //dibujar cuando tiempo del potenciador
+        if(coliPotenLenti){
+            potentLentitudtxt.mostrarMensaje(batch,"Lentitud",ANCHO*.13F,.65F*ALTO);
+            potentLentitudtxt.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.13F,.60F*ALTO);
+        }
+
+
         if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==60){
             texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el segundo nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
@@ -186,7 +209,16 @@ public class PantallaNivel2 extends Pantalla {
             actualizarAshes(delta);
             actualizarCajas(delta);
             actualizarPotenciadores(delta);
+            actualizarTiempoPotenciador();
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
+        }
+    }
+
+    private void actualizarTiempoPotenciador() {
+        if(coliPotenLenti){
+            tiempoLentitud = tiempoLentitud +(60*Gdx.graphics.getDeltaTime())/60;
+        }else{
+            //potentLentitudtxt=null;
         }
     }
 
@@ -197,7 +229,7 @@ public class PantallaNivel2 extends Pantalla {
             timerCrearPotenciador = 0;
             //Crear Potenciador
             float xPotenciador = MathUtils.random(ANCHO, ANCHO*1.5f);
-            PotenciadorLentitud potenciadorLentitud = new PotenciadorLentitud(texturaPotenciadores, xPotenciador, ALTO/1.35f);
+            PotenciadorLentitud potenciadorLentitud = new PotenciadorLentitud(texturaPotenciadores, xPotenciador, ALTO/1.6f);
             arrPotenciadores.add(potenciadorLentitud);
         }
         // Mover los Potenciadores
@@ -236,7 +268,7 @@ public class PantallaNivel2 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4,-350);
             arrAshes.add(ashe);
         }
 
@@ -248,9 +280,10 @@ public class PantallaNivel2 extends Pantalla {
         for (int i=arrAshes.size-1; i>=0; i--){
             Ashe ashe = arrAshes.get(i);
         if (coliPotenLenti){
-                if(tiempo>=(tiempoColision+8.0)){
+                if(tiempoLentitud>9.0){
                    Gdx.app.log("TIEMPO ACABADO ", "El potenciador acabo");
                     ashe.setPotenLentitud(false);
+                    coliPotenLenti=false;
                     Gdx.app.log("Normalidad", "El float es:"+ashe.getpotenLentitud());
 
                 } else {
@@ -276,13 +309,10 @@ public class PantallaNivel2 extends Pantalla {
         for(PotenciadorLentitud potenciadorLentitud : arrPotenciadores){
             int i=0;
             if (olivia.sprite.getBoundingRectangle().overlaps(potenciadorLentitud.sprite.getBoundingRectangle())){
-                //olivia.setEstado(EstadoOlivia.CORRIENDO);
-                //estadoOlivia=EstadoOlivia.CORRIENDO;
                 coliPotenLenti=true;
                 arrPotenciadores.removeIndex(i);
                 tiempoColision=this.tiempo;
                 Gdx.app.log("Probando colision", "TOCO DIAMANTE,CORRIENDO");
-                Gdx.app.log("Colision diamante", "El tiempo es:"+(tiempoColision));
                 break;
 
             }
@@ -320,7 +350,7 @@ public class PantallaNivel2 extends Pantalla {
     }
 
     private void actualizarFondo() {
-        xFondo-=4;
+        xFondo-=4.5f;
         if(xFondo<=-texturaFondo.getWidth()) {
             xFondo=0;
         }
@@ -427,7 +457,7 @@ public class PantallaNivel2 extends Pantalla {
 
         public EscenaPausa(Viewport vista) {
             super(vista);       //Pasa la vista al constructor de Stage
-            texturaFondo = new Texture("menuPausa/fondoPausar.png");
+            texturaFondo = new Texture("nivel2/fondoPausa.png");
             Image imgFondo= new Image(texturaFondo);
             imgFondo.setPosition(ANCHO/2,ALTO/2, Align.center);
             addActor(imgFondo);
