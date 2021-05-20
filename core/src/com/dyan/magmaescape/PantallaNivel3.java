@@ -122,7 +122,7 @@ public class PantallaNivel3 extends Pantalla{
         crearPotenciadorInvencibilidad();
         //recuperarMarcador();
 
-        procesadorEntrada= new ProcesadorEntrada();
+        procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(procesadorEntrada);
 
     }
@@ -186,7 +186,7 @@ public class PantallaNivel3 extends Pantalla{
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,140);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,190);
     }
     private void crearPause() {
 
@@ -275,7 +275,7 @@ public class PantallaNivel3 extends Pantalla{
         texto.mostrarMensaje(batch,"Tiempo  "+Integer.toString((int) tiempo),ANCHO*.85F,.9F*ALTO);
 
         if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==90){
-            texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
+            texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el tercer nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
         }
 
@@ -634,8 +634,8 @@ public class PantallaNivel3 extends Pantalla{
 
             float anchoPause = texturaPause.getWidth();
             float altoPause = texturaPause.getHeight();
-            float xPause = texturaPause.getWidth()/2;
-            float yPause = ALTO - 1.55f*altoPause;
+            float xPause = .03F*ANCHO;
+            float yPause = .85F*ALTO;
             // Primero, verificar el boton de back
 
             Rectangle rectPuse = new Rectangle(xPause, yPause, anchoPause, altoPause);

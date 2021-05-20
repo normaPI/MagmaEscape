@@ -104,7 +104,7 @@ public class Olivia extends Objeto {
     public void saltar() {
         if ( estado != EstadoOlivia.SALTANDO){
             tAire = 0;
-            tVuelo = 2 * v0y/ g;
+            tVuelo =  2*v0y/ g;
             estado = EstadoOlivia.SALTANDO;
 
         }
