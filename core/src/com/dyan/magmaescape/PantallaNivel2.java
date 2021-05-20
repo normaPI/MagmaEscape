@@ -217,14 +217,15 @@ public class PantallaNivel2 extends Pantalla {
             arrCajas.add(caja);
         }
         //Mover los obstaculos
-        //for (Caja caja : arrCajas)
-        for (int i=arrCajas.size-1; i>=0; i--){
-            Caja caja =arrCajas.get(i);
+        for (Caja caja : arrCajas){
+
+        //for (int i=arrCajas.size-1; i>=0; i--){
+          //  Caja caja =arrCajas.get(i);
             caja.moverIzquierda(delta);
             //Prueba si la caja debe desaparecer, porque salió de la pantalla
-            if (caja.getX() < -60) {
-                arrCajas.removeIndex(i);
-            }
+            //if (caja.getX() < -60) {
+              //  arrCajas.removeIndex(i);
+            //}
         }
     }
 

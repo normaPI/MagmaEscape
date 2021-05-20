@@ -29,6 +29,7 @@ public class Caja extends Objeto
 
         sprite = new Sprite(texturas[0][0]);
         sprite.setPosition(x, y);
+
     }
 
     @Override  //Sobreescribir el metodo
@@ -38,9 +39,7 @@ public class Caja extends Objeto
         batch.draw(frame, sprite.getX(), sprite.getY());
     }
 
-    public float getX() {
-        return sprite.getX();
-    }
+
 
 
     //Mover al enemigo
