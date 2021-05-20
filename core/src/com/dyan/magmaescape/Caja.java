@@ -1,3 +1,4 @@
+
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
@@ -38,13 +39,14 @@ public class Caja extends Objeto
         batch.draw(frame, sprite.getX(), sprite.getY());
     }
 
+    public float getX() {
+        return sprite.getX();
+    }
+
+
     //Mover al enemigo
     public void moverIzquierda(float delta) {
         float dx = velocidadX * delta;
         sprite.setX(sprite.getX() + dx);
-    }
-
-    public float getX() {
-        return sprite.getX();
     }
 }
