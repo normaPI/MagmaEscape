@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 
 public class PantallaConfiguracion extends Pantalla {
     private Juego juego;
@@ -32,7 +33,7 @@ public class PantallaConfiguracion extends Pantalla {
         this.escenaMenu = new Stage(this.vista);
         this.texturaFondo = new Texture("configuracion/fondoConfiguracion.jpg");
         Button btnRegresar = this.crearBoton("configuracion/button_regresar.png","configuracion/button_regresarInverso.png");
-        btnRegresar.setPosition(256.0F, 144.0F, 1);
+        btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         this.escenaMenu.addActor(btnRegresar);
         btnRegresar.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
