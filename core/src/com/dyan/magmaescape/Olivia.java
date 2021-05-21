@@ -15,22 +15,26 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Olivia extends Objeto {
     private Animation<TextureRegion> animacionCorrer;
     private Animation<TextureRegion> animacionMorir;
-    private float timerAnimacion;  //Para saber el que corresponder mostar
+    private float timerAnimacion;  // Para saber el que corresponde mostrar
 
     // Salto
     private final float yBase = 180; // Suelo, piso
     // Aire
     private float tAire;            // Tiempo que lleva en el aire
     private float tVuelo;           // tiempo de vuelo total
-    private final float v0y = 250;  // Componente en y de la velocida
-    private final float g = 150;   // La gravedad:  Pixeles/ s^2
+    private float v0y = 250;  // Componente en y de la velocida
+    private float g = 150;   // La gravedad:  Pixeles/ s^2
 
     private EstadoOlivia estado;
 
 
 
 
-    public Olivia(Texture textura, float x, float y){
+    public Olivia(Texture textura, float x, float y, float inicialY, float gravity){
+
+       //SOBREESCRIBIR LOS VALORES ORIGINALES
+       v0y=inicialY;
+       g = gravity;
         TextureRegion region = new TextureRegion(textura);
         TextureRegion[][] texturas = region.split(80,220);
 
@@ -67,6 +71,7 @@ public class Olivia extends Objeto {
                 super.render(batch);
                 break;
 
+
             case MURIENDO:
                 timerAnimacion+=delta;
                 TextureRegion frameMorir= animacionMorir.getKeyFrame(timerAnimacion);
@@ -85,10 +90,12 @@ public class Olivia extends Objeto {
         sprite.setY(y);
 
         // Como sabria que ya termino la simulacion
-        if (tAire >= tVuelo || y <=yBase){
+        if (tAire >= tVuelo || y <=yBase ){
             estado = EstadoOlivia.CAMINADO;
             sprite.setY(yBase);
         }
+
+
 
 
     }
@@ -100,7 +107,7 @@ public class Olivia extends Objeto {
     public void saltar() {
         if ( estado != EstadoOlivia.SALTANDO){
             tAire = 0;
-            tVuelo = 2 * v0y/ g;
+            tVuelo =  2*v0y/ g;
             estado = EstadoOlivia.SALTANDO;
 
         }

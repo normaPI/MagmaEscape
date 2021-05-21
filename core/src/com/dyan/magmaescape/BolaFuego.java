@@ -8,22 +8,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /*
-Representa un obstáculo
+Representa un enemigo
  */
-public class Caja extends Objeto
+public class BolaFuego extends Objeto
 {
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
-    private float velocidadX = -300;  //pixeles/segundos
+    private float velocidadX = -500;  // pixeles/segundos
+    private float velocidadY = -55;  // pixeles/segundos
 
-    public Caja(Texture textura, float x, float y) {
+    public BolaFuego(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
-        TextureRegion[][] texturas = region.split(80,80);
+        TextureRegion[][] texturas = region.split(80,95);
 
         //Crear la animacion
-        TextureRegion[] arrFrames = { texturas[0][0], texturas[0][1],texturas[0][2]};
-        animacion = new Animation<TextureRegion>(0.4f, arrFrames);
+        TextureRegion[] arrFrames = { texturas[0][0], texturas[0][1], texturas[0][2] };
+        animacion = new Animation<TextureRegion>(0.3f, arrFrames);
         animacion.setPlayMode(Animation.PlayMode.LOOP);
         timerAnimacion = 0;
 
@@ -39,8 +40,11 @@ public class Caja extends Objeto
     }
 
     //Mover al enemigo
-    public void moverIzquierda(float delta) {
+    public void moverCaida(float delta) {
         float dx = velocidadX * delta;
+        float dy = velocidadY * delta;
         sprite.setX(sprite.getX() + dx);
+        sprite.setY(sprite.getY() + dy);
+
     }
 }

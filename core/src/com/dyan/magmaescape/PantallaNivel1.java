@@ -16,9 +16,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaNivel1 extends Pantalla {
 
@@ -42,6 +45,11 @@ public class PantallaNivel1 extends Pantalla {
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 4;
 
+
+    //Escena pausa
+    private EscenaPausa escenaPausa;
+    private ProcesadorEntrada procesadorEntrada;
+
     // Boton PAUSE
     private Texture texturaPause;
 
@@ -51,8 +59,13 @@ public class PantallaNivel1 extends Pantalla {
     private Texto texto; //escribe texto en la pantalla
 
 
-    // Estado de Juego
+    // Estado de Olivia
     private EstadoOlivia estadoOlivia = EstadoOlivia.CAMINADO;
+
+    //Estado del juego
+    private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
+
+
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
@@ -68,6 +81,7 @@ public class PantallaNivel1 extends Pantalla {
         crearTexto();
         //recuperarMarcador();
 
+        procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
@@ -94,10 +108,20 @@ public class PantallaNivel1 extends Pantalla {
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f, 250, 150);
     }
     private void crearPause() {
+
+
         texturaPause = new Texture("nivel1/button_pausa.png");
+    }
+
+    private Button crearBoton(String archivo, String archivoInverso) {
+        Texture texturaBoton = new Texture(archivo);
+        TextureRegionDrawable trdBtnMario = new TextureRegionDrawable(texturaBoton);
+        Texture texturaInverso = new Texture(archivoInverso);
+        TextureRegionDrawable trdBtnInverso = new TextureRegionDrawable(texturaInverso);
+        return new Button(trdBtnMario, trdBtnInverso);
     }
 
 
@@ -142,6 +166,12 @@ public class PantallaNivel1 extends Pantalla {
             texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
         }
+        //Dibujar la pausa
+        if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)
+        {
+            escenaPausa.draw();
+        }
+
 
 
         batch.end();
@@ -149,7 +179,7 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void actualizar(float delta) {
-        if(estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
+        if(estadoJuego== EstadoJuego.JUGANDO  && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
             actualizarFondo();
             actualizarAshes(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
@@ -163,17 +193,24 @@ public class PantallaNivel1 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -300);
             arrAshes.add(ashe);
         }
 
-        if(estadoOlivia!=EstadoOlivia.MURIENDO){
+        if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego== EstadoJuego.JUGANDO){
             probarColisiones();
         }
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        //for (Ashe ashe: arrAshes)
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe = arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si los ashes deben desaparecer, porque salieron de la pantalla
+            if (ashe.getX() < -60) {
+                //Borrar el objeto
+                arrAshes.removeIndex(i);
+            }
         }
     }
 
@@ -238,15 +275,19 @@ public class PantallaNivel1 extends Pantalla {
 
             float anchoPause = texturaPause.getWidth();
             float altoPause = texturaPause.getHeight();
-            float xPause = texturaPause.getWidth()/2;
-            float yPause = ALTO - 1.55f*altoPause;
+            float xPause = .03F*ANCHO;
+            float yPause = .85F*ALTO;
             // Primero, verificar el boton de back
 
             Rectangle rectPuse = new Rectangle(xPause, yPause, anchoPause, altoPause);
             if(rectPuse.contains(v.x, v.y)){
                 // SALIY y guardar el marcador
-                estadoOlivia = EstadoOlivia.PAUSA;
-                olivia.setEstado(EstadoOlivia.PAUSA);
+                if (escenaPausa == null) escenaPausa = new EscenaPausa(vista);
+
+                estadoJuego= EstadoJuego.PAUSADO;
+                //Cambiar el procesador de entrada, ahra quien sera el procesador de entrada sera la escena de pausa
+                Gdx.input.setInputProcessor(escenaPausa); //Detecta el click sobre el boton
+
                 Preferences preferencias = Gdx.app.getPreferences("TIEMPO");
                 preferencias.putInteger("segundos", (int) tiempo);
                 preferencias.flush();
@@ -304,4 +345,68 @@ public class PantallaNivel1 extends Pantalla {
             return false;
         }
     }
+
+    //Creacion de la escena pausa al apretar el boton
+    private class EscenaPausa extends Stage
+    {
+        private Texture texturaFondo;
+
+        public EscenaPausa(Viewport vista)
+        {
+            super(vista);
+            //añadir la textura de pausa
+            texturaFondo= new Texture("pausa/fondoPausa.png");
+            Image imgFondo= new Image(texturaFondo);
+            imgFondo.setPosition(ANCHO/2,ALTO/2, Align.center);
+            addActor(imgFondo);
+
+            //adicion de botones
+            //actores
+            Button btnVolverJuego = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
+            //agregar boton a la escena
+            addActor(btnVolverJuego);
+            btnVolverJuego.setPosition(ANCHO/2,.7F*ALTO,Align.center);
+
+            btnVolverJuego.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event,x,y);
+                    estadoJuego= PantallaNivel1.EstadoJuego.JUGANDO;
+                    Gdx.input.setInputProcessor(procesadorEntrada);
+                }
+            });
+
+            Button btnVolverIntentar = crearBoton("menuPausa/btnVolverIntentar.png", "menuPausa/btnVolverIntentarInverso.png");
+            //agregar boton a la escena
+            addActor(btnVolverIntentar);
+            btnVolverIntentar.setPosition(ANCHO/2,.5F*ALTO, Align.center);
+
+            btnVolverIntentar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaNivel1(juego));
+                }
+            });
+
+            Button btnMenuPrincipal = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
+
+            //agregar boton a la escena
+            addActor(btnMenuPrincipal);
+            btnMenuPrincipal.setPosition(ANCHO/2,.3F*ALTO, Align.center);
+
+            btnMenuPrincipal.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaMenu(juego));
+                }
+            });
+
+        }
+    }
+    private enum EstadoJuego
+    {
+        JUGANDO,
+        PAUSADO
+    }
+
 }
