@@ -1,13 +1,7 @@
-/*
-Esta clase representa a la pantalla Acerca De
-Autor: Yised Denise Apolonio
-*/
-
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-public class PantallaAcerca extends Pantalla
-{
+public class PantallaHistoriaFinal extends Pantalla {
+
     //Referencia al juego principal
     private Juego juego;
     //Fondo
@@ -25,22 +19,22 @@ public class PantallaAcerca extends Pantalla
     //Escena
     private Stage escenaMenu;
 
-    public PantallaAcerca(Juego juego) {
+    public PantallaHistoriaFinal(Juego juego) {
         this.juego = juego;
     }
 
+    @Override
     public void show() {
-        crearAcercaDe();
+        crearHistoriaFinal();
         //1: bloquear la tecla de back
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
-    private void crearAcercaDe() {
+    private void crearHistoriaFinal() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercaDe/fondoAcercaD.png");
-
-        //Boton regresar
+        texturaFondo=new Texture("acercaDe/historiaFinal.png");
+        //Boton REGRESAR HISTORIA INICIAL
         Button btnRegresar=crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         escenaMenu.addActor(btnRegresar);
@@ -49,12 +43,12 @@ public class PantallaAcerca extends Pantalla
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //Cambiar pantalla
-                juego.setScreen(new PantallaMenu(juego));
+                juego.setScreen(new PantallaHistoria(juego));
             }
         });
 
-        //BOTON HISTORIA
-        Button btnHistoria=crearBoton("acercaDe/button_historia1.png", "acercaDe/button_historiaInverso.png");
+        //BOTON MENU PRINCIPAL
+        Button btnHistoria=crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
         btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/6, Align.center);
         escenaMenu.addActor(btnHistoria);
         //Registrar el evento de click para el boton
@@ -62,9 +56,10 @@ public class PantallaAcerca extends Pantalla
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                juego.setScreen(new PantallaHistoria(juego));
+                juego.setScreen(new PantallaMenu(juego));
             }
         });
+
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
     }
@@ -78,6 +73,7 @@ public class PantallaAcerca extends Pantalla
         return new Button(trdBtn, trdBtnInverso);
     }
 
+    @Override
     public void render(float delta) {
         borrarPantalla(1,0,0);
         batch.setProjectionMatrix(camara.combined);
@@ -88,20 +84,21 @@ public class PantallaAcerca extends Pantalla
         // Escena (DESPUES DEL FONDO)
         escenaMenu.draw();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.BACK))
-        {
-            //regresar a la pantalla anterior  (cierta accion)
-            juego.setScreen(new PantallaMenu(juego));
-        }
 
     }
 
+    @Override
     public void pause() {
+
     }
 
+    @Override
     public void resume() {
+
     }
 
+    @Override
     public void dispose() {
+
     }
 }
