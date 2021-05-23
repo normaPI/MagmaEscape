@@ -149,7 +149,7 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void crearFondoNeblina() {
-        texturaNeblina= new Texture("nivel3/Nube75resize.png");
+        texturaNeblina= new Texture("nivel3/Nube35.png");
 
     }
 
@@ -238,7 +238,7 @@ public class PantallaNivel3 extends Pantalla{
         //dibujando fondo
         batch.draw(texturaFondo,xFondo,0);
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
-        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
+
         batch.draw(texturaPause, .03f*ANCHO, .85F*ALTO);
 
         olivia.render(batch);
@@ -248,6 +248,8 @@ public class PantallaNivel3 extends Pantalla{
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
+
+
         //Dibujar Bolas de fuego
         for (BolaFuego bolaFuego : arrBolasFuego) {
             bolaFuego.render(batch);
@@ -257,6 +259,8 @@ public class PantallaNivel3 extends Pantalla{
         for (Caja caja : arrCajas) {
             caja.render(batch);
         }
+
+
 
 
         if(potenciadorLentitud!=null)
@@ -283,6 +287,8 @@ public class PantallaNivel3 extends Pantalla{
 
             }
         }
+
+        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
 
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
