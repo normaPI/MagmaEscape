@@ -13,7 +13,7 @@ public class TextoBlanco {
 
     public TextoBlanco(String archivoo){
         font = new BitmapFont(Gdx.files.internal(archivoo));
-        font.setColor(1,1,1,1);
+        font.setColor(10,1,0,1);
 
     }
 
