@@ -307,8 +307,7 @@ public class PantallaNivel1 extends Pantalla {
 
             }
 
-            if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
-
+            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != EstadoOlivia.MURIENDO){
                 olivia.saltar(); // Top-Down
             }
 

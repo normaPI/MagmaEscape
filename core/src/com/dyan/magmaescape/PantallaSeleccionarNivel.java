@@ -74,7 +74,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
         } );
 
         Button btnRegresar = crearBoton("menuNiveles/button_regresar.png", "menuNiveles/button_regresarInverso.png");
-        btnRegresar.setPosition(ANCHO/10,ALTO/6,Align.center);
+        btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         escenaMenuSeleccionNivel.addActor(btnRegresar);
         btnRegresar.addListener(new ClickListener(){
             @Override
