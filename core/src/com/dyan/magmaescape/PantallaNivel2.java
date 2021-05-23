@@ -91,7 +91,7 @@ public class PantallaNivel2 extends Pantalla {
     }
 
     private void crearFondoNeblina() {
-        texturaNeblina= new Texture("nivel2/Nube75resize.png");
+        texturaNeblina= new Texture("nivel2/Nube35.png");
     }
 
     private void crearPotenciador() {
@@ -150,7 +150,7 @@ public class PantallaNivel2 extends Pantalla {
         batch.draw(texturaFondo,xFondo,0);
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
         batch.draw(texturaPause, .03f*ANCHO, .85F*ALTO);
-        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
+
 
         olivia.render(batch);
 
@@ -172,6 +172,8 @@ public class PantallaNivel2 extends Pantalla {
         for (PotenciadorLentitud potenciadorLentitud : arrPotenciadores) {
             potenciadorLentitud.render(batch);
         }
+
+        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
             texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
