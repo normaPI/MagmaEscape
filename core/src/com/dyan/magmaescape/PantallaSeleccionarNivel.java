@@ -5,6 +5,7 @@ Autor: Amauri Elian Perez
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,7 +31,10 @@ public class PantallaSeleccionarNivel extends Pantalla {
     }
 
     @Override
-    public void show() {crearMenuNiveles();}
+    public void show() {
+        crearMenuNiveles();
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
+    }
 
     private void crearMenuNiveles() {
         texturaFondo= new Texture("menuNiveles/fondoSeleccionNivel.png");

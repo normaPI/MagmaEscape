@@ -69,6 +69,7 @@ public class PantallaNivel1 extends Pantalla {
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
+        juego.reproducir(Juego.TipoMusica.NIVELES);
     }
 
     @Override
@@ -307,15 +308,20 @@ public class PantallaNivel1 extends Pantalla {
             }
 
             if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
+
                 olivia.saltar(); // Top-Down
             }
 
             if (estadoOlivia == EstadoOlivia.MURIENDO){
+                juego.reproducir(Juego.TipoMusica.MUERTE);
                 if (v.x >= ANCHO/2){
                     juego.setScreen(new PantallaNivel1(juego));
                 }
                 else
+                {
+                    juego.reproducir(Juego.TipoMusica.MENU);
                     juego.setScreen(new PantallaMenu(juego));
+                }
             }
 
             if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30 ){
@@ -397,6 +403,7 @@ public class PantallaNivel1 extends Pantalla {
             btnMenuPrincipal.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    juego.reproducir(Juego.TipoMusica.MENU);
                     juego.setScreen(new PantallaMenu(juego));
                 }
             });

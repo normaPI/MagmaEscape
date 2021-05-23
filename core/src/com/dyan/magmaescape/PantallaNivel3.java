@@ -6,6 +6,7 @@ Autor: Norma P Iturbide
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -51,6 +52,12 @@ public class PantallaNivel3 extends Pantalla{
 
     // Boton PAUSE
     private Texture texturaPause;
+
+    //Asset manager
+
+
+    //Audio
+
 
 
     //contador
@@ -105,11 +112,15 @@ public class PantallaNivel3 extends Pantalla{
 
     public PantallaNivel3(Juego juego) {
         this.juego = juego;
+        juego.reproducir(Juego.TipoMusica.NIVELES);
+
     }
 
     @Override
     public void show() {
 
+
+        cargarRecursos();
         crearFondo();
         crearFondoNeblina();
         crearPause();
@@ -122,8 +133,18 @@ public class PantallaNivel3 extends Pantalla{
         crearPotenciadorInvencibilidad();
         //recuperarMarcador();
 
+
+
         procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(procesadorEntrada);
+
+
+
+
+    }
+
+    private void cargarRecursos() {
+
 
     }
 
@@ -291,6 +312,8 @@ public class PantallaNivel3 extends Pantalla{
             txtLEN.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.13F,.60F*ALTO);
         }
 
+        //if(estadoOlivia==EstadoOlivia.MURIENDO) juego.reproducir(Juego.TipoMusica.MUERTE);
+
         //Dibujar la pausa
         if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)
         {
@@ -298,6 +321,8 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         batch.end();
+
+
 
     }
 
@@ -339,6 +364,9 @@ public class PantallaNivel3 extends Pantalla{
             checandoTiempoPotenciador();
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
+
+
+
 
     }
 
@@ -656,15 +684,23 @@ public class PantallaNivel3 extends Pantalla{
 
 
             if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != EstadoOlivia.MURIENDO ){
+
                 olivia.saltar(); // Top-Down
+
             }
 
             if (estadoOlivia == EstadoOlivia.MURIENDO){
+
                 if (v.x >= ANCHO/2){
+
                     juego.setScreen(new PantallaNivel3(juego));
                 }
                 else
+                {
+                    juego.reproducir(Juego.TipoMusica.MENU);
                     juego.setScreen(new PantallaMenu(juego));
+                }
+
             }
 
             if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==90 ){
@@ -746,6 +782,7 @@ public class PantallaNivel3 extends Pantalla{
             btnMenuPrincipal.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    juego.reproducir(Juego.TipoMusica.MENU);
                     juego.setScreen(new PantallaMenu(juego));
                 }
             });

@@ -5,6 +5,7 @@ Autor: Yised Denisse Apolonio
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,6 +31,8 @@ public class PantallaHistoria extends Pantalla
     @Override
     public void show() {
         crearHistoria();
+        //1: bloquear la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void crearHistoria() {
@@ -72,6 +75,8 @@ public class PantallaHistoria extends Pantalla
 
         // Escena (DESPUES DEL FONDO)
         escenaMenu.draw();
+
+
     }
 
     @Override
