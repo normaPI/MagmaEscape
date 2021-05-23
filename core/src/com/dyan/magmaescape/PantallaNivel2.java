@@ -52,6 +52,12 @@ public class PantallaNivel2 extends Pantalla {
     private float timerCrearAve;
     private final float TIEMPO_CREAR_AVE = 3;
 
+    //Monos
+    private Array<Mono> arrMonos;
+    private Texture texturaMono;
+    private float timerCrearMono;
+    private final float TIEMPO_CREAR_MONO = 3;
+
     //Potenciador
     private Array<PotenciadorLentitud> arrPotenciadores;
     private Texture texturaPotenciadores;
@@ -91,9 +97,15 @@ public class PantallaNivel2 extends Pantalla {
         crearCajas();
         crearPotenciador();
         crearAves();
+        crearMonos();
 
         procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(procesadorEntrada);
+    }
+
+    private void crearMonos() {
+        texturaMono=new Texture("nivel2/monkey.png");
+        arrMonos=new Array<>();
     }
 
     private void crearAves() {
@@ -179,6 +191,10 @@ public class PantallaNivel2 extends Pantalla {
         for (Ave ave:arrAves) {
             ave.render(batch);
         }
+        //Dibujar monos
+        for (Mono mono:arrMonos) {
+            mono.render(batch);
+        }
         //Dibujar Cajas de Fuego
         for (Caja caja : arrCajas) {
             caja.render(batch);
@@ -227,8 +243,31 @@ public class PantallaNivel2 extends Pantalla {
             actualizarPotenciadores(delta);
             actualizarTiempoPotenciador();
             actualizarAves(delta);
+            actualizarMonos(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
+    }
+
+    private void actualizarMonos(float delta) {
+        timerCrearAve+= delta;
+        if (timerCrearAve>=TIEMPO_CREAR_AVE) {
+            timerCrearAve = 0;
+            //Crear Enemigo
+            float xAve = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Ave ave = new Ave(texturaAves,xAve,ALTO/1.22f);
+            arrAves.add(ave);
+        }
+
+
+        // Mover los Ashes
+        for (int i=arrAves.size-1; i>=0; i--){
+            Ave ave = arrAves.get(i);
+            ave.moverIzquierda(delta);
+            if (ave.sprite.getX() < -60) {
+                arrAves.removeIndex(i);
+            }
+        }
+
     }
 
     private void actualizarAves(float delta) {
