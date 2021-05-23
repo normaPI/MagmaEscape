@@ -6,6 +6,7 @@ Autor: Amauri Elian Perez
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,6 +27,7 @@ public class PantallaAyuda extends Pantalla {
 
     public PantallaAyuda(Juego juego) {
         this.juego = juego;
+
     }
 
     public void show() {
@@ -46,6 +48,9 @@ public class PantallaAyuda extends Pantalla {
         });
 
         Gdx.input.setInputProcessor(escenaAyuda);
+
+        //1: bloquear la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
     }
 
@@ -68,6 +73,12 @@ public class PantallaAyuda extends Pantalla {
         batch.draw(texturaFondo,0,0);
         batch.end();
         escenaAyuda.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK))
+        {
+            //regresar a la pantalla anterior  (cierta accion)
+            juego.setScreen(new PantallaMenu(juego));
+        }
     }
 
     public void pause() {

@@ -6,6 +6,7 @@ Autor: Yised Denise Apolonio
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,6 +31,8 @@ public class PantallaAcerca extends Pantalla
 
     public void show() {
         crearAcercaDe();
+        //1: bloquear la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void crearAcercaDe() {
@@ -84,6 +87,12 @@ public class PantallaAcerca extends Pantalla
 
         // Escena (DESPUES DEL FONDO)
         escenaMenu.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK))
+        {
+            //regresar a la pantalla anterior  (cierta accion)
+            juego.setScreen(new PantallaMenu(juego));
+        }
 
     }
 

@@ -6,6 +6,8 @@ Autor: Daniel Castañeda
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,6 +18,13 @@ public class Olivia extends Objeto {
     private Animation<TextureRegion> animacionCorrer;
     private Animation<TextureRegion> animacionMorir;
     private float timerAnimacion;  // Para saber el que corresponde mostrar
+
+    private Sound saltar;
+    private final AssetManager managerr;
+
+
+
+
 
     // Salto
     private final float yBase = 180; // Suelo, piso
@@ -28,9 +37,12 @@ public class Olivia extends Objeto {
     private EstadoOlivia estado;
 
 
-
-
     public Olivia(Texture textura, float x, float y, float inicialY, float gravity){
+
+        managerr = new AssetManager();
+        managerr.load("musica/salto.mp3", Sound.class);
+        managerr.finishLoading();
+        saltar= managerr.get("musica/salto.mp3");
 
        //SOBREESCRIBIR LOS VALORES ORIGINALES
        v0y=inicialY;
@@ -104,15 +116,23 @@ public class Olivia extends Objeto {
         return sprite;
     }
 
+    public void reproducirSalto()
+    {
+
+        saltar.play();
+    }
+
     public void saltar() {
         if ( estado != EstadoOlivia.SALTANDO){
+            reproducirSalto();
             tAire = 0;
             tVuelo =  2*v0y/ g;
             estado = EstadoOlivia.SALTANDO;
-
         }
 
     }
+
+
     public EstadoOlivia getEstado(){
         return estado;
     }
