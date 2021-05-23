@@ -37,7 +37,7 @@ public class PantallaAyuda extends Pantalla {
 
         //actores
         Button btnRegresar = crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
-        btnRegresar.setPosition(ANCHO/5,ALTO/6, Align.center);
+        btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         //agregar boton a la escena
         escenaAyuda.addActor(btnRegresar);
         btnRegresar.addListener(new ClickListener(){
