@@ -31,7 +31,7 @@ public class PantallaAyuda extends Pantalla {
     }
 
     public void show() {
-        texturaFondo= new Texture("acercaDe/fondoAyuda.jpg");
+        texturaFondo= new Texture("acercaDe/fondoAyuda.png");
 
         escenaAyuda= new Stage(vista);
 
