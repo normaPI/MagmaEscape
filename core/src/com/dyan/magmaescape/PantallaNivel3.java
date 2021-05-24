@@ -6,6 +6,7 @@ Autor: Norma P Iturbide
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -41,17 +42,22 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 4;
+    private final float TIEMPO_CREAR_ASHE = 3;
+
+    //Libelulas
+    private Array<Libelula> arrLibelulas;
+    private Texture texturaLibelula;
+    private float timerCreaLibelula;   //Acumulador de tiempo
+    private final float TIEMPO_CREAR_LIBELULAS = 5;
 
     //Bolas de fuego
     private Array<BolaFuego> arrBolasFuego;
     private Texture texturaBolaFuego;
     private float timerCreaBola;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_BOLA = 15;
+    private final float TIEMPO_CREAR_BOLA = 14;
 
     // Boton PAUSE
     private Texture texturaPause;
-
 
     //contador
     private float tiempo=0;
@@ -67,7 +73,7 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Caja> arrCajas;
     private Texture texturaCaja;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 22;
+    private final float TIEMPO_CREAR_CAJA = 92;
 
 
     //Potenciadores
@@ -105,6 +111,8 @@ public class PantallaNivel3 extends Pantalla{
 
     public PantallaNivel3(Juego juego) {
         this.juego = juego;
+        juego.reproducir(Juego.TipoMusica.NIVELES);
+
     }
 
     @Override
@@ -115,6 +123,7 @@ public class PantallaNivel3 extends Pantalla{
         crearPause();
         crearOlivia();
         crearAshes();
+        crearLibelulas();
         crearBolasFuego();
         crearTexto();
         crearCaja();
@@ -125,10 +134,13 @@ public class PantallaNivel3 extends Pantalla{
         procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(procesadorEntrada);
 
+
     }
 
+
+
     private void crearFondoNeblina() {
-        texturaNeblina= new Texture("nivel3/Nube75resize.png");
+        texturaNeblina= new Texture("nivel3/Nube35.png");
 
     }
 
@@ -154,7 +166,7 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void crearCaja() {
-        texturaCaja= new Texture("nivel3/fuego.png");
+        texturaCaja= new Texture("nivel2/fuegos.png");
         arrCajas=new Array<>();
     }
 
@@ -178,6 +190,12 @@ public class PantallaNivel3 extends Pantalla{
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
+
+    private void crearLibelulas() {
+        texturaLibelula = new Texture("nivel3/libelula.png");
+        arrLibelulas = new Array<>();
+    }
+
     private void crearBolasFuego() {
         texturaBolaFuego = new Texture("nivel3/bolaFuego.png");
         arrBolasFuego = new Array<>();
@@ -186,7 +204,7 @@ public class PantallaNivel3 extends Pantalla{
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,190);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,160);
     }
     private void crearPause() {
 
@@ -217,7 +235,7 @@ public class PantallaNivel3 extends Pantalla{
         //dibujando fondo
         batch.draw(texturaFondo,xFondo,0);
         batch.draw(texturaFondo, xFondo + texturaFondo.getWidth(), 0);
-        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
+
         batch.draw(texturaPause, .03f*ANCHO, .85F*ALTO);
 
         olivia.render(batch);
@@ -227,6 +245,12 @@ public class PantallaNivel3 extends Pantalla{
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
+        //Dibujar Libelulas
+        for (Libelula libelula : arrLibelulas) {
+            libelula.render(batch);
+        }
+
+
         //Dibujar Bolas de fuego
         for (BolaFuego bolaFuego : arrBolasFuego) {
             bolaFuego.render(batch);
@@ -236,6 +260,8 @@ public class PantallaNivel3 extends Pantalla{
         for (Caja caja : arrCajas) {
             caja.render(batch);
         }
+
+
 
 
         if(potenciadorLentitud!=null)
@@ -263,6 +289,8 @@ public class PantallaNivel3 extends Pantalla{
             }
         }
 
+        batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
+
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
             texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
@@ -282,14 +310,16 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoInvencibilidad==EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA && txt!=null)
         {
             txt.mostrarMensaje(batch,"Invencibilidad",ANCHO*.13F,.65F*ALTO);
-            txt.mostrarMensaje(batch,"Activada "+(int)(tiempoInv),ANCHO*.13F,.60F*ALTO);
+            txt.mostrarMensaje(batch,"Activada "+(10-(int)(tiempoInv)),ANCHO*.13F,.60F*ALTO);
         }
 
         if(estadoLentitud==EstadoLentitud.LENTITUD_ACTIVADA&& txtLEN!=null)
         {
             txtLEN.mostrarMensaje(batch,"Lentitud",ANCHO*.13F,.65F*ALTO);
-            txtLEN.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.13F,.60F*ALTO);
+            txtLEN.mostrarMensaje(batch,"Activada "+(11-(int)(tiempoLentitud)),ANCHO*.13F,.60F*ALTO);
         }
+
+        //if(estadoOlivia==EstadoOlivia.MURIENDO) juego.reproducir(Juego.TipoMusica.MUERTE);
 
         //Dibujar la pausa
         if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)
@@ -299,12 +329,15 @@ public class PantallaNivel3 extends Pantalla{
 
         batch.end();
 
+
+
     }
 
     private void actualizarLentitud(float delta) {
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshesLentitud(delta);
+            actualizarLibelulas(delta);
             actualizarBolasFuego(delta);
             actualizarCajas(delta);
             actualizarPotenciadores();
@@ -318,6 +351,7 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshesINVENCIBILIDAD(delta);
+            actualizarLibelulas(delta);
             actualizarBolasFuegoINVENCIBILIDAD(delta);
             actualizarCajasINVENCIBILIDAD(delta);
             actualizarPotenciadores();
@@ -332,6 +366,7 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshes(delta);
+            actualizarLibelulas(delta);
             actualizarBolasFuego(delta);
             actualizarCajas(delta);
             actualizarPotenciadores();
@@ -339,6 +374,9 @@ public class PantallaNivel3 extends Pantalla{
             checandoTiempoPotenciador();
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
+
+
+
 
     }
 
@@ -353,7 +391,7 @@ public class PantallaNivel3 extends Pantalla{
         if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA){
             tiempoInv = tiempoInv+(60*Gdx.graphics.getDeltaTime())/60;
         }
-        if ((int)tiempoInv == 65){
+        if ((int)tiempoInv == 10){
             estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA;
             txt=null;
         }
@@ -364,6 +402,8 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
             colisionPotenInvencibilidad();
         }
+
+
     }
 
     private void colisionPotenInvencibilidad() {
@@ -417,8 +457,13 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         //Mover los obstaculos
-        for (Caja caja : arrCajas) {
+        for (int i=arrCajas.size-1; i>=0; i--){
+            Caja caja =arrCajas.get(i);
             caja.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (caja.sprite.getX() < -60) {
+                arrCajas.removeIndex(i);
+            }
         }
     }
 
@@ -439,8 +484,13 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         //Mover los obstaculos
-        for (Caja caja : arrCajas) {
+        for (int i=arrCajas.size-1; i>=0; i--){
+            Caja caja =arrCajas.get(i);
             caja.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (caja.sprite.getX() < -60) {
+                arrCajas.removeIndex(i);
+            }
         }
     }
 
@@ -455,8 +505,13 @@ public class PantallaNivel3 extends Pantalla{
             arrBolasFuego.add(bolaFuego);
         }
         // Mover Bolas de fuego
-        for (BolaFuego bolaFuego: arrBolasFuego) {
+        for (int i=arrBolasFuego.size-1; i>=0; i--){
+            BolaFuego bolaFuego =arrBolasFuego.get(i);
             bolaFuego.moverCaida(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (bolaFuego.sprite.getX() < -60) {
+                arrBolasFuego.removeIndex(i);
+            }
         }
 
     }
@@ -473,8 +528,13 @@ public class PantallaNivel3 extends Pantalla{
             arrBolasFuego.add(bolaFuego);
         }
         // Mover Bolas de fuego
-        for (BolaFuego bolaFuego: arrBolasFuego) {
+        for (int i=arrBolasFuego.size-1; i>=0; i--){
+            BolaFuego bolaFuego =arrBolasFuego.get(i);
             bolaFuego.moverCaida(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (bolaFuego.sprite.getX() < -60) {
+                arrBolasFuego.removeIndex(i);
+            }
         }
 
         if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
@@ -499,8 +559,13 @@ public class PantallaNivel3 extends Pantalla{
         }*/
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe=arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (ashe.sprite.getX() < -60) {
+                arrAshes.removeIndex(i);
+            }
         }
     }
 
@@ -511,7 +576,7 @@ public class PantallaNivel3 extends Pantalla{
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -800);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -500);
             arrAshes.add(ashe);
         }
 
@@ -520,8 +585,35 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe=arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (ashe.sprite.getX() < -60) {
+                arrAshes.removeIndex(i);
+            }
+        }
+    }
+
+    private void actualizarLibelulas(float delta) {
+        // Crear Ashes
+        timerCreaLibelula += delta;
+        if (timerCreaLibelula >= TIEMPO_CREAR_LIBELULAS) {
+            timerCreaLibelula = 0;
+            //Crear Enemigo
+            float xLibelula = MathUtils.random(ANCHO, ANCHO*1.5f);
+            float yLibelula = MathUtils.random(ALTO*0.75f, ALTO);
+            Libelula libelula = new Libelula(texturaLibelula, xLibelula, yLibelula);
+            arrLibelulas.add(libelula);
+        }
+        // Mover los Ashes
+        for (int i = arrLibelulas.size-1; i>=0; i--){
+            Libelula libelula = arrLibelulas.get(i);
+            libelula.mover(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (libelula.sprite.getX() < -60) {
+                arrLibelulas.removeIndex(i);
+            }
         }
     }
 
@@ -541,8 +633,13 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe=arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (ashe.sprite.getX() < -60) {
+                arrAshes.removeIndex(i);
+            }
         }
     }
 
@@ -656,15 +753,23 @@ public class PantallaNivel3 extends Pantalla{
 
 
             if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != EstadoOlivia.MURIENDO ){
+
                 olivia.saltar(); // Top-Down
+
             }
 
             if (estadoOlivia == EstadoOlivia.MURIENDO){
+
                 if (v.x >= ANCHO/2){
-                    juego.setScreen(new PantallaNivel3(juego));
+
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL3));
                 }
                 else
-                    juego.setScreen(new PantallaMenu(juego));
+                {
+                    juego.reproducir(Juego.TipoMusica.MENU);
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
+                }
+
             }
 
             if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==90 ){
@@ -700,6 +805,7 @@ public class PantallaNivel3 extends Pantalla{
     {
         private Texture texturaFondo;
 
+
         public EscenaPausa(Viewport vista)
         {
             super(vista);
@@ -711,7 +817,7 @@ public class PantallaNivel3 extends Pantalla{
 
             //adicion de botones
             //actores
-            Button btnVolverJuego = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
+            Button btnVolverJuego = crearBoton("menuPausa/button_volver-al-juego.png", "menuPausa/button_volver-al-juego-2.png");
             //agregar boton a la escena
             addActor(btnVolverJuego);
             btnVolverJuego.setPosition(ANCHO/2,.7F*ALTO,Align.center);
@@ -720,12 +826,12 @@ public class PantallaNivel3 extends Pantalla{
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event,x,y);
-                    estadoJuego=EstadoJuego.JUGANDO;
+                    estadoJuego= PantallaNivel3.EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(procesadorEntrada);
                 }
             });
 
-            Button btnVolverIntentar = crearBoton("menuPausa/btnVolverIntentar.png", "menuPausa/btnVolverIntentarInverso.png");
+            Button btnVolverIntentar = crearBoton("menuPausa/button_volver-a-intentar.png", "menuPausa/button_volver-a-intentar-2.png");
             //agregar boton a la escena
             addActor(btnVolverIntentar);
             btnVolverIntentar.setPosition(ANCHO/2,.5F*ALTO, Align.center);
@@ -733,11 +839,11 @@ public class PantallaNivel3 extends Pantalla{
             btnVolverIntentar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    juego.setScreen(new PantallaNivel3(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL3));
                 }
             });
 
-            Button btnMenuPrincipal = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
+            Button btnMenuPrincipal = crearBoton("menuPausa/button_menu-principal.png", "menuPausa/button_menu-principal-2.png");
 
             //agregar boton a la escena
             addActor(btnMenuPrincipal);
@@ -746,7 +852,8 @@ public class PantallaNivel3 extends Pantalla{
             btnMenuPrincipal.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    juego.setScreen(new PantallaMenu(juego));
+                    juego.reproducir(Juego.TipoMusica.MENU);
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
             });
 

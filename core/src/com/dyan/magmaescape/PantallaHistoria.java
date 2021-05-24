@@ -5,6 +5,7 @@ Autor: Yised Denisse Apolonio
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,14 +31,16 @@ public class PantallaHistoria extends Pantalla
     @Override
     public void show() {
         crearHistoria();
+        //1: bloquear la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void crearHistoria() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercaDe/fondoHistoria.jpg");
+        texturaFondo=new Texture("acercaDe/historiaInicio.png");
         //Boton regresar
-        Button btnRegresar=crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
+        Button btnRegresar=crearBoton("configuracion/button_regresar.png", "configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         escenaMenu.addActor(btnRegresar);
         //Registrar el evento de click para el boton
@@ -49,6 +52,17 @@ public class PantallaHistoria extends Pantalla
             }
         });
 
+        //BOTON HISTORIA FINAL
+        Button btnHistoria=crearBoton("acercaDe/button_continuar.png", "acercaDe/button_continuar-2.png");
+        btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/6, Align.center);
+        escenaMenu.addActor(btnHistoria);
+        //Registrar el evento de click para el boton
+        btnHistoria.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaHistoriaFinal(juego));
+            }
+        });
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
     }
@@ -72,6 +86,8 @@ public class PantallaHistoria extends Pantalla
 
         // Escena (DESPUES DEL FONDO)
         escenaMenu.draw();
+
+
     }
 
     @Override

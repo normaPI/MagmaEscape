@@ -6,6 +6,7 @@ Autor: Yised Denise Apolonio
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,15 +31,17 @@ public class PantallaAcerca extends Pantalla
 
     public void show() {
         crearAcercaDe();
+        //1: bloquear la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void crearAcercaDe() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercaDe/fondoAcerca.jpg");
+        texturaFondo=new Texture("acercaDe/fondoAcercaD.png");
 
         //Boton regresar
-        Button btnRegresar=crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
+        Button btnRegresar=crearBoton("configuracion/button_regresar.png", "configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         escenaMenu.addActor(btnRegresar);
         //Registrar el evento de click para el boton
@@ -51,8 +54,8 @@ public class PantallaAcerca extends Pantalla
         });
 
         //BOTON HISTORIA
-        Button btnHistoria=crearBoton("acercaDe/button_historia1.png", "acercaDe/button_historiaInverso.png");
-        btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/2, Align.center);
+        Button btnHistoria=crearBoton("acercaDe/button_historia.png", "acercaDe/button_historia-2.png");
+        btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/6, Align.center);
         escenaMenu.addActor(btnHistoria);
         //Registrar el evento de click para el boton
         btnHistoria.addListener(new ClickListener(){
@@ -84,6 +87,12 @@ public class PantallaAcerca extends Pantalla
 
         // Escena (DESPUES DEL FONDO)
         escenaMenu.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK))
+        {
+            //regresar a la pantalla anterior  (cierta accion)
+            juego.setScreen(new PantallaMenu(juego));
+        }
 
     }
 

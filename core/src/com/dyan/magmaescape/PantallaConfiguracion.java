@@ -7,6 +7,7 @@ Autor: Carlos Daniel Castañeda
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,12 +28,14 @@ public class PantallaConfiguracion extends Pantalla {
 
     public void show() {
         this.crearConfig();
+        //1: bloquear la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void crearConfig() {
         this.escenaMenu = new Stage(this.vista);
         this.texturaFondo = new Texture("configuracion/fondoConfiguracion.jpg");
-        Button btnRegresar = this.crearBoton("configuracion/button_regresar.png","configuracion/button_regresarInverso.png");
+        Button btnRegresar = this.crearBoton("configuracion/button_regresar.png","configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         this.escenaMenu.addActor(btnRegresar);
         btnRegresar.addListener(new ClickListener() {
@@ -68,6 +71,12 @@ public class PantallaConfiguracion extends Pantalla {
         this.batch.draw(this.texturaFondo, 0.0F, 0.0F);
         this.batch.end();
         this.escenaMenu.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK))
+        {
+            //regresar a la pantalla anterior  (cierta accion)
+            juego.setScreen(new PantallaMenu(juego));
+        }
     }
 
     public void pause() {

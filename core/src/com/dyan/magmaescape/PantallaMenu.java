@@ -18,7 +18,9 @@ public class PantallaMenu extends Pantalla {
     private Stage escenaMenu;
 
     public PantallaMenu(Juego juego) {
+
         this.juego = juego;
+
     }
 
     public void show() {
@@ -30,7 +32,7 @@ public class PantallaMenu extends Pantalla {
         this.escenaMenu = new Stage(this.vista);
 
         Button btnJugar = this.crearBoton("menuPrincipal/button_jugar.png", "menuPrincipal/button_jugar-2.png");
-        btnJugar.setPosition(3*ANCHO/4, 3*ALTO/6, 1);
+        btnJugar.setPosition(ANCHO-ANCHO*0.34F, 0.43f*ALTO, 1);
         this.escenaMenu.addActor(btnJugar);
         btnJugar.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -38,7 +40,7 @@ public class PantallaMenu extends Pantalla {
             }
         });
         Button btnAcerca = this.crearBoton("menuPrincipal/button_acerca-de.png", "menuPrincipal/button_acerca-de-2.png");
-        btnAcerca.setPosition(ANCHO/4, 4*ALTO/6, 1);
+        btnAcerca.setPosition(ANCHO/4, ALTO*0.36F+2*ALTO*0.17F, 1);
         this.escenaMenu.addActor(btnAcerca);
         btnAcerca.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -46,7 +48,7 @@ public class PantallaMenu extends Pantalla {
             }
         });
         Button btnAyuda = this.crearBoton("menuPrincipal/button_ayuda.png", "menuPrincipal/button_ayuda-2.png");
-        btnAyuda.setPosition(ANCHO/4, 3*ALTO/6, 1);
+        btnAyuda.setPosition(ANCHO/4, ALTO*0.36F+ALTO*0.17F, 1);
         this.escenaMenu.addActor(btnAyuda);
         btnAyuda.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -54,7 +56,7 @@ public class PantallaMenu extends Pantalla {
             }
         });
         Button btnConfiguracion = this.crearBoton("menuPrincipal/button_configuracion.png", "menuPrincipal/button_configuracion-2.png");
-        btnConfiguracion.setPosition(ANCHO/4, 2*ALTO/6, 1);
+        btnConfiguracion.setPosition(ANCHO/4, ALTO*0.36F, 1);
         this.escenaMenu.addActor(btnConfiguracion);
         btnConfiguracion.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {

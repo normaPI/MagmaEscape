@@ -29,8 +29,6 @@ public class PantallaNivel1 extends Pantalla {
     private Juego juego;
     //Fondo
     private Texture texturaFondo;
-    //Escena
-    private Stage escenaMenu;
 
     //sprite de Olivia
     private Sprite oliviaSprite;
@@ -45,6 +43,11 @@ public class PantallaNivel1 extends Pantalla {
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 4;
 
+    //Animacion (Peces)
+    private Array<Pez> arrPeces;
+    private Texture texturaPeces;
+    private float timerCrearPez;
+    private final float TIEMPO_CREAR_PEZ = 6;
 
     //Escena pausa
     private EscenaPausa escenaPausa;
@@ -69,6 +72,7 @@ public class PantallaNivel1 extends Pantalla {
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
+        juego.reproducir(Juego.TipoMusica.NIVELES);
     }
 
     @Override
@@ -78,12 +82,18 @@ public class PantallaNivel1 extends Pantalla {
         crearPause();
         crearOlivia();
         crearAshes();
+        crearPeces();
         crearTexto();
         //recuperarMarcador();
 
         procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
+    }
+
+    private void crearPeces() {
+        texturaPeces = new Texture("nivel1/peces.png");
+        arrPeces = new Array<>();
     }
 
     private void crearTexto() {
@@ -111,7 +121,6 @@ public class PantallaNivel1 extends Pantalla {
         olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f, 250, 150);
     }
     private void crearPause() {
-
 
         texturaPause = new Texture("nivel1/button_pausa.png");
     }
@@ -143,19 +152,23 @@ public class PantallaNivel1 extends Pantalla {
 
         if (estadoOlivia == EstadoOlivia.PAUSA){
             texto.mostrarMensaje(batch, "PAUSA", ANCHO/2, ALTO/2);
-            texto.mostrarMensaje(batch, "Tap para CONTINUAR", 3*ANCHO/4, ALTO/4);
-            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
+            texto.mostrarMensaje(batch, "Tap para continuar...", 3*ANCHO/4, ALTO/4);
+            texto.mostrarMensaje(batch, "Tap para ir a menu", ANCHO/4, ALTO/4);
         }
 
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
+        //Dibujar Peces
+        for (Pez pez : arrPeces) {
+            pez.render(batch);
+        }
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
-            texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
-            texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
-            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
+            texto.mostrarMensaje(batch, "PERDISTE:(", ANCHO/2, ALTO-(ALTO*.20F));
+            texto.mostrarMensaje(batch, "Tap para volver a intentar", 3*ANCHO/4, ALTO/4);
+            texto.mostrarMensaje(batch, "Tap para ir a menu", ANCHO/4, ALTO/4);
         }
 
         //dibujar contador de tiempo
@@ -165,6 +178,9 @@ public class PantallaNivel1 extends Pantalla {
         if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30){
             texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
+            Preferences preferencias = Gdx.app.getPreferences("NIVEL2");
+            preferencias.putInteger("edoNivel2", 1);
+            preferencias.flush();
         }
         //Dibujar la pausa
         if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)
@@ -182,10 +198,33 @@ public class PantallaNivel1 extends Pantalla {
         if(estadoJuego== EstadoJuego.JUGANDO  && estadoOlivia != EstadoOlivia.MURIENDO && (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo<30) ){
             actualizarFondo();
             actualizarAshes(delta);
+            actualizarPeces(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
     }
 
+    private void actualizarPeces(float delta) {
+        //Crear Cajas de Fuego
+        timerCrearPez += delta;
+        if (timerCrearPez >= TIEMPO_CREAR_PEZ) {
+            timerCrearPez = 0;
+            //Crear elemento
+            float xPez = MathUtils.random(ANCHO, ANCHO*1.5F);
+            Pez pez = new Pez(texturaPeces, xPez, ALTO/15);
+            arrPeces.add(pez);
+        }
+        //Mover los elementos (peces)
+        //for (Caja caja : arrCajas){
+
+        for (int i=arrPeces.size-1; i>=0; i--){
+            Pez pez =arrPeces.get(i);
+            pez.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (pez.sprite.getX() < -60) {
+                arrPeces.removeIndex(i);
+            }
+        }
+    }
     private void actualizarAshes(float delta) {
         // Crear Ashes
         timerCreaAshe += delta;
@@ -207,7 +246,7 @@ public class PantallaNivel1 extends Pantalla {
             Ashe ashe = arrAshes.get(i);
             ashe.moverIzquierda(delta);
             //Prueba si los ashes deben desaparecer, porque salieron de la pantalla
-            if (ashe.getX() < -60) {
+            if (ashe.sprite.getX() < -60) {
                 //Borrar el objeto
                 arrAshes.removeIndex(i);
             }
@@ -306,16 +345,20 @@ public class PantallaNivel1 extends Pantalla {
 
             }
 
-            if (estadoOlivia != EstadoOlivia.PAUSA && estadoOlivia != EstadoOlivia.MURIENDO ){
+            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != EstadoOlivia.MURIENDO){
                 olivia.saltar(); // Top-Down
             }
 
             if (estadoOlivia == EstadoOlivia.MURIENDO){
+                juego.reproducir(Juego.TipoMusica.MUERTE);
                 if (v.x >= ANCHO/2){
-                    juego.setScreen(new PantallaNivel1(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
                 }
                 else
-                    juego.setScreen(new PantallaMenu(juego));
+                {
+                    juego.reproducir(Juego.TipoMusica.MENU);
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
+                }
             }
 
             if (estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30 ){
@@ -362,7 +405,7 @@ public class PantallaNivel1 extends Pantalla {
 
             //adicion de botones
             //actores
-            Button btnVolverJuego = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
+            Button btnVolverJuego = crearBoton("menuPausa/button_volver-al-juego.png", "menuPausa/button_volver-al-juego-2.png");
             //agregar boton a la escena
             addActor(btnVolverJuego);
             btnVolverJuego.setPosition(ANCHO/2,.7F*ALTO,Align.center);
@@ -376,7 +419,7 @@ public class PantallaNivel1 extends Pantalla {
                 }
             });
 
-            Button btnVolverIntentar = crearBoton("menuPausa/btnVolverIntentar.png", "menuPausa/btnVolverIntentarInverso.png");
+            Button btnVolverIntentar = crearBoton("menuPausa/button_volver-a-intentar.png", "menuPausa/button_volver-a-intentar-2.png");
             //agregar boton a la escena
             addActor(btnVolverIntentar);
             btnVolverIntentar.setPosition(ANCHO/2,.5F*ALTO, Align.center);
@@ -384,11 +427,11 @@ public class PantallaNivel1 extends Pantalla {
             btnVolverIntentar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    juego.setScreen(new PantallaNivel1(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
                 }
             });
 
-            Button btnMenuPrincipal = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
+            Button btnMenuPrincipal = crearBoton("menuPausa/button_menu-principal.png", "menuPausa/button_menu-principal-2.png");
 
             //agregar boton a la escena
             addActor(btnMenuPrincipal);
@@ -397,7 +440,8 @@ public class PantallaNivel1 extends Pantalla {
             btnMenuPrincipal.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    juego.setScreen(new PantallaMenu(juego));
+                    juego.reproducir(Juego.TipoMusica.MENU);
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
             });
 
