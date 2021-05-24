@@ -49,7 +49,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
         btnNivel1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new PantallaNivel1(juego));
+                juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
             }
         });
 
@@ -59,7 +59,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
         btnNivel2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new PantallaNivel2(juego));
+                juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL2));
             }
         });
 
@@ -69,7 +69,7 @@ public class PantallaSeleccionarNivel extends Pantalla {
         btnNivel3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new PantallaNivel3(juego));
+                juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL3));
             }
         } );
 
