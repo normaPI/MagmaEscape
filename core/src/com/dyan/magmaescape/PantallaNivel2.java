@@ -46,6 +46,22 @@ public class PantallaNivel2 extends Pantalla {
     private float timerCrearCaja;
     private final float TIEMPO_CREAR_CAJA = 53;
 
+    //Aves
+    private Array<Ave> arrAves;
+    private Texture texturaAves;
+    private float timerCrearAve;
+    private final float TIEMPO_CREAR_AVE = 5;
+
+
+    //Monos
+    private Array<Mono> arrMonos;
+    private Texture texturaMono;
+    private float timerCrearMono;
+    private final float TIEMPO_CREAR_MONO =6;
+    boolean primerMono=true;
+
+
+
     //Potenciador
     private Array<PotenciadorLentitud> arrPotenciadores;
     private Texture texturaPotenciadores;
@@ -85,9 +101,21 @@ public class PantallaNivel2 extends Pantalla {
         crearPotentLentitudTxt();
         crearCajas();
         crearPotenciador();
+        crearAves();
+        crearMonos();
 
         procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(procesadorEntrada);
+    }
+
+    private void crearMonos() {
+        texturaMono=new Texture("nivel2/monkey.png");
+        arrMonos=new Array<>();
+    }
+
+    private void crearAves() {
+        texturaAves=new Texture("nivel2/aves.png");
+        arrAves=new Array<>();
     }
 
     private void crearFondoNeblina() {
@@ -159,6 +187,14 @@ public class PantallaNivel2 extends Pantalla {
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
         }
+        //Dibujar aves
+        for (Ave ave:arrAves) {
+            ave.render(batch);
+        }
+        //Dibujar monos
+        for (Mono mono:arrMonos) {
+            mono.render(batch);
+        }
         //Dibujar Cajas de Fuego
         for (Caja caja : arrCajas) {
             caja.render(batch);
@@ -183,7 +219,7 @@ public class PantallaNivel2 extends Pantalla {
         //dibujar cuando tiempo del potenciador
         if(coliPotenLenti){
             potentLentitudtxt.mostrarMensaje(batch,"Lentitud",ANCHO*.13F,.65F*ALTO);
-            potentLentitudtxt.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.13F,.60F*ALTO);
+            potentLentitudtxt.mostrarMensaje(batch,"Activada "+(8-(int)(tiempoLentitud)),ANCHO*.13F,.60F*ALTO);
         }
 
 
@@ -216,8 +252,58 @@ public class PantallaNivel2 extends Pantalla {
             actualizarCajas(delta);
             actualizarPotenciadores(delta);
             actualizarTiempoPotenciador();
+            actualizarAves(delta);
+            actualizarMonos(delta);
             tiempo= tiempo+(60*Gdx.graphics.getDeltaTime())/60;
         }
+    }
+
+    private void actualizarMonos(float delta) {
+        timerCrearMono+= delta;
+
+
+
+        if (timerCrearMono>=TIEMPO_CREAR_MONO) {
+            timerCrearMono = 0;
+            //Crear Enemigo
+            float xMono = MathUtils.random(ANCHO, ANCHO*1.1f);
+
+            Mono mono = new Mono(texturaMono,xMono,ALTO/7);
+            arrMonos.add(mono);
+        }
+
+
+        // Mover los Ashes
+        for (int i=arrMonos.size-1; i>=0; i--){
+            Mono mono = arrMonos.get(i);
+            mono.moverIzquierda(delta);
+            if (mono.sprite.getX() < -60) {
+                arrMonos.removeIndex(i);
+            }
+        }
+
+    }
+
+    private void actualizarAves(float delta) {
+        timerCrearAve+= delta;
+        if (timerCrearAve>=TIEMPO_CREAR_AVE) {
+            timerCrearAve = 0;
+            //Crear Enemigo
+            float xAve = MathUtils.random(ANCHO, ANCHO*1.5f);
+            Ave ave = new Ave(texturaAves,xAve,ALTO/1.22f);
+            arrAves.add(ave);
+        }
+
+
+        // Mover los Ashes
+        for (int i=arrAves.size-1; i>=0; i--){
+            Ave ave = arrAves.get(i);
+            ave.moverIzquierda(delta);
+            if (ave.sprite.getX() < -60) {
+                arrAves.removeIndex(i);
+            }
+        }
+
     }
 
     private void actualizarTiempoPotenciador() {
@@ -286,7 +372,7 @@ public class PantallaNivel2 extends Pantalla {
         for (int i=arrAshes.size-1; i>=0; i--){
             Ashe ashe = arrAshes.get(i);
         if (coliPotenLenti){
-                if(tiempoLentitud>9.0){
+                if(tiempoLentitud>=8.0){
                    Gdx.app.log("TIEMPO ACABADO ", "El potenciador acabo");
                     ashe.setPotenLentitud(false);
                     coliPotenLenti=false;
