@@ -38,7 +38,7 @@ public class PantallaNivel2 extends Pantalla {
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 44;
+    private final float TIEMPO_CREAR_ASHE = 4;
 
     //Obstaculo (Cajas de fuego)
     private Array<Caja> arrCajas;
@@ -376,6 +376,7 @@ public class PantallaNivel2 extends Pantalla {
                    Gdx.app.log("TIEMPO ACABADO ", "El potenciador acabo");
                     ashe.setPotenLentitud(false);
                     coliPotenLenti=false;
+                    tiempoLentitud=0;
                     Gdx.app.log("Normalidad", "El float es:"+ashe.getpotenLentitud());
 
                 } else {
