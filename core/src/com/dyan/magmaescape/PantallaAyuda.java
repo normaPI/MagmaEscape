@@ -36,7 +36,7 @@ public class PantallaAyuda extends Pantalla {
         escenaAyuda= new Stage(vista);
 
         //actores
-        Button btnRegresar = crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
+        Button btnRegresar = crearBoton("configuracion/button_regresar.png", "configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         //agregar boton a la escena
         escenaAyuda.addActor(btnRegresar);

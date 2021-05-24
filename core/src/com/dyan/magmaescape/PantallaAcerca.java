@@ -41,7 +41,7 @@ public class PantallaAcerca extends Pantalla
         texturaFondo=new Texture("acercaDe/fondoAcercaD.png");
 
         //Boton regresar
-        Button btnRegresar=crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
+        Button btnRegresar=crearBoton("configuracion/button_regresar.png", "configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         escenaMenu.addActor(btnRegresar);
         //Registrar el evento de click para el boton
@@ -54,7 +54,7 @@ public class PantallaAcerca extends Pantalla
         });
 
         //BOTON HISTORIA
-        Button btnHistoria=crearBoton("acercaDe/button_historia1.png", "acercaDe/button_historiaInverso.png");
+        Button btnHistoria=crearBoton("acercaDe/button_historia.png", "acercaDe/button_historia-2.png");
         btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/6, Align.center);
         escenaMenu.addActor(btnHistoria);
         //Registrar el evento de click para el boton

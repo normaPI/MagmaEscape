@@ -35,7 +35,7 @@ public class PantallaConfiguracion extends Pantalla {
     private void crearConfig() {
         this.escenaMenu = new Stage(this.vista);
         this.texturaFondo = new Texture("configuracion/fondoConfiguracion.jpg");
-        Button btnRegresar = this.crearBoton("configuracion/button_regresar.png","configuracion/button_regresarInverso.png");
+        Button btnRegresar = this.crearBoton("configuracion/button_regresar.png","configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         this.escenaMenu.addActor(btnRegresar);
         btnRegresar.addListener(new ClickListener() {
