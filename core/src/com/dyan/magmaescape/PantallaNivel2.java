@@ -294,7 +294,7 @@ public class PantallaNivel2 extends Pantalla {
                 }
         }
             ashe.moverIzquierda(delta);
-            if (ashe.getX() < -60) {
+            if (ashe.sprite.getX() <-60) {
                arrAshes.removeIndex(i);
             }
         }
@@ -473,7 +473,7 @@ public class PantallaNivel2 extends Pantalla {
 
             //Boton Volver a Jugar
             Button btnJugar = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
-            btnJugar.setPosition(ANCHO / 2, 0.6f * ALTO, Align.center);
+            btnJugar.setPosition(ANCHO / 2, 0.7f * ALTO, Align.center);
             addActor(btnJugar);
             //Registrar el evento de click para el boton
             btnJugar.addListener(new ClickListener() {
@@ -488,9 +488,21 @@ public class PantallaNivel2 extends Pantalla {
                 }
             });
 
+            //BOTON VOLVER A INTENTAR
+            Button btnVolverIntentar = crearBoton("menuPausa/btnVolverIntentar.png", "menuPausa/btnVolverIntentarInverso.png");
+            addActor(btnVolverIntentar);
+            btnVolverIntentar.setPosition(ANCHO/2,0.5f*ALTO, Align.center);
+
+            btnVolverIntentar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaNivel2(juego));
+                }
+            });
+
             //BOTON IR A MENU PRINCIPAL
             Button btnMenu = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
-            btnMenu.setPosition(ANCHO / 2, 0.4F * ALTO, Align.center);
+            btnMenu.setPosition(ANCHO / 2, 0.3f * ALTO, Align.center);
             addActor(btnMenu);
             //Registrar el evento de click para el boton
             btnMenu.addListener(new ClickListener() {
