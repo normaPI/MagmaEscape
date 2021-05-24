@@ -91,7 +91,7 @@ public class PantallaNivel2 extends Pantalla {
     }
 
     private void crearFondoNeblina() {
-        texturaNeblina= new Texture("nivel2/Nube35.png");
+        texturaNeblina= new Texture("nivel3/Nube35.png");
     }
 
     private void crearPotenciador() {
