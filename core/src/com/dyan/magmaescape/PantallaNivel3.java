@@ -42,7 +42,7 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 84;
+    private final float TIEMPO_CREAR_ASHE = 4;
 
     //Bolas de fuego
     private Array<BolaFuego> arrBolasFuego;
