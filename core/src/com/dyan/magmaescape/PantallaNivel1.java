@@ -349,12 +349,12 @@ public class PantallaNivel1 extends Pantalla {
             if (estadoOlivia == EstadoOlivia.MURIENDO){
                 juego.reproducir(Juego.TipoMusica.MUERTE);
                 if (v.x >= ANCHO/2){
-                    juego.setScreen(new PantallaNivel1(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
                 }
                 else
                 {
                     juego.reproducir(Juego.TipoMusica.MENU);
-                    juego.setScreen(new PantallaMenu(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
             }
 
@@ -424,7 +424,7 @@ public class PantallaNivel1 extends Pantalla {
             btnVolverIntentar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    juego.setScreen(new PantallaNivel1(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
                 }
             });
 
@@ -438,7 +438,7 @@ public class PantallaNivel1 extends Pantalla {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     juego.reproducir(Juego.TipoMusica.MENU);
-                    juego.setScreen(new PantallaMenu(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
             });
 
