@@ -178,6 +178,9 @@ public class PantallaNivel1 extends Pantalla {
         if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==30){
             texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el primer nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
+            Preferences preferencias = Gdx.app.getPreferences("NIVEL2");
+            preferencias.putInteger("edoNivel2", 1);
+            preferencias.flush();
         }
         //Dibujar la pausa
         if(estadoJuego == EstadoJuego.PAUSADO && escenaPausa!= null)

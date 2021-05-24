@@ -6,6 +6,7 @@ package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,6 +25,13 @@ public class PantallaSeleccionarNivel extends Pantalla {
     //Escena
     private Stage escenaMenuSeleccionNivel;
 
+    //Preferencias Niveles
+    Integer nivel2;
+    Integer nivel3;
+    private EstadoNiveles estadoNiveles2 = EstadoNiveles.NIVEL2_LOCK;
+    private EstadoNiveles estadoNiveles3 = EstadoNiveles.NIVEL3_LOCK;
+
+
 
 
     public PantallaSeleccionarNivel(Juego juego) {
@@ -32,11 +40,33 @@ public class PantallaSeleccionarNivel extends Pantalla {
 
     @Override
     public void show() {
-        crearMenuNiveles();
+        recuperarDisposicionNiveles();
+        if (estadoNiveles2 == EstadoNiveles.NIVEL2_LOCK && estadoNiveles3 == EstadoNiveles.NIVEL3_LOCK)
+            crearMenuNiveles1();
+        else if (estadoNiveles3 == EstadoNiveles.NIVEL3_LOCK)
+            crearMenuNiveles1y2();
+        else
+            crearMenuNiveles1y2y3();
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
+    private void recuperarDisposicionNiveles() {
+        Preferences prefsNivel2 = Gdx.app.getPreferences("NIVEL2");
+        Preferences prefsNivel3 = Gdx.app.getPreferences("NIVEL3");
+        // 0: lock 1:unlock
+        nivel2 = prefsNivel2.getInteger("edoNivel2",0);
+        nivel3 = prefsNivel3.getInteger("edoNivel3",0);
 
-    private void crearMenuNiveles() {
+        if (nivel2 == 1){
+            estadoNiveles2 = EstadoNiveles.NIVEL2_UNLOCK;
+        }
+        if (nivel3 == 1){
+            estadoNiveles3 = EstadoNiveles.NIVEL3_UNLOCK;
+        }
+
+
+    }
+
+    private void crearMenuNiveles1() {
         texturaFondo= new Texture("menuNiveles/fondoSeleccionNivel.png");
 
         escenaMenuSeleccionNivel= new Stage(vista);
@@ -59,11 +89,113 @@ public class PantallaSeleccionarNivel extends Pantalla {
         btnNivel2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL2));
+            }
+        });
+
+        Button btnNivel3 = crearBoton("menuNiveles/button_nivel3BLOCK.png", "menuNiveles/button_nivel3-2.png");
+        btnNivel3.setPosition(ANCHO*.80F,3*ALTO/6,Align.center);
+        escenaMenuSeleccionNivel.addActor(btnNivel3);
+        btnNivel3.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL3));
+            }
+        } );
+
+        Button btnRegresar = crearBoton("configuracion/button_regresar.png", "configuracion/button_regresar.png");
+        btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
+        escenaMenuSeleccionNivel.addActor(btnRegresar);
+        btnRegresar.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
+
+        Gdx.input.setInputProcessor(escenaMenuSeleccionNivel);
+
+    }
+
+    private void crearMenuNiveles1y2() {
+        texturaFondo= new Texture("menuNiveles/fondoSeleccionNivel.png");
+
+        escenaMenuSeleccionNivel= new Stage(vista);
+
+        //actores botones...
+        Button btnNivel1 = crearBoton("menuNiveles/button_nivel1.png", "menuNiveles/button_nivel1-2.png");
+        btnNivel1.setPosition(ANCHO*.20F,3*ALTO/6, Align.center);
+        //agregar boton a la escena
+        escenaMenuSeleccionNivel.addActor(btnNivel1);
+        btnNivel1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
+            }
+        });
+
+        Button btnNivel2 = crearBoton("menuNiveles/button_nivel2.png", "menuNiveles/button_nivel2-2.png");
+        btnNivel2.setPosition(ANCHO*.5F,3*ALTO/6,Align.center);
+        escenaMenuSeleccionNivel.addActor(btnNivel2);
+        btnNivel2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL2));
             }
         });
 
         Button btnNivel3 = crearBoton("menuNiveles/button_nivel3BLOCK.png", "menuNiveles/button_nivel3-2.png");
+        btnNivel3.setPosition(ANCHO*.80F,3*ALTO/6,Align.center);
+        escenaMenuSeleccionNivel.addActor(btnNivel3);
+        btnNivel3.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL3));
+            }
+        } );
+
+        Button btnRegresar = crearBoton("configuracion/button_regresar.png", "configuracion/button_regresar.png");
+        btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
+        escenaMenuSeleccionNivel.addActor(btnRegresar);
+        btnRegresar.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
+
+        Gdx.input.setInputProcessor(escenaMenuSeleccionNivel);
+
+    }
+
+    private void crearMenuNiveles1y2y3() {
+        texturaFondo= new Texture("menuNiveles/fondoSeleccionNivel.png");
+
+        escenaMenuSeleccionNivel= new Stage(vista);
+
+        //actores botones...
+        Button btnNivel1 = crearBoton("menuNiveles/button_nivel1.png", "menuNiveles/button_nivel1-2.png");
+        btnNivel1.setPosition(ANCHO*.20F,3*ALTO/6, Align.center);
+        //agregar boton a la escena
+        escenaMenuSeleccionNivel.addActor(btnNivel1);
+        btnNivel1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
+            }
+        });
+
+        Button btnNivel2 = crearBoton("menuNiveles/button_nivel2.png", "menuNiveles/button_nivel2-2.png");
+        btnNivel2.setPosition(ANCHO*.5F,3*ALTO/6,Align.center);
+        escenaMenuSeleccionNivel.addActor(btnNivel2);
+        btnNivel2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL2));
+            }
+        });
+
+        Button btnNivel3 = crearBoton("menuNiveles/button_nivel3.png", "menuNiveles/button_nivel3-2.png");
         btnNivel3.setPosition(ANCHO*.80F,3*ALTO/6,Align.center);
         escenaMenuSeleccionNivel.addActor(btnNivel3);
         btnNivel3.addListener(new ClickListener(){
@@ -82,8 +214,6 @@ public class PantallaSeleccionarNivel extends Pantalla {
                 juego.setScreen(new PantallaMenu(juego));
             }
         });
-
-
 
         Gdx.input.setInputProcessor(escenaMenuSeleccionNivel);
 

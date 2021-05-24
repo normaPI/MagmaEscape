@@ -38,13 +38,13 @@ public class PantallaNivel2 extends Pantalla {
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 4;
+    private final float TIEMPO_CREAR_ASHE = 44;
 
     //Obstaculo (Cajas de fuego)
     private Array<Caja> arrCajas;
     private Texture texturaCajas;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 15;
+    private final float TIEMPO_CREAR_CAJA = 53;
 
     //Potenciador
     private Array<PotenciadorLentitud> arrPotenciadores;
@@ -190,6 +190,14 @@ public class PantallaNivel2 extends Pantalla {
         if(estadoOlivia != EstadoOlivia.MURIENDO && (int)tiempo==60){
             texto.mostrarMensaje(batch, "¡Has ganado! Has pasado el segundo nivel", ANCHO/2, ALTO/2);
             texto.mostrarMensaje(batch, "Tap para continuar...", ANCHO/2, ALTO/4);
+            Preferences preferencias = Gdx.app.getPreferences("TIEMPO");
+            preferencias.putInteger("segundos", (int) tiempo);
+            preferencias.flush();
+
+            Preferences preferencias3 = Gdx.app.getPreferences("NIVEL3");
+            preferencias3.putInteger("edoNivel3", 1);
+            preferencias3.flush();
+
         }
 
         batch.end();
