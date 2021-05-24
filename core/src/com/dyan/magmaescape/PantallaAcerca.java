@@ -25,14 +25,28 @@ public class PantallaAcerca extends Pantalla
     //Escena
     private Stage escenaMenu;
 
+    private AsheAcerca asheAmauri, asheDaniel, asheNorma, asheDenisse;
+
     public PantallaAcerca(Juego juego) {
         this.juego = juego;
     }
 
     public void show() {
         crearAcercaDe();
+        crearAshesAcerca();
         //1: bloquear la tecla de back
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
+    }
+
+    private void crearAshesAcerca() {
+        Texture texturaAmauri = new Texture("acercaDe/AsheAmauri.png");
+        asheAmauri = new AsheAcerca(texturaAmauri,ANCHO*0.085f,ALTO/3f,196,249);
+        Texture texturaDaniel = new Texture("acercaDe/AsheDaniel.png");
+        asheDaniel = new AsheAcerca(texturaDaniel,ANCHO*0.32f,ALTO/3f,194,246);
+        Texture texturaNorma = new Texture("acercaDe/AshesNorma.png");
+        asheNorma = new AsheAcerca(texturaNorma,ANCHO*0.53f,ALTO/3f,196,249);
+        Texture texturaDenisse = new Texture("acercaDe/AsheDenisse.png");
+        asheDenisse = new AsheAcerca(texturaDenisse,ANCHO*0.76f,ALTO/3f,195,247);
     }
 
     private void crearAcercaDe() {
@@ -83,6 +97,10 @@ public class PantallaAcerca extends Pantalla
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         batch.draw(texturaFondo,0,0);
+        asheAmauri.render(batch);
+        asheDaniel.render(batch);
+        asheNorma.render(batch);
+        asheDenisse.render(batch);
         batch.end();
 
         // Escena (DESPUES DEL FONDO)
