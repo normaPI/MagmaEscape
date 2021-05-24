@@ -26,7 +26,7 @@ public class PantallaNivel2Completo extends Pantalla{
         this.escenaNivelCompleto2 = new Stage(this.vista);
         texturaFondo=new Texture("nivel2/finNivel2.jpg");
 
-        Button btnVolverMenu = crearBoton("nivel1/button_continuar.png", "nivel1/button_continuarInv.png");
+        Button btnVolverMenu = crearBoton("acercaDe/button_continuar.png", "acercaDe/button_continuar-2.png");
         btnVolverMenu.setPosition(ANCHO*.85f,ALTO-(ALTO*.90F), Align.center);
         //agregar boton a la escena
         escenaNivelCompleto2.addActor(btnVolverMenu);

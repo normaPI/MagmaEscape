@@ -44,7 +44,7 @@ public class PantallaNivel2 extends Pantalla {
     private Array<Caja> arrCajas;
     private Texture texturaCajas;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 18;
+    private final float TIEMPO_CREAR_CAJA = 15;
 
     //Potenciador
     private Array<PotenciadorLentitud> arrPotenciadores;
@@ -154,11 +154,6 @@ public class PantallaNivel2 extends Pantalla {
 
         olivia.render(batch);
 
-        /*if (estadoOlivia == EstadoOlivia.PAUSA){
-            texto.mostrarMensaje(batch, "PAUSA", ANCHO/2, ALTO/2);
-            texto.mostrarMensaje(batch, "Tap para CONTINUAR", 3*ANCHO/4, ALTO/4);
-            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
-        }*/
 
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
@@ -176,9 +171,9 @@ public class PantallaNivel2 extends Pantalla {
         batch.draw(texturaNeblina,ANCHO-texturaNeblina.getWidth(),ALTO*.15F);
 
         if (estadoOlivia == EstadoOlivia.MURIENDO){
-            texto.mostrarMensaje(batch, "Sorry,  perdiste :(", ANCHO/2, ALTO-(ALTO*.20F));
-            texto.mostrarMensaje(batch, "Tap para VOLVER A INTENTAR", 3*ANCHO/4, ALTO/4);
-            texto.mostrarMensaje(batch, "Tap para ir a MENU", ANCHO/4, ALTO/4);
+            texto.mostrarMensaje(batch, "PERDISTE:(", ANCHO/2, ALTO-(ALTO*.20F));
+            texto.mostrarMensaje(batch, "Tap para volver a intentar", 3*ANCHO/4, ALTO/4);
+            texto.mostrarMensaje(batch, "Tap para ir a menu", ANCHO/4, ALTO/4);
         }
 
         //dibujar contador de tiempo
@@ -294,7 +289,7 @@ public class PantallaNivel2 extends Pantalla {
                 }
         }
             ashe.moverIzquierda(delta);
-            if (ashe.getX() < -60) {
+            if (ashe.sprite.getX() <-60) {
                arrAshes.removeIndex(i);
             }
         }
@@ -472,8 +467,8 @@ public class PantallaNivel2 extends Pantalla {
             addActor(imgFondo);
 
             //Boton Volver a Jugar
-            Button btnJugar = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
-            btnJugar.setPosition(ANCHO / 2, 0.6f * ALTO, Align.center);
+            Button btnJugar = crearBoton("menuPausa/button_volver-al-juego.png", "menuPausa/button_volver-al-juego-2.png");
+            btnJugar.setPosition(ANCHO / 2, 0.7f * ALTO, Align.center);
             addActor(btnJugar);
             //Registrar el evento de click para el boton
             btnJugar.addListener(new ClickListener() {
@@ -488,9 +483,21 @@ public class PantallaNivel2 extends Pantalla {
                 }
             });
 
+            //BOTON VOLVER A INTENTAR
+            Button btnVolverIntentar =  crearBoton("menuPausa/button_volver-a-intentar.png", "menuPausa/button_volver-a-intentar-2.png");
+            addActor(btnVolverIntentar);
+            btnVolverIntentar.setPosition(ANCHO/2,0.5f*ALTO, Align.center);
+
+            btnVolverIntentar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    juego.setScreen(new PantallaNivel2(juego));
+                }
+            });
+
             //BOTON IR A MENU PRINCIPAL
-            Button btnMenu = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
-            btnMenu.setPosition(ANCHO / 2, 0.4F * ALTO, Align.center);
+            Button btnMenu = crearBoton("menuPausa/button_menu-principal.png", "menuPausa/button_menu-principal-2.png");
+            btnMenu.setPosition(ANCHO / 2, 0.3f * ALTO, Align.center);
             addActor(btnMenu);
             //Registrar el evento de click para el boton
             btnMenu.addListener(new ClickListener() {

@@ -42,13 +42,13 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 4;
+    private final float TIEMPO_CREAR_ASHE = 84;
 
     //Bolas de fuego
     private Array<BolaFuego> arrBolasFuego;
     private Texture texturaBolaFuego;
     private float timerCreaBola;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_BOLA = 15;
+    private final float TIEMPO_CREAR_BOLA = 95;
 
     // Boton PAUSE
     private Texture texturaPause;
@@ -74,7 +74,7 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Caja> arrCajas;
     private Texture texturaCaja;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 22;
+    private final float TIEMPO_CREAR_CAJA = 92;
 
 
     //Potenciadores
@@ -774,6 +774,7 @@ public class PantallaNivel3 extends Pantalla{
     {
         private Texture texturaFondo;
 
+
         public EscenaPausa(Viewport vista)
         {
             super(vista);
@@ -785,7 +786,7 @@ public class PantallaNivel3 extends Pantalla{
 
             //adicion de botones
             //actores
-            Button btnVolverJuego = crearBoton("menuPausa/btnVolverJuego.png", "menuPausa/btnVolverJuegoInverso.png");
+            Button btnVolverJuego = crearBoton("menuPausa/button_volver-al-juego.png", "menuPausa/button_volver-al-juego-2.png");
             //agregar boton a la escena
             addActor(btnVolverJuego);
             btnVolverJuego.setPosition(ANCHO/2,.7F*ALTO,Align.center);
@@ -794,12 +795,12 @@ public class PantallaNivel3 extends Pantalla{
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event,x,y);
-                    estadoJuego=EstadoJuego.JUGANDO;
+                    estadoJuego= PantallaNivel3.EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(procesadorEntrada);
                 }
             });
 
-            Button btnVolverIntentar = crearBoton("menuPausa/btnVolverIntentar.png", "menuPausa/btnVolverIntentarInverso.png");
+            Button btnVolverIntentar = crearBoton("menuPausa/button_volver-a-intentar.png", "menuPausa/button_volver-a-intentar-2.png");
             //agregar boton a la escena
             addActor(btnVolverIntentar);
             btnVolverIntentar.setPosition(ANCHO/2,.5F*ALTO, Align.center);
@@ -811,7 +812,7 @@ public class PantallaNivel3 extends Pantalla{
                 }
             });
 
-            Button btnMenuPrincipal = crearBoton("menuPausa/btnMenuPrincipal.png", "menuPausa/btnMenuPrincipalInverso.png");
+            Button btnMenuPrincipal = crearBoton("menuPausa/button_menu-principal.png", "menuPausa/button_menu-principal-2.png");
 
             //agregar boton a la escena
             addActor(btnMenuPrincipal);
