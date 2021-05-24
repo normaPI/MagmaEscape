@@ -42,7 +42,7 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 84;
+    private final float TIEMPO_CREAR_ASHE = 4;
 
     //Libelulas
     private Array<Libelula> arrLibelulas;
@@ -118,8 +118,6 @@ public class PantallaNivel3 extends Pantalla{
     @Override
     public void show() {
 
-
-        cargarRecursos();
         crearFondo();
         crearFondoNeblina();
         crearPause();
@@ -143,10 +141,7 @@ public class PantallaNivel3 extends Pantalla{
 
     }
 
-    private void cargarRecursos() {
 
-
-    }
 
     private void crearFondoNeblina() {
         texturaNeblina= new Texture("nivel3/Nube35.png");
@@ -771,12 +766,12 @@ public class PantallaNivel3 extends Pantalla{
 
                 if (v.x >= ANCHO/2){
 
-                    juego.setScreen(new PantallaNivel3(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL3));
                 }
                 else
                 {
                     juego.reproducir(Juego.TipoMusica.MENU);
-                    juego.setScreen(new PantallaMenu(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
 
             }
@@ -848,7 +843,7 @@ public class PantallaNivel3 extends Pantalla{
             btnVolverIntentar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    juego.setScreen(new PantallaNivel3(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL3));
                 }
             });
 
@@ -862,7 +857,7 @@ public class PantallaNivel3 extends Pantalla{
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     juego.reproducir(Juego.TipoMusica.MENU);
-                    juego.setScreen(new PantallaMenu(juego));
+                    juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
             });
 
