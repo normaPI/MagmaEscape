@@ -175,7 +175,7 @@ public class PantallaNivel3 extends Pantalla{
     }
 
     private void crearCaja() {
-        texturaCaja= new Texture("nivel3/fuego.png");
+        texturaCaja= new Texture("nivel2/fuegos.png");
         arrCajas=new Array<>();
     }
 

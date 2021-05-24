@@ -38,7 +38,7 @@ public class PantallaHistoria extends Pantalla
     private void crearHistoria() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercaDe/fondoHistoria.jpg");
+        texturaFondo=new Texture("acercaDe/historiaInicio.png");
         //Boton regresar
         Button btnRegresar=crearBoton("acercaDe/button_regresar.png", "acercaDe/button_regresarInverso.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
@@ -52,6 +52,17 @@ public class PantallaHistoria extends Pantalla
             }
         });
 
+        //BOTON HISTORIA FINAL
+        Button btnHistoria=crearBoton("nivel1/button_continuar.png", "nivel1/button_continuarInv.png");
+        btnHistoria.setPosition(2.5f*ANCHO/3,ALTO/6, Align.center);
+        escenaMenu.addActor(btnHistoria);
+        //Registrar el evento de click para el boton
+        btnHistoria.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaHistoriaFinal(juego));
+            }
+        });
         //ESCENA SE ENCARGA DE ATENDER LOS EVENTOS DE ENTRADA
         Gdx.input.setInputProcessor(escenaMenu);
     }
