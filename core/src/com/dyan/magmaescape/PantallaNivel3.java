@@ -309,13 +309,13 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoInvencibilidad==EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA && txt!=null)
         {
             txt.mostrarMensaje(batch,"Invencibilidad",ANCHO*.13F,.65F*ALTO);
-            txt.mostrarMensaje(batch,"Activada "+(int)(tiempoInv),ANCHO*.13F,.60F*ALTO);
+            txt.mostrarMensaje(batch,"Activada "+(10-(int)(tiempoInv)),ANCHO*.13F,.60F*ALTO);
         }
 
         if(estadoLentitud==EstadoLentitud.LENTITUD_ACTIVADA&& txtLEN!=null)
         {
             txtLEN.mostrarMensaje(batch,"Lentitud",ANCHO*.13F,.65F*ALTO);
-            txtLEN.mostrarMensaje(batch,"Activada "+(int)(tiempoLentitud),ANCHO*.13F,.60F*ALTO);
+            txtLEN.mostrarMensaje(batch,"Activada "+(11-(int)(tiempoLentitud)),ANCHO*.13F,.60F*ALTO);
         }
 
         //if(estadoOlivia==EstadoOlivia.MURIENDO) juego.reproducir(Juego.TipoMusica.MUERTE);
@@ -387,7 +387,7 @@ public class PantallaNivel3 extends Pantalla{
         if (estadoInvencibilidad == EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA){
             tiempoInv = tiempoInv+(60*Gdx.graphics.getDeltaTime())/60;
         }
-        if ((int)tiempoInv == 65){
+        if ((int)tiempoInv == 10){
             estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_DESACTIVADA;
             txt=null;
         }
