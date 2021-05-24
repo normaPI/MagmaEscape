@@ -28,6 +28,7 @@ public class PantallaCargando extends Pantalla {
         spriteCargando.setPosition(ANCHO/2-spriteCargando.getWidth()/2,ALTO/2-spriteCargando.getHeight()/2);
         textoBlanco=new TextoBlanco("font/arcade2.fnt");
 
+
     }
 
     @Override
