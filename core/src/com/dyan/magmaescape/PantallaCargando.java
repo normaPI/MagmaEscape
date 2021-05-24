@@ -62,6 +62,10 @@ public class PantallaCargando extends Pantalla {
                 case NIVEL3:
                     juego.setScreen(new PantallaNivel3(juego));
                     break;
+                case SELECCION:
+                    juego.reproducir(Juego.TipoMusica.MENU);
+                    juego.setScreen(new PantallaSeleccionarNivel(juego));
+                    break;
             }
         }
 

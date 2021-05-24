@@ -36,7 +36,7 @@ public class PantallaNivel3Completo extends Pantalla{
         btnVolverMenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new PantallaMenu(juego));
+                juego.setScreen(new PantallaCargando(juego,Pantallas.SELECCION));
             }
         });
 

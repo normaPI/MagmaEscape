@@ -4,5 +4,6 @@ public enum Pantallas {
     MENU,
     NIVEL1,
     NIVEL2,
-    NIVEL3
+    NIVEL3,
+    SELECCION
 }

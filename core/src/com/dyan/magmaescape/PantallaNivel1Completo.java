@@ -28,14 +28,14 @@ public class PantallaNivel1Completo extends Pantalla {
         this.escenaNivelCompleto1 = new Stage(this.vista);
         texturaFondo=new Texture("nivel1/mapaEncontrado.png");
 
-        Button btnVolverMenu = crearBoton("acercaDe/button_continuar.png", "acercaDe/button_continuar2.png");
+        Button btnVolverMenu = crearBoton("acercaDe/button_continuar.png", "acercaDe/button_continuar-2.png");
         btnVolverMenu.setPosition(ANCHO*.85f,ALTO-(ALTO*.90F), Align.center);
         //agregar boton a la escena
         escenaNivelCompleto1.addActor(btnVolverMenu);
         btnVolverMenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                juego.setScreen(new PantallaSeleccionarNivel(juego));
+                juego.setScreen(new PantallaCargando(juego,Pantallas.SELECCION));
             }
         });
 
