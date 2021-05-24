@@ -50,13 +50,17 @@ public class PantallaNivel2 extends Pantalla {
     private Array<Ave> arrAves;
     private Texture texturaAves;
     private float timerCrearAve;
-    private final float TIEMPO_CREAR_AVE = 3;
+    private final float TIEMPO_CREAR_AVE = 5;
+
 
     //Monos
     private Array<Mono> arrMonos;
     private Texture texturaMono;
     private float timerCrearMono;
-    private final float TIEMPO_CREAR_MONO = 3;
+    private final float TIEMPO_CREAR_MONO =6;
+    boolean primerMono=true;
+
+
 
     //Potenciador
     private Array<PotenciadorLentitud> arrPotenciadores;
@@ -249,22 +253,26 @@ public class PantallaNivel2 extends Pantalla {
     }
 
     private void actualizarMonos(float delta) {
-        timerCrearAve+= delta;
-        if (timerCrearAve>=TIEMPO_CREAR_AVE) {
-            timerCrearAve = 0;
+        timerCrearMono+= delta;
+
+
+
+        if (timerCrearMono>=TIEMPO_CREAR_MONO) {
+            timerCrearMono = 0;
             //Crear Enemigo
-            float xAve = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ave ave = new Ave(texturaAves,xAve,ALTO/1.22f);
-            arrAves.add(ave);
+            float xMono = MathUtils.random(ANCHO, ANCHO*1.1f);
+
+            Mono mono = new Mono(texturaMono,xMono,ALTO/7);
+            arrMonos.add(mono);
         }
 
 
         // Mover los Ashes
-        for (int i=arrAves.size-1; i>=0; i--){
-            Ave ave = arrAves.get(i);
-            ave.moverIzquierda(delta);
-            if (ave.sprite.getX() < -60) {
-                arrAves.removeIndex(i);
+        for (int i=arrMonos.size-1; i>=0; i--){
+            Mono mono = arrMonos.get(i);
+            mono.moverIzquierda(delta);
+            if (mono.sprite.getX() < -60) {
+                arrMonos.removeIndex(i);
             }
         }
 
