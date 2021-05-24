@@ -42,7 +42,7 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 4;
+    private final float TIEMPO_CREAR_ASHE = 3;
 
     //Libelulas
     private Array<Libelula> arrLibelulas;
@@ -54,7 +54,7 @@ public class PantallaNivel3 extends Pantalla{
     private Array<BolaFuego> arrBolasFuego;
     private Texture texturaBolaFuego;
     private float timerCreaBola;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_BOLA = 95;
+    private final float TIEMPO_CREAR_BOLA = 14;
 
     // Boton PAUSE
     private Texture texturaPause;
@@ -131,12 +131,8 @@ public class PantallaNivel3 extends Pantalla{
         crearPotenciadorInvencibilidad();
         //recuperarMarcador();
 
-
-
         procesadorEntrada = new ProcesadorEntrada();
         Gdx.input.setInputProcessor(procesadorEntrada);
-
-
 
 
     }
@@ -208,7 +204,7 @@ public class PantallaNivel3 extends Pantalla{
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,190);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,160);
     }
     private void crearPause() {
 
@@ -580,7 +576,7 @@ public class PantallaNivel3 extends Pantalla{
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -800);
+            Ashe ashe = new Ashe(texturaAshe, xAshe, ALTO/4f, -500);
             arrAshes.add(ashe);
         }
 
