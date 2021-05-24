@@ -44,6 +44,12 @@ public class PantallaNivel3 extends Pantalla{
     private float timerCreaAshe;   //Acumulador de tiempo
     private final float TIEMPO_CREAR_ASHE = 84;
 
+    //Libelulas
+    private Array<Libelula> arrLibelulas;
+    private Texture texturaLibelula;
+    private float timerCreaLibelula;   //Acumulador de tiempo
+    private final float TIEMPO_CREAR_LIBELULAS = 5;
+
     //Bolas de fuego
     private Array<BolaFuego> arrBolasFuego;
     private Texture texturaBolaFuego;
@@ -52,13 +58,6 @@ public class PantallaNivel3 extends Pantalla{
 
     // Boton PAUSE
     private Texture texturaPause;
-
-    //Asset manager
-
-
-    //Audio
-
-
 
     //contador
     private float tiempo=0;
@@ -126,6 +125,7 @@ public class PantallaNivel3 extends Pantalla{
         crearPause();
         crearOlivia();
         crearAshes();
+        crearLibelulas();
         crearBolasFuego();
         crearTexto();
         crearCaja();
@@ -199,6 +199,12 @@ public class PantallaNivel3 extends Pantalla{
         //ashe = new Ashe(texturaAshe, ANCHO-140, 105);
         arrAshes = new Array<>();
     }
+
+    private void crearLibelulas() {
+        texturaLibelula = new Texture("nivel3/libelula.png");
+        arrLibelulas = new Array<>();
+    }
+
     private void crearBolasFuego() {
         texturaBolaFuego = new Texture("nivel3/bolaFuego.png");
         arrBolasFuego = new Array<>();
@@ -247,6 +253,10 @@ public class PantallaNivel3 extends Pantalla{
         //Dibujar Ashes
         for (Ashe ashe : arrAshes) {
             ashe.render(batch);
+        }
+        //Dibujar Libelulas
+        for (Libelula libelula : arrLibelulas) {
+            libelula.render(batch);
         }
 
 
@@ -336,6 +346,7 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshesLentitud(delta);
+            actualizarLibelulas(delta);
             actualizarBolasFuego(delta);
             actualizarCajas(delta);
             actualizarPotenciadores();
@@ -349,6 +360,7 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshesINVENCIBILIDAD(delta);
+            actualizarLibelulas(delta);
             actualizarBolasFuegoINVENCIBILIDAD(delta);
             actualizarCajasINVENCIBILIDAD(delta);
             actualizarPotenciadores();
@@ -363,6 +375,7 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoJuego==EstadoJuego.JUGANDO && estadoOlivia!=EstadoOlivia.MURIENDO && (int)tiempo<90) {
             actualizarFondo();
             actualizarAshes(delta);
+            actualizarLibelulas(delta);
             actualizarBolasFuego(delta);
             actualizarCajas(delta);
             actualizarPotenciadores();
@@ -587,6 +600,28 @@ public class PantallaNivel3 extends Pantalla{
             //Prueba si la caja debe desaparecer, porque salió de la pantalla
             if (ashe.sprite.getX() < -60) {
                 arrAshes.removeIndex(i);
+            }
+        }
+    }
+
+    private void actualizarLibelulas(float delta) {
+        // Crear Ashes
+        timerCreaLibelula += delta;
+        if (timerCreaLibelula >= TIEMPO_CREAR_LIBELULAS) {
+            timerCreaLibelula = 0;
+            //Crear Enemigo
+            float xLibelula = MathUtils.random(ANCHO, ANCHO*1.5f);
+            float yLibelula = MathUtils.random(ALTO*0.75f, ALTO);
+            Libelula libelula = new Libelula(texturaLibelula, xLibelula, yLibelula);
+            arrLibelulas.add(libelula);
+        }
+        // Mover los Ashes
+        for (int i = arrLibelulas.size-1; i>=0; i--){
+            Libelula libelula = arrLibelulas.get(i);
+            libelula.mover(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (libelula.sprite.getX() < -60) {
+                arrLibelulas.removeIndex(i);
             }
         }
     }
