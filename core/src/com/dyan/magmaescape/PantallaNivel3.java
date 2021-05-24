@@ -398,6 +398,8 @@ public class PantallaNivel3 extends Pantalla{
         if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
             colisionPotenInvencibilidad();
         }
+
+
     }
 
     private void colisionPotenInvencibilidad() {
@@ -451,8 +453,13 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         //Mover los obstaculos
-        for (Caja caja : arrCajas) {
+        for (int i=arrCajas.size-1; i>=0; i--){
+            Caja caja =arrCajas.get(i);
             caja.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (caja.sprite.getX() < -60) {
+                arrCajas.removeIndex(i);
+            }
         }
     }
 
@@ -473,8 +480,13 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         //Mover los obstaculos
-        for (Caja caja : arrCajas) {
+        for (int i=arrCajas.size-1; i>=0; i--){
+            Caja caja =arrCajas.get(i);
             caja.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (caja.sprite.getX() < -60) {
+                arrCajas.removeIndex(i);
+            }
         }
     }
 
@@ -489,8 +501,13 @@ public class PantallaNivel3 extends Pantalla{
             arrBolasFuego.add(bolaFuego);
         }
         // Mover Bolas de fuego
-        for (BolaFuego bolaFuego: arrBolasFuego) {
+        for (int i=arrBolasFuego.size-1; i>=0; i--){
+            BolaFuego bolaFuego =arrBolasFuego.get(i);
             bolaFuego.moverCaida(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (bolaFuego.sprite.getX() < -60) {
+                arrBolasFuego.removeIndex(i);
+            }
         }
 
     }
@@ -507,8 +524,13 @@ public class PantallaNivel3 extends Pantalla{
             arrBolasFuego.add(bolaFuego);
         }
         // Mover Bolas de fuego
-        for (BolaFuego bolaFuego: arrBolasFuego) {
+        for (int i=arrBolasFuego.size-1; i>=0; i--){
+            BolaFuego bolaFuego =arrBolasFuego.get(i);
             bolaFuego.moverCaida(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (bolaFuego.sprite.getX() < -60) {
+                arrBolasFuego.removeIndex(i);
+            }
         }
 
         if(estadoOlivia!=EstadoOlivia.MURIENDO && estadoJuego==EstadoJuego.JUGANDO){
@@ -533,8 +555,13 @@ public class PantallaNivel3 extends Pantalla{
         }*/
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe=arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (ashe.sprite.getX() < -60) {
+                arrAshes.removeIndex(i);
+            }
         }
     }
 
@@ -554,8 +581,13 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe=arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (ashe.sprite.getX() < -60) {
+                arrAshes.removeIndex(i);
+            }
         }
     }
 
@@ -575,8 +607,13 @@ public class PantallaNivel3 extends Pantalla{
         }
 
         // Mover los Ashes
-        for (Ashe ashe: arrAshes) {
+        for (int i=arrAshes.size-1; i>=0; i--){
+            Ashe ashe=arrAshes.get(i);
             ashe.moverIzquierda(delta);
+            //Prueba si la caja debe desaparecer, porque salió de la pantalla
+            if (ashe.sprite.getX() < -60) {
+                arrAshes.removeIndex(i);
+            }
         }
     }
 
