@@ -72,7 +72,12 @@ public class PantallaNivel1 extends Pantalla {
 
     public PantallaNivel1(Juego juego) {
         this.juego = juego;
-        juego.reproducir(Juego.TipoMusica.NIVELES);
+        //Leer la preferencia musicOn y si esta prendida llamar a juego reproducir
+        Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+        boolean musicOn = prefs.getBoolean("musicOn", true);
+        if(musicOn){
+            juego.reproducir(Juego.TipoMusica.NIVELES);
+        }
     }
 
     @Override
@@ -350,7 +355,7 @@ public class PantallaNivel1 extends Pantalla {
             }
 
             if (estadoOlivia == EstadoOlivia.MURIENDO){
-                juego.reproducir(Juego.TipoMusica.MUERTE);
+               // juego.reproducir(Juego.TipoMusica.MUERTE);
                 if (v.x >= ANCHO/2){
                     juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL1));
                 }

@@ -7,6 +7,8 @@ package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -32,7 +34,13 @@ public class Juego extends Game {
 	public void create()
 	{
 		this.setScreen(new PantallaMenu(this));
-		reproducir(TipoMusica.MENU);
+		//leer desde las preferencias el valor de la variable musica
+		Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+		boolean musicOn = prefs.getBoolean("musicOn", true);
+		if(musicOn){
+			reproducir(TipoMusica.MENU);
+		}
+
 	}
 
 	public void reproducir(TipoMusica tipo)
@@ -73,6 +81,27 @@ public class Juego extends Game {
 		}
 
 
+
+	}
+	public void detener(TipoMusica tipo){
+		switch (tipo)
+		{
+			case MENU:
+				manager.clear();// revisar si se quita esta instruccion
+				menuM.stop();
+				break;
+
+			case NIVELES:
+				manager.clear();
+				nivel.stop();
+				break;
+
+			case MUERTE:
+				morir.stop();
+				nivel.stop();
+				break;
+
+		}
 
 	}
 

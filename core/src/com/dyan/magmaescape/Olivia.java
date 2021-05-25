@@ -6,6 +6,7 @@ Autor: Daniel Castañeda
 package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -115,8 +116,11 @@ public class Olivia extends Objeto {
 
     public void reproducirSalto()
     {
-
-        saltar.play();
+        Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+        boolean musicOn = prefs.getBoolean("musicOn", true);
+        if(musicOn){
+            saltar.play();
+        }
     }
 
     public void saltar() {

@@ -111,7 +111,11 @@ public class PantallaNivel3 extends Pantalla{
 
     public PantallaNivel3(Juego juego) {
         this.juego = juego;
-        juego.reproducir(Juego.TipoMusica.NIVELES);
+        Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+        boolean musicOn = prefs.getBoolean("musicOn", true);
+        if(musicOn){
+            juego.reproducir(Juego.TipoMusica.NIVELES);
+        }
 
     }
 
