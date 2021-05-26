@@ -35,7 +35,7 @@ public class PantallaConfiguracion extends Pantalla {
 
     private void crearConfig() {
         this.escenaMenu = new Stage(this.vista);
-        this.texturaFondo = new Texture("configuracion/fondoConfiguracion.jpg");
+        this.texturaFondo = new Texture("configuracion/pantallaConfiguracion.png");
         Button btnRegresar = this.crearBoton("configuracion/button_regresar.png","configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);
         this.escenaMenu.addActor(btnRegresar);
@@ -66,7 +66,7 @@ public class PantallaConfiguracion extends Pantalla {
             btnMute.setStyle(styleOff);
         }
 
-        btnMute.setPosition(640.0F, 400.0F, 1);
+        btnMute.setPosition(ANCHO/2, ALTO/2, 1);
         this.escenaMenu.addActor(btnMute);
         btnMute.addListener(new ClickListener() {
 
