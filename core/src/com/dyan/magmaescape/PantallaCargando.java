@@ -1,5 +1,7 @@
 package com.dyan.magmaescape;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Align;
@@ -64,7 +66,12 @@ public class PantallaCargando extends Pantalla {
                     juego.setScreen(new PantallaNivel3(juego));
                     break;
                 case SELECCION:
-                    juego.reproducir(Juego.TipoMusica.MENU);
+                    Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+                    boolean musicOn = prefs.getBoolean("musicOn", true);
+                    if(musicOn){
+                        juego.detener(Juego.TipoMusica.NIVELES);
+                        juego.reproducir(Juego.TipoMusica.MENU);
+                    }
                     juego.setScreen(new PantallaSeleccionarNivel(juego));
                     break;
             }
