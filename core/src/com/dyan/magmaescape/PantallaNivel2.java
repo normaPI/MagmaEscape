@@ -88,7 +88,11 @@ public class PantallaNivel2 extends Pantalla {
 
     public PantallaNivel2(Juego juego) {
         this.juego=juego;
-        juego.reproducir(Juego.TipoMusica.NIVELES);
+        Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+        boolean musicOn = prefs.getBoolean("musicOn", true);
+        if(musicOn){
+            juego.reproducir(Juego.TipoMusica.NIVELES);
+        }
     }
     @Override
     public void show() {
@@ -510,13 +514,18 @@ public class PantallaNivel2 extends Pantalla {
             }
 
             if (estadoOlivia == EstadoOlivia.MURIENDO){
-                juego.reproducir(Juego.TipoMusica.MUERTE);
+               //juego.reproducir(Juego.TipoMusica.MUERTE);
                 if (v.x >= ANCHO/2){
                     juego.setScreen(new PantallaCargando(juego,Pantallas.NIVEL2));
                 }
                 else
                 {
-                    juego.reproducir(Juego.TipoMusica.MENU);
+                    Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+                    boolean musicOn = prefs.getBoolean("musicOn", true);
+                    if(musicOn){
+                        juego.detener(Juego.TipoMusica.NIVELES);
+                        juego.reproducir(Juego.TipoMusica.MENU);
+                    }
                     juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
 
                 }
@@ -600,7 +609,12 @@ public class PantallaNivel2 extends Pantalla {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    juego.reproducir(Juego.TipoMusica.MENU);
+                    Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+                    boolean musicOn = prefs.getBoolean("musicOn", true);
+                    if(musicOn){
+                        juego.detener(Juego.TipoMusica.NIVELES);
+                        juego.reproducir(Juego.TipoMusica.MENU);
+                    }
                     juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
             });

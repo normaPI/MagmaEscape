@@ -8,6 +8,7 @@ package com.dyan.magmaescape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -44,12 +45,47 @@ public class PantallaConfiguracion extends Pantalla {
             }
         });
 
+        Texture texturaOff = new Texture("configuracion/btnMute.png");
+        TextureRegionDrawable trdOff = new TextureRegionDrawable(texturaOff);
+
+        Texture texturaOn = new Texture("configuracion/btnSonido.png");
+        TextureRegionDrawable trdOn = new TextureRegionDrawable(texturaOn);
+
+
+        Button.ButtonStyle styleOn= new Button.ButtonStyle(trdOn,trdOff,trdOff);
+        Button.ButtonStyle styleOff= new Button.ButtonStyle(trdOff,trdOn,trdOn);
+
 
         Button btnMute = this.crearBoton("configuracion/btnMute.png","configuracion/btnSonido.png");
+        //Leer la preferencia de music on y si esta en false, cambiar el estilo del boto
+        Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+        boolean musicOn = prefs.getBoolean("musicOn", true);
+        if(musicOn){
+            btnMute.setStyle(styleOn);
+        }else{
+            btnMute.setStyle(styleOff);
+        }
+
         btnMute.setPosition(640.0F, 400.0F, 1);
         this.escenaMenu.addActor(btnMute);
         btnMute.addListener(new ClickListener() {
+
             public void clicked(InputEvent event, float x, float y) {
+                //leer el estado actual de music on
+                //si musicOn esta es true, cambiarlo a false y detener la musica
+                Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+                boolean musicOn = prefs.getBoolean("musicOn", true);
+                if(musicOn){
+                    prefs.putBoolean("musicOn", false);
+                    prefs.flush();
+                    juego.detener(Juego.TipoMusica.MENU);
+
+                }else {
+                    prefs.putBoolean("musicOn", true);
+                    prefs.flush();
+                    juego.reproducir(Juego.TipoMusica.MENU);
+                }
+
             }
         });
         Gdx.input.setInputProcessor(this.escenaMenu);
