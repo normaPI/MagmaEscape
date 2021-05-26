@@ -41,6 +41,7 @@ public class Juego extends Game {
 			reproducir(TipoMusica.MENU);
 		}
 
+
 	}
 
 	public void reproducir(TipoMusica tipo)
@@ -49,6 +50,7 @@ public class Juego extends Game {
 		switch (tipo)
 		{
 			case MENU:
+				//se encm
 				manager.clear();
 				manager.load("musica/menu.wav", Music.class);
 				manager.finishLoading();
@@ -89,6 +91,7 @@ public class Juego extends Game {
 			case MENU:
 				manager.clear();// revisar si se quita esta instruccion
 				menuM.stop();
+
 				break;
 
 			case NIVELES:

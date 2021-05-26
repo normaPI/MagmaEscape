@@ -770,7 +770,13 @@ public class PantallaNivel3 extends Pantalla{
                 }
                 else
                 {
-                    juego.reproducir(Juego.TipoMusica.MENU);
+                    Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+                    boolean musicOn = prefs.getBoolean("musicOn", true);
+                    if(musicOn){
+                        juego.detener(Juego.TipoMusica.NIVELES);
+                        juego.reproducir(Juego.TipoMusica.MENU);
+                    }
+
                     juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
 
@@ -856,7 +862,13 @@ public class PantallaNivel3 extends Pantalla{
             btnMenuPrincipal.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    juego.reproducir(Juego.TipoMusica.MENU);
+
+                    Preferences prefs = Gdx.app.getPreferences("MusicPreference");
+                    boolean musicOn = prefs.getBoolean("musicOn", true);
+                    if(musicOn){
+                        juego.detener(Juego.TipoMusica.NIVELES);
+                        juego.reproducir(Juego.TipoMusica.MENU);
+                    }
                     juego.setScreen(new PantallaCargando(juego,Pantallas.MENU));
                 }
             });
