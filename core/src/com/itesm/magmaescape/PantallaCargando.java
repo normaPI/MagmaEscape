@@ -13,9 +13,10 @@ public class PantallaCargando extends Pantalla {
 
     private Juego juego;
     private com.itesm.magmaescape.Pantallas screen;
+    private Texture texturaFondo;
     private Texture texturaCargando;
     private Sprite spriteCargando;
-    private TextoBlanco textoBlanco;
+    private Texto textoBlanco;
 
     private float timerPasar;
     private static final float TIEMPO_ENTRE_FRAMES = 1f;
@@ -29,9 +30,10 @@ public class PantallaCargando extends Pantalla {
     @Override
     public void show() {
         texturaCargando=new Texture("cargando/loading.png");
+        texturaFondo=new Texture("cargando/pantallaCargando.png");
         spriteCargando= new Sprite(texturaCargando);
         spriteCargando.setPosition(ANCHO/2-spriteCargando.getWidth()/2,ALTO/2-spriteCargando.getHeight()/2);
-        textoBlanco=new TextoBlanco("font/arcade2.fnt");
+        textoBlanco=new Texto ("font/arcade2.fnt");
 
 
     }
@@ -43,6 +45,7 @@ public class PantallaCargando extends Pantalla {
         borrarPantalla(0,0,0);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
+        batch.draw(texturaFondo,0,0);
         //dibujando fondo
         spriteCargando.draw(batch);
         textoBlanco.mostrarMensaje(batch,"Cargando...",ANCHO/2,.2f*ALTO);
