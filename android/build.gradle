@@ -86,7 +86,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.dyan.magmaescape/com.dyan.magmaescape.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.itesm.magmaescape/com.itesm.magmaescape.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
