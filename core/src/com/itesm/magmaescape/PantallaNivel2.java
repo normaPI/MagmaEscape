@@ -38,13 +38,13 @@ public class PantallaNivel2 extends Pantalla {
     private Array<com.itesm.magmaescape.Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 64;
+    private final float TIEMPO_CREAR_ASHE = 4;
 
     //Obstaculo (Cajas de fuego)
     private Array<Caja> arrCajas;
     private Texture texturaCajas;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 63;
+    private final float TIEMPO_CREAR_CAJA = 12;
 
     //Aves
     private Array<Ave> arrAves;
@@ -272,7 +272,7 @@ public class PantallaNivel2 extends Pantalla {
             //Crear Enemigo
             float xMono = MathUtils.random(ANCHO, ANCHO*1.1f);
 
-            com.itesm.magmaescape.Mono mono = new com.itesm.magmaescape.Mono(texturaMono,xMono,ALTO/7);
+            com.itesm.magmaescape.Mono mono = new com.itesm.magmaescape.Mono(texturaMono,xMono,ALTO*0.03f);
             arrMonos.add(mono);
         }
 

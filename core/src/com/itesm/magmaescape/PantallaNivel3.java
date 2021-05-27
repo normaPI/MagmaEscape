@@ -42,19 +42,19 @@ public class PantallaNivel3 extends Pantalla {
     private Array<com.itesm.magmaescape.Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 93;
+    private final float TIEMPO_CREAR_ASHE = 5;
 
     //Libelulas
     private Array<com.itesm.magmaescape.Libelula> arrLibelulas;
     private Texture texturaLibelula;
     private float timerCreaLibelula;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_LIBELULAS = 95;
+    private final float TIEMPO_CREAR_LIBELULAS = 5;
 
     //Bolas de fuego
     private Array<com.itesm.magmaescape.BolaFuego> arrBolasFuego;
     private Texture texturaBolaFuego;
     private float timerCreaBola;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_BOLA = 104;
+    private final float TIEMPO_CREAR_BOLA = 19;
 
     // Boton PAUSE
     private Texture texturaPause;
@@ -73,7 +73,7 @@ public class PantallaNivel3 extends Pantalla {
     private Array<com.itesm.magmaescape.Caja> arrCajas;
     private Texture texturaCaja;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 92;
+    private final float TIEMPO_CREAR_CAJA = 12;
 
 
     //Potenciadores
@@ -87,7 +87,7 @@ public class PantallaNivel3 extends Pantalla {
     private com.itesm.magmaescape.PotenciadorInvencibilidad potenciadorInvencibilidad;
     private Texture texturaPotenciadorInvencibilidad;
     private float timerCrearPotenciadorInvencibilidad;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_POTENCIADOR_INVENCIBILIDAD = 25;
+    private final float TIEMPO_CREAR_POTENCIADOR_INVENCIBILIDAD = 35;
 
 
     //Escena pausa
@@ -179,11 +179,6 @@ public class PantallaNivel3 extends Pantalla {
 
     }
 
-    private void recuperarMarcador() {
-        Preferences prefs = Gdx.app.getPreferences("TIEMPO");
-        tiempo = prefs.getInteger("segundos",0);
-    }
-
     private void crearFondo(){
 
         texturaFondo = new Texture("nivel3/fondoNivel31.png");
@@ -207,7 +202,7 @@ public class PantallaNivel3 extends Pantalla {
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,300,160);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,250,130);
     }
     private void crearPause() {
 
