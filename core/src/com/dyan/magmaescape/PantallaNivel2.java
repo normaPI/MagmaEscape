@@ -38,13 +38,13 @@ public class PantallaNivel2 extends Pantalla {
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 4;
+    private final float TIEMPO_CREAR_ASHE = 64;
 
     //Obstaculo (Cajas de fuego)
     private Array<Caja> arrCajas;
     private Texture texturaCajas;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 53;
+    private final float TIEMPO_CREAR_CAJA = 63;
 
     //Aves
     private Array<Ave> arrAves;

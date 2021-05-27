@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Align;
 public class PantallaNivel3Completo extends Pantalla{
 
     private Juego juego;
+    private OliviaEzra oliviaEzra;
 
     private Texture texturaFondo;
     //Escena
@@ -39,8 +40,13 @@ public class PantallaNivel3Completo extends Pantalla{
                 juego.setScreen(new PantallaCargando(juego,Pantallas.SELECCION));
             }
         });
-
+        crearOliviaEzra();
         Gdx.input.setInputProcessor(escenaNivelCompleto3);
+    }
+
+    private void crearOliviaEzra() {
+        Texture texturaOE = new Texture("nivel3/OliviaEzra.png");
+       oliviaEzra = new OliviaEzra(texturaOE,ANCHO*0.65f,ALTO/7f);
     }
 
     private Button crearBoton(String archivo, String archivoInverso) {
@@ -58,6 +64,7 @@ public class PantallaNivel3Completo extends Pantalla{
         batch.setProjectionMatrix(this.camara.combined);
         batch.begin();
         batch.draw(texturaFondo,0,0);
+        oliviaEzra.render(batch);
 
         batch.end();
 

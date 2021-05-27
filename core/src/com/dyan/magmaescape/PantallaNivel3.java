@@ -42,19 +42,19 @@ public class PantallaNivel3 extends Pantalla{
     private Array<Ashe> arrAshes;
     private Texture texturaAshe;
     private float timerCreaAshe;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_ASHE = 3;
+    private final float TIEMPO_CREAR_ASHE = 93;
 
     //Libelulas
     private Array<Libelula> arrLibelulas;
     private Texture texturaLibelula;
     private float timerCreaLibelula;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_LIBELULAS = 5;
+    private final float TIEMPO_CREAR_LIBELULAS = 95;
 
     //Bolas de fuego
     private Array<BolaFuego> arrBolasFuego;
     private Texture texturaBolaFuego;
     private float timerCreaBola;   //Acumulador de tiempo
-    private final float TIEMPO_CREAR_BOLA = 14;
+    private final float TIEMPO_CREAR_BOLA = 104;
 
     // Boton PAUSE
     private Texture texturaPause;
