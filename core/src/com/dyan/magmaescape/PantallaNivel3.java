@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
+// Created by Norma Perez I 17/05/2021
 public class PantallaNivel3 extends Pantalla{
     //
     private Juego juego;
@@ -203,7 +203,6 @@ public class PantallaNivel3 extends Pantalla{
     private void crearBolasFuego() {
         texturaBolaFuego = new Texture("nivel3/bolaFuego.png");
         arrBolasFuego = new Array<>();
-        //Gdx.app.log("FUNION:", "creaBolasFuego");
     }
 
     private void crearOlivia() {
@@ -413,10 +412,7 @@ public class PantallaNivel3 extends Pantalla{
     private void colisionPotenInvencibilidad() {
         if(potenciadorInvencibilidad!=null){
             if (olivia.sprite.getBoundingRectangle().overlaps(potenciadorInvencibilidad.sprite.getBoundingRectangle())) {
-                // Le pego
-                //Gdx.app.log("Probando colision con potenciador rojo", "invencibilidad papu");
                 estadoInvencibilidad = EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA;
-                Gdx.app.log("ESTADO", "ya tenemo EDO INVENC");
                 potenciadorInvencibilidad=null;
 
             }
@@ -436,9 +432,7 @@ public class PantallaNivel3 extends Pantalla{
         if(potenciadorLentitud!=null)
         {
             if (olivia.sprite.getBoundingRectangle().overlaps(potenciadorLentitud.sprite.getBoundingRectangle())){
-                Gdx.app.log("Probando colision con el potenciador", "TOCO DIAMANTE,CORRIENDO");
                 estadoLentitud = EstadoLentitud.LENTITUD_ACTIVADA;
-                    Gdx.app.log("ESTADO", "ya tenemo EDO LENTITUD");
                 potenciadorLentitud=null;
             }
         }
@@ -654,8 +648,6 @@ public class PantallaNivel3 extends Pantalla{
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
-                //olivia = null;
-                Gdx.app.log("Probando colision con bola de fuego", "YA LE PEGAMOS");
                 break;
             }
         }
@@ -667,8 +659,6 @@ public class PantallaNivel3 extends Pantalla{
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
-                //olivia = null;
-                Gdx.app.log("Probando colision con ashe", "YA LE PEGAMOS");
                 break;
             }
         }
@@ -680,8 +670,6 @@ public class PantallaNivel3 extends Pantalla{
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
-                //olivia = null;
-                Gdx.app.log("Probando colision de caja de fuego", "Ya se quemo");
                 break;
             }
         }

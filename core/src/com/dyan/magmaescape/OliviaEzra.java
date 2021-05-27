@@ -1,4 +1,8 @@
 package com.dyan.magmaescape;
+/*
+Esta clase es para la animacion de Olivia y Ezra al final del nivel3
+Autor: Norma P Iturbide
+*/
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

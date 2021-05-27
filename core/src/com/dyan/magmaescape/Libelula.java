@@ -1,5 +1,11 @@
 package com.dyan.magmaescape;
 
+/*
+Esta clase es para la animacion de Libelula el nivel 3
+Autor: Norma P Iturbide
+*/
+
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;

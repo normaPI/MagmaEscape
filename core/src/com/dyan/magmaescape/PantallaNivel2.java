@@ -377,11 +377,9 @@ public class PantallaNivel2 extends Pantalla {
             Ashe ashe = arrAshes.get(i);
         if (coliPotenLenti){
                 if(tiempoLentitud>=8.0){
-                   Gdx.app.log("TIEMPO ACABADO ", "El potenciador acabo");
                     ashe.setPotenLentitud(false);
                     coliPotenLenti=false;
                     tiempoLentitud=0;
-                    Gdx.app.log("Normalidad", "El float es:"+ashe.getpotenLentitud());
 
                 } else {
                     ashe.setPotenLentitud(true);
@@ -409,7 +407,6 @@ public class PantallaNivel2 extends Pantalla {
                 coliPotenLenti=true;
                 arrPotenciadores.removeIndex(i);
                 tiempoColision=this.tiempo;
-                Gdx.app.log("Probando colision", "TOCO DIAMANTE,CORRIENDO");
                 break;
 
             }
@@ -420,13 +417,11 @@ public class PantallaNivel2 extends Pantalla {
 
     private void colisionCaja() {
         for (Caja caja : arrCajas) {
-            //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(caja.sprite.getBoundingRectangle())){
                 // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
                 //olivia = null;
-                Gdx.app.log("Probando colision", "YA LE PEGAMOS");
                 break;
             }
         }
@@ -434,13 +429,9 @@ public class PantallaNivel2 extends Pantalla {
 
     private void colisionAshe() {
         for (Ashe ashe: arrAshes) {
-            //Gdx.app.log("Probando colision", "tengo miedo");
             if (olivia.sprite.getBoundingRectangle().overlaps(ashe.sprite.getBoundingRectangle())){
-                // Le pego
                 olivia.setEstado(EstadoOlivia.MURIENDO);
                 estadoOlivia = EstadoOlivia.MURIENDO;
-                //olivia = null;
-                Gdx.app.log("Probando colision", "YA LE PEGAMOS");
                 break;
             }
         }

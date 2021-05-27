@@ -1,4 +1,8 @@
 package com.dyan.magmaescape;
+/*
+Esta clase es para mostrar la pantalla de cargando
+Autor: Amauri Elian
+*/
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
