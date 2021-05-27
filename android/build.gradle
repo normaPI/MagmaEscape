@@ -17,7 +17,7 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "com.dyan.magmaescape"
+        applicationId "com.itesm.magmaescape"
         minSdkVersion 14
         targetSdkVersion 30
         versionCode 1
