@@ -27,8 +27,8 @@ public class PantallaSeleccionarNivel extends Pantalla {
     //Preferencias Niveles
     Integer nivel2;
     Integer nivel3;
-    private com.itesm.magmaescape.EstadoNiveles estadoNiveles2 = com.itesm.magmaescape.EstadoNiveles.NIVEL2_LOCK;
-    private com.itesm.magmaescape.EstadoNiveles estadoNiveles3 = com.itesm.magmaescape.EstadoNiveles.NIVEL3_LOCK;
+    private com.itesm.magmaescape.EstadoNiveles estadoNiveles2 = EstadoNiveles.NIVEL2_LOCK;
+    private com.itesm.magmaescape.EstadoNiveles estadoNiveles3 = EstadoNiveles.NIVEL3_LOCK;
 
 
 
