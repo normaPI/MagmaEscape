@@ -24,7 +24,7 @@ public class PantallaNivel2Completo extends Pantalla {
     @Override
     public void show() {
         this.escenaNivelCompleto2 = new Stage(this.vista);
-        texturaFondo=new Texture("nivel2/finNivel2.jpg");
+        texturaFondo=new Texture("nivel2/finalSegundoNivel.jpg");
 
         Button btnVolverMenu = crearBoton("acercaDe/button_continuar.png", "acercaDe/button_continuar-2.png");
         btnVolverMenu.setPosition(ANCHO*.85f,ALTO-(ALTO*.90F), Align.center);
