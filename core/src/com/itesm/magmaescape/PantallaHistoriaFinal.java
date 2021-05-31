@@ -33,7 +33,7 @@ public class PantallaHistoriaFinal extends Pantalla {
     private void crearHistoriaFinal() {
         escenaMenu=new Stage(vista);
 
-        texturaFondo=new Texture("acercaDe/historiaFinal.png");
+        texturaFondo=new Texture("acercaDe/historiaFin.png");
         //Boton REGRESAR HISTORIA INICIAL
         Button btnRegresar=crearBoton("configuracion/button_regresar.png", "configuracion/button_regresar-2.png");
         btnRegresar.setPosition(ANCHO/6,ALTO/6, Align.center);

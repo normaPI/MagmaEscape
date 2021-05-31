@@ -18,7 +18,7 @@ public class Pez extends Objeto {
 
     public Pez(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);
-        TextureRegion[][] texturas = region.split(128,60);
+        TextureRegion[][] texturas = region.split(96,45);
 
         //Crear la animacion
         TextureRegion[] arrFrames = { texturas[0][0], texturas[0][1]};

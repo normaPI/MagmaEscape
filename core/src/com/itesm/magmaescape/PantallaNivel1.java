@@ -98,7 +98,7 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void crearPeces() {
-        texturaPeces = new Texture("nivel1/peces.png");
+        texturaPeces = new Texture("nivel1/pez.png");
         arrPeces = new Array<>();
     }
 
@@ -113,7 +113,7 @@ public class PantallaNivel1 extends Pantalla {
 
     private void crearFondo(){
 
-        texturaFondo = new Texture("nivel1/fondNivel1.jpg");
+        texturaFondo = new Texture("nivel1/fondoNivel1.png");
     }
 
     private void crearAshes() {
@@ -210,23 +210,21 @@ public class PantallaNivel1 extends Pantalla {
     }
 
     private void actualizarPeces(float delta) {
-        //Crear Cajas de Fuego
+        //Crear peces
         timerCrearPez += delta;
         if (timerCrearPez >= TIEMPO_CREAR_PEZ) {
             timerCrearPez = 0;
             //Crear elemento
             float xPez = MathUtils.random(ANCHO, ANCHO*1.5F);
-            com.itesm.magmaescape.Pez pez = new com.itesm.magmaescape.Pez(texturaPeces, xPez, ALTO/15);
+            com.itesm.magmaescape.Pez pez = new com.itesm.magmaescape.Pez(texturaPeces, xPez, ALTO/17);
             arrPeces.add(pez);
         }
         //Mover los elementos (peces)
-        //for (Caja caja : arrCajas){
-
         for (int i=arrPeces.size-1; i>=0; i--){
             Pez pez =arrPeces.get(i);
             pez.moverIzquierda(delta);
             //Prueba si la caja debe desaparecer, porque salió de la pantalla
-            if (pez.sprite.getX() < -60) {
+            if (pez.sprite.getX() < -95) {
                 arrPeces.removeIndex(i);
             }
         }
