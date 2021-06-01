@@ -202,7 +202,7 @@ public class PantallaNivel3 extends Pantalla {
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,250,170);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,255,220);
     }
     private void crearPause() {
 
@@ -569,7 +569,7 @@ public class PantallaNivel3 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            com.itesm.magmaescape.Ashe ashe = new com.itesm.magmaescape.Ashe(texturaAshe, xAshe, ALTO/4f, -500);
+            com.itesm.magmaescape.Ashe ashe = new com.itesm.magmaescape.Ashe(texturaAshe, xAshe, ALTO/4f, -550);
             arrAshes.add(ashe);
         }
 
@@ -673,7 +673,7 @@ public class PantallaNivel3 extends Pantalla {
 
 
     private void actualizarFondo() {
-        xFondo-=6;
+        xFondo-=4;
         if(xFondo<=-texturaFondo.getWidth()) {
             xFondo=0;
         }
