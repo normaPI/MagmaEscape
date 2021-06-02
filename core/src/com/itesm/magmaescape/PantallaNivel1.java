@@ -346,7 +346,7 @@ public class PantallaNivel1 extends Pantalla {
 
             }
 
-            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != com.itesm.magmaescape.EstadoOlivia.MURIENDO){
+            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != com.itesm.magmaescape.EstadoOlivia.MURIENDO && (int)tiempo<30){
                 olivia.saltar(); // Top-Down
             }
 
