@@ -15,7 +15,7 @@ public class Caja extends Objeto
     private Animation<TextureRegion> animacion;
     private float timerAnimacion;
 
-    private float velocidadX = -400;  //pixeles/segundos
+    private float velocidadX = -300;  //pixeles/segundos
 
     public Caja(Texture textura, float x, float y) {
         TextureRegion region = new TextureRegion(textura);

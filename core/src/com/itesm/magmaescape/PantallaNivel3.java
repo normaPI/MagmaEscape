@@ -73,7 +73,7 @@ public class PantallaNivel3 extends Pantalla {
     private Array<com.itesm.magmaescape.Caja> arrCajas;
     private Texture texturaCaja;
     private float timerCrearCaja;
-    private final float TIEMPO_CREAR_CAJA = 12;
+    private final float TIEMPO_CREAR_CAJA = 15;
 
 
     //Potenciadores
@@ -202,7 +202,7 @@ public class PantallaNivel3 extends Pantalla {
 
     private void crearOlivia() {
         Texture texturaOlivia = new Texture("nivel1/oliviaSprites.png");
-        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,255,220);
+        olivia = new Olivia(texturaOlivia,ANCHO/4-(texturaOlivia.getWidth()/4f),ALTO/4f,250,195);
     }
     private void crearPause() {
 
@@ -569,7 +569,7 @@ public class PantallaNivel3 extends Pantalla {
             timerCreaAshe = 0;
             //Crear Enemigo
             float xAshe = MathUtils.random(ANCHO, ANCHO*1.5f);
-            com.itesm.magmaescape.Ashe ashe = new com.itesm.magmaescape.Ashe(texturaAshe, xAshe, ALTO/4f, -550);
+            com.itesm.magmaescape.Ashe ashe = new com.itesm.magmaescape.Ashe(texturaAshe, xAshe, ALTO/4f, -600);
             arrAshes.add(ashe);
         }
 
