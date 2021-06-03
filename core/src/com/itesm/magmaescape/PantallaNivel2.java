@@ -499,7 +499,7 @@ public class PantallaNivel2 extends Pantalla {
 
             }else
 
-            if (estadoOlivia != com.itesm.magmaescape.EstadoOlivia.PAUSA && estadoOlivia != com.itesm.magmaescape.EstadoOlivia.MURIENDO ){
+            if (estadoOlivia != com.itesm.magmaescape.EstadoOlivia.PAUSA && estadoOlivia != com.itesm.magmaescape.EstadoOlivia.MURIENDO && (int)tiempo<60 ){
 
                 olivia.saltar(); // Top-Down
             }

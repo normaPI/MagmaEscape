@@ -5,6 +5,7 @@ Autor: Norma P Iturbide
 */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,6 +26,7 @@ public class PantallaMenu extends Pantalla {
 
     public void show() {
         this.crearMenu();
+        Gdx.input.setCatchKey(Input.Keys.BACK, false);
     }
 
     private void crearMenu() {
