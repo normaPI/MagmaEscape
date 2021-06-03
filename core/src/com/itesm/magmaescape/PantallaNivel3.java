@@ -307,8 +307,8 @@ public class PantallaNivel3 extends Pantalla {
 
         if(estadoInvencibilidad== com.itesm.magmaescape.EstadoInvencibilidad.INVENCIBILIDAD_ACTIVADA && txt!=null)
         {
-            txt.mostrarMensaje(batch,"Invencibilidad",ANCHO*.13F,.65F*ALTO);
-            txt.mostrarMensaje(batch,"Activada "+(10-(int)(tiempoInv)),ANCHO*.13F,.60F*ALTO);
+            txt.mostrarMensaje(batch,"Invencibilidad",ANCHO*.17F,.70F*ALTO);
+            txt.mostrarMensaje(batch,"Activada "+(10-(int)(tiempoInv)),ANCHO*.17F,.65F*ALTO);
         }
 
         if(estadoLentitud== com.itesm.magmaescape.EstadoLentitud.LENTITUD_ACTIVADA&& txtLEN!=null)
@@ -739,7 +739,7 @@ public class PantallaNivel3 extends Pantalla {
             }else
 
 
-            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != com.itesm.magmaescape.EstadoOlivia.MURIENDO ){
+            if (estadoJuego==EstadoJuego.JUGANDO && estadoOlivia != com.itesm.magmaescape.EstadoOlivia.MURIENDO && (int)tiempo<90){
 
                 olivia.saltar(); // Top-Down
 
